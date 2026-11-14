@@ -105,7 +105,7 @@ header{position:static;background:#e63c1f;padding:14px 14px 0}
 .pw .ph{width:100%;height:200px;object-fit:contain;border:0;border-radius:12px}
 .p0{text-align:center;color:var(--mu);font-size:14px;cursor:pointer}.p0i{font-size:38px}
 .sbd{align-self:flex-start;margin:10px 0 8px;padding:5px 12px;border-radius:999px;font-size:14px;font-weight:600}
-.sbd.yes{color:#16a34a;border:1.5px solid #16a34a}.sbd.no{color:#dc2626;border:1.5px solid #dc2626}
+.sbd.yes{color:#16a34a;border:1.5px solid #16a34a}.sbd.no{color:#16a34a;border:1.5px solid #16a34a}
 .cd .nm{font-size:17px;font-weight:500}
 .pr{font-size:26px;font-weight:800;margin-top:6px}
 .pr .mr{text-decoration:line-through;text-decoration-thickness:2px;color:var(--mu);font-size:18px;font-weight:600;margin-right:10px}.pr .gr{color:#16a34a}
@@ -454,7 +454,7 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 #dti .dbt .bn{width:100%;margin:0!important;background:#fb641b!important;color:#fff!important;border-radius:4px!important;font-size:17px!important;font-weight:800;padding:14px 8px!important}
 #dto{background:#fff;margin-top:8px;border-top:0!important;padding-bottom:110px!important}
 #dto .dgc{position:relative}
-.dgs{font-size:12px;font-weight:800;padding:2px 8px 6px}.dgs.y{color:#16a34a}.dgs.n{color:#dc2626}
+.dgs{font-size:12px;font-weight:800;padding:2px 8px 6px}.dgs.y{color:#16a34a}.dgs.n{color:#16a34a}
 .cvc.no{opacity:.75}
 /* booking */
 #bysum,.bysec{border-radius:0;box-shadow:0 1px 2px rgba(0,0,0,.08)}
@@ -564,7 +564,7 @@ html{overflow-x:hidden}
 .cd.hp .prw{width:100%!important;justify-content:flex-start!important}
 .cd .ln .nm,.cd.hp .nm{white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;min-height:2.6em;word-break:break-word;font-size:14px!important;font-weight:600!important}
 .cd.hp .sbd.yes,.cd .sbd.yes{background:none!important;color:#16a34a!important;border:1.5px solid #16a34a!important;border-radius:999px!important;padding:2px 8px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-.cd.hp .sbd.no,.cd .sbd.no{background:none!important;color:#dc2626!important;border:1.5px solid #dc2626!important;border-radius:999px!important;padding:2px 8px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.cd.hp .sbd.no,.cd .sbd.no{background:none!important;color:#16a34a!important;border:1.5px solid #16a34a!important;border-radius:999px!important;padding:2px 8px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .cd.hp .abt{background:#fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .pw:not(.np):not(.vd){height:190px!important}
 .cd{overflow:hidden}
@@ -857,7 +857,7 @@ if(c&&u&&String(c.m)===String(u.m))return{m:c.m,due:Number(c.due)||0,credit:Numb
 function fmtN(n){return(Math.round(Number(n)*100)/100).toLocaleString("en-IN")}
 function hasR(o){return o&&o.Rate!==undefined&&o.Rate!==null&&o.Rate!==""}
 function effRate(r){var n=parseFloat(String(r==null?"":r).replace(/,/g,""));return isNaN(n)?null:Math.max(0,n-offRs())}
-function mkStr(o){return(o.MRate!==undefined&&o.MRate!==null&&o.MRate!=="")?o.MRate:o.Rate}
+function mkStr(o){return o.Rate}
 function offPct(o){if(!hasR(o))return 0;var m=parseFloat(String(mkStr(o)).replace(/,/g,"")),e=effRate(o.Rate);return(m>0&&e!==null&&m>e)?Math.round((m-e)/m*100):0}
 function offLbl(){var c=offRs();return c>0?"ऑफर ₹"+fmtN(c)+" की छूट":""}
 /* ===== माल की सिंक: KING_MOBILE.html वाली वही Google Sheet (Items) -> यह पेज ===== */
@@ -898,15 +898,15 @@ if(navigator.onLine===false){itOffline();return}
 itemBusy=true;
 try{fetch(GAS+"?action=items&v="+encodeURIComponent(itemV==null?"":itemV)+"&t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
 itemBusy=false;
-if(d&&d.ok&&d.same){itemFails=0;kldOk();return}
-if(!d||!d.ok||!d.items){itemFails++;if(itemFails>=3)itOffline();return}
+if(d&&d.ok&&d.same){itemFails=0;if(!items.length){itemV=null;itemNext=Date.now()+3000;status("⚠ सर्वर ने 'डेटा वही है' कहा पर पेज खाली है — पूरा डेटा दोबारा माँग रहे हैं…");return}kldOk();return}
+if(!d||!d.ok||!d.items){itemFails++;status("⚠ सर्वर (Google Script) से गलत जवाब आया"+(d&&d.error?": "+d.error:"")+" — Script को New Deployment (Anyone) से दोबारा Deploy कीजिए");if(itemFails>=3)itOffline();return}
 itemFails=0;kldOk();
 if((d.v!==undefined&&d.v===itemV)||itOverlay())return;
 var L=d.items.filter(function(x){return String(x&&x.Item).indexOf("~~")!==0}).map(norm);
-if(!L.length)return;
+if(!L.length){status("⚠ सर्वर जुड़ गया पर Google Sheet के Items टैब से 0 आइटम आए — Sheet में डेटा / Script की Sheet जाँचिए");return}
 itApply(L);itemV=d.v;
-status("")
-}).catch(function(){itemBusy=false;itemFails++;if(itemFails>=3)itOffline();itemNext=Date.now()+Math.min(5000,1000*itemFails)})}catch(e){itemBusy=false}}
+status("✔ सर्वर से "+d.items.length+" आइटम आए · पेज में "+items.length+" दिख रहे हैं")
+}).catch(function(e){itemBusy=false;itemFails++;try{console.error("ITEMS FETCH ERROR",e)}catch(x){}status("⚠ डेटा नहीं आ सका: "+(e&&e.message?e.message:e));if(itemFails>=3)itOffline();itemNext=Date.now()+Math.min(5000,1000*itemFails)})}catch(e){itemBusy=false;status("⚠ Error: "+(e&&e.message?e.message:e))}}
 var kldDone=false,kldTm=null;
 function kldWait(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="";document.getElementById("klt").textContent="डेटा आ रहा है…";clearTimeout(kldTm);kldTm=setTimeout(kldFail,9000)}
 function kldFail(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="fail";document.getElementById("klt").textContent="Net nahi connect hai";document.getElementById("klm").textContent="इंटरनेट नहीं जुड़ा है। King Mobile में माल और ऑर्डर देखने के लिए सर्वर (इंटरनेट) का जुड़ा होना बहुत ज़रूरी है।"}
@@ -946,20 +946,19 @@ items.forEach(function(o){mig(o);if(!o.Photos)o.Photos=o.Photo?String(o.Photo).s
 function status(t){document.getElementById("stm").textContent=t}
 function waMsg(it){var L=["*KING MOBILE SHOP*","आइटम: "+it.Item];
 if(it.SKU!==undefined&&it.SKU!==null&&it.SKU!=="")L.push("SKU: "+it.SKU);
-if(it.MRate!==""&&it.MRate!=null&&it.MRate!==undefined)L.push("Market Rs: ₹"+it.MRate);
 if(it.Warranty)L.push("Warranty: "+it.Warranty);
 if(it.Rate!==""&&it.Rate!=null)L.push("Rs (रेट): ₹"+it.Rate);
 var s=stkOf(it.Qty);if(s)L.push((s==="Yes"?"Stock: है":"Coming Soon"));
 L.push("मुझे ये चाहिए, कृपया बताइए।");return L.join("\n")}
 /* ===== फोटो हमेशा के लिए: SKU के हिसाब से इसी फ़ोन/ब्राउज़र की IndexedDB में रखी जाती है ===== */
 var PHL={},phLoaded=false,phdb=null;
-var MRL={};try{MRL=JSON.parse(localStorage.getItem("kms_mrate")||"{}")||{}}catch(e){MRL={}}
-function mrSave(){try{localStorage.setItem("kms_mrate",JSON.stringify(MRL))}catch(e){}}
-function mrApply(list){var ch=false;list.forEach(function(o){var k=phKey(o);if(k&&MRL[k]!==undefined&&String(o.MRate==null?"":o.MRate)!==String(MRL[k])){o.MRate=MRL[k];ch=true}});return ch}
+var MRL={};try{localStorage.removeItem("kms_mrate")}catch(e){}
+function mrSave(){}
+function mrApply(list){return false;var ch=false;list.forEach(function(o){var k=phKey(o);if(k&&MRL[k]!==undefined&&String(o.MRate==null?"":o.MRate)!==String(MRL[k])){o.MRate=MRL[k];ch=true}});return ch}
 function phKey(o){var s=String(o&&o.SKU!=null?o.SKU:"").trim();return s?"S:"+s:(o&&o.Item?"N:"+String(o.Item):"")}
-function phOpen(cb){if(phdb){cb(phdb);return}try{var r=indexedDB.open("kms_photos",1);r.onupgradeneeded=function(){r.result.createObjectStore("p")};r.onsuccess=function(){phdb=r.result;cb(phdb)};r.onerror=function(){cb(null)}}catch(e){cb(null)}}
-function phPut(k,a){phOpen(function(d){if(!d)return;try{var st=d.transaction("p","readwrite").objectStore("p");if(a&&a.length)st.put(a,k);else st.delete(k)}catch(e){}})}
-function phApplyTo(list){var ch=false;list.forEach(function(o){var k=phKey(o),a=k&&PHL[k];if(a&&a.length&&!(o.Photos&&o.Photos.length)&&!a.every(isSrvUrl)){o.Photos=a.slice();ch=true}});return ch}
+function phOpen(cb){cb(null);return;if(phdb){cb(phdb);return}try{var r=indexedDB.open("kms_photos",1);r.onupgradeneeded=function(){r.result.createObjectStore("p")};r.onsuccess=function(){phdb=r.result;cb(phdb)};r.onerror=function(){cb(null)}}catch(e){cb(null)}}
+function phPut(k,a){return;phOpen(function(d){if(!d)return;try{var st=d.transaction("p","readwrite").objectStore("p");if(a&&a.length)st.put(a,k);else st.delete(k)}catch(e){}})}
+function phApplyTo(list){return false;var ch=false;list.forEach(function(o){var k=phKey(o),a=k&&PHL[k];if(a&&a.length&&!(o.Photos&&o.Photos.length)&&!a.every(isSrvUrl)){o.Photos=a.slice();ch=true}});return ch}
 function phLoad(){phOpen(function(d){if(!d){phLoaded=true;return}try{var q=d.transaction("p","readonly").objectStore("p").openCursor();q.onsuccess=function(){var c=q.result;if(c){PHL[c.key]=c.value;c.continue()}else{phLoaded=true;if(phApplyTo(items)){try{render()}catch(e){}}}};q.onerror=function(){phLoaded=true}}catch(e){phLoaded=true}})}
 function phFlush(){if(!phLoaded)return;items.forEach(function(o){var k=phKey(o);if(!k)return;var a=o.Photos||[],b=PHL[k]||[];if(a.join("|")===b.join("|"))return;if(a.length)PHL[k]=a.slice();else delete PHL[k];phPut(k,a);try{srvPush(k,a)}catch(e){}})}
 /* Excel/Sheet से जो SKU हट गया, उसकी फोटो भी हट जाती है (अधूरी लिस्ट आए तो कुछ नहीं हटता) */
@@ -969,7 +968,7 @@ var PH_TOKEN="KING-PHOTO-2026";   /* यही शब्द KING_ALL_IN_ONE.gs �
 var PHSRV={},PHOK=false,PHPEND={},PHQ={},PHTRY={};
 function phSame(a,b){return (a||[]).join("|")===(b||[]).join("|")}
 function isSrvUrl(u){return /^https:\/\/lh3\.googleusercontent\.com\/d\//.test(u)}
-function phSrvNote(n){var k=phKey(n);if(!k)return;PHOK=true;if(PHPEND[k])return;if(n.Photos&&n.Photos.length)PHSRV[k]=n.Photos.slice();else delete PHSRV[k]}
+function phSrvNote(n){var k=phKey(n);if(!k)return;PHOK=true;if(PHPEND[k])return;if(n.Photos&&n.Photos.length){PHSRV[k]=n.Photos.slice();PHL[k]=n.Photos.slice()}else{delete PHSRV[k];delete PHL[k]}}
 function itemByKey(k){var r=null;items.forEach(function(o){if(!r&&phKey(o)===k)r=o});return r}
 function srvPush(k,a){
 if(!GAS||!PH_SESS||!k)return;
@@ -992,18 +991,33 @@ function phRetry(){if(!PHOK||!phLoaded||!PH_SESS)return;var n=0;items.forEach(fu
 setTimeout(function(){setInterval(phRetry,15000)},3000);
 function save(){try{phFlush()}catch(e){}}
 var STANDALONE=!(function(){try{return !!(window.frameElement&&/^f_(cust|admin|del)$/.test(window.frameElement.id))}catch(e){return false}})();   /* index.html ke andar nahi (alag file akeli khuli) -> password wali jagah chup-chaap band: click par kuch nahi hota */
-function mrEdit(i){if(STANDALONE)return;var o=items[i];if(!o)return;var k=phKey(o);
+function mrEdit(i){return;if(STANDALONE)return;var o=items[i];if(!o)return;var k=phKey(o);
 var pw=prompt("पासवर्ड डालिए:");if(pw===null)return;
 if(String(pw).trim()!=="8112334607"){alert("पासवर्ड गलत है");return}
 var v=prompt("कटा हुआ रेट (MRP) लिखिए (खाली छोड़ने पर कटा रेट हट जाएगा):",hasR(o)?String(mkStr(o)):"");if(v===null)return;
 v=String(v).replace(/[^0-9.]/g,"");
 if(v===""){delete o.MRate;if(k)delete MRL[k]}else{o.MRate=v;if(k)MRL[k]=v}
 mrSave();try{render()}catch(e){}try{drawCombo()}catch(e){}}
-phLoad();try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+phLoaded=true;try{indexedDB.deleteDatabase("kms_photos")}catch(e){}try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 function idbInit(){try{indexedDB.deleteDatabase("kms_items2")}catch(e){}}
 var sv=-1,busy=false,dirty=false;
 function strip(o){var c={};for(var k in o)if(k!=="Open")c[k]=o[k];if(c.Photos&&c.Photos.length)c.Photo=c.Photos[0];return c}
-function norm(o){var r={Item:String(o.Item==null?"":o.Item)};["SKU","Qty","Rate","MRate","Warranty","FK","FKDate"].forEach(function(k){if(o[k]!==undefined&&o[k]!==null&&o[k]!=="")r[k]=o[k]});var p=(o.Photos&&o.Photos.length)?o.Photos.slice():(o.Photo?String(o.Photo).split("|").filter(Boolean):[]);if(p.length)r.Photos=p;return mig(r)}
+
+/* ===== अंग्रेज़ी की गलत स्पेलिंग / बड़े-छोटे अक्षर अपने-आप सही (हर नया आइटम भी) ===== */
+var KFX_W={"mah":"mAh","nekband":"Neckband","nakband":"Neckband","neckbend":"Neckband","covar":"Cover","kavar":"Cover","kover":"Cover","chaina":"China","ceble":"Cable","cabel":"Cable","cabal":"Cable","cebal":"Cable","univarsal":"Universal","unversal":"Universal","keypaid":"Keypad","keypad":"Keypad","oneplas":"Oneplus","onepus":"Oneplus","fing":"Find","infinx":"Infinix","infinix":"Infinix","micomax":"Micromax","nothink":"Nothing","corv":"Curved","sparkgo":"Spark Go","chargar":"Charger","chager":"Charger","chargr":"Charger","charjar":"Charger","charjer":"Charger","charging":"Charging","charjing":"Charging","chargin":"Charging","batry":"Battery","battri":"Battery","batri":"Battery","bettry":"Battery","battary":"Battery","batary":"Battery","blutooth":"Bluetooth","bluetoot":"Bluetooth","bluetooh":"Bluetooth","bluthooth":"Bluetooth","blootooth":"Bluetooth","bluetooth":"Bluetooth","headfone":"Headphone","hedphone":"Headphone","headphon":"Headphone","headfon":"Headphone","headfones":"Headphones","hedphones":"Headphones","hedset":"Headset","handfree":"Handsfree","hanfree":"Handsfree","handsfree":"Handsfree","handfri":"Handsfree","earfone":"Earphone","earphon":"Earphone","earfon":"Earphone","eyarphone":"Earphone","earfones":"Earphones","speeker":"Speaker","spiker":"Speaker","speker":"Speaker","spekar":"Speaker","mobail":"Mobile","mobil":"Mobile","moble":"Mobile","mobaile":"Mobile","tempard":"Tempered","temperd":"Tempered","tempred":"Tempered","tampered":"Tempered","tempar":"Tempered","gless":"Glass","glss":"Glass","glas":"Glass","protecter":"Protector","protektor":"Protector","scren":"Screen","screan":"Screen","sceen":"Screen","gaurd":"Guard","gaurad":"Guard","pawer":"Power","powarbank":"Power Bank","powerbank":"Power Bank","memry":"Memory","memori":"Memory","adaptar":"Adapter","adaptor":"Adapter","extenssion":"Extension","extention":"Extension","holdar":"Holder","holdr":"Holder","remot":"Remote","wirless":"Wireless","wireles":"Wireless","wirelss":"Wireless","wifi":"WiFi","typec":"Type-C","samsang":"Samsung","samsong":"Samsung","samung":"Samsung","redme":"Redmi","readmi":"Redmi","radmi":"Redmi","realmi":"Realme","relme":"Realme","realmy":"Realme","motrola":"Motorola","motorolla":"Motorola","lenevo":"Lenovo","iphone":"iPhone","ipad":"iPad","airpods":"AirPods","airpod":"AirPod","blak":"Black","blck":"Black","grean":"Green","gren":"Green","silvar":"Silver","silvr":"Silver","pinck":"Pink","purpal":"Purple","orenge":"Orange","yelow":"Yellow","orignal":"Original","orginal":"Original","oridinal":"Original","qualty":"Quality","qwality":"Quality","digitel":"Digital","camra":"Camera","cemra":"Camera","displey":"Display","dispaly":"Display","foldar":"Folder","conector":"Connector","conecter":"Connector","swich":"Switch","swtch":"Switch","soket":"Socket","bord":"Board","tripot":"Tripod","selfi":"Selfie","sefie":"Selfie","tourch":"Torch","redar":"Reader","keybord":"Keyboard","labtop":"Laptop","laptob":"Laptop","tablate":"Tablet","mose":"Mouse"};
+var KFX_A={"hd":"HD","lte":"LTE","pcb":"PCB","usb":"USB","og":"OG","uv":"UV","dc":"DC","tws":"TWS","lcd":"LCD","led":"LED","tc":"TC","otg":"OTG","sd":"SD","sim":"SIM","ram":"RAM","rom":"ROM","fm":"FM","tv":"TV","ac":"AC","dj":"DJ","gps":"GPS","aux":"AUX","hdmi":"HDMI","ir":"IR","cctv":"CCTV","dvr":"DVR","mp3":"MP3","mp4":"MP4","pubg":"PUBG","jbl":"JBL","ic":"IC","pd":"PD","qc":"QC","pvc":"PVC","nfc":"NFC"};
+function kfixQ(t){return String(t==null?"":t).replace(/[A-Za-z]+/g,function(w){var l=w.toLowerCase();return KFX_W.hasOwnProperty(l)?KFX_W[l].toLowerCase():w}).replace(/\bear buds\b/gi,"earbuds").replace(/\bear phones?\b/gi,function(m){return m.replace(/\s+/,"").toLowerCase()}).replace(/\bhead phones?\b/gi,function(m){return m.replace(/\s+/,"").toLowerCase()}).replace(/\bhand[\s-]*free\b/gi,"handsfree").replace(/\bblue[\s-]+tooth\b/gi,"bluetooth").replace(/\btype[\s-]*c\b/gi,"type-c")}
+function kfix(s){s=String(s==null?"":s);
+s=s.replace(/\bear buds\b/gi,"Earbuds");
+s=s.replace(/\bear phones\b/gi,"Earphones").replace(/\bear phone\b/gi,"Earphone").replace(/\bhead phones\b/gi,"Headphones").replace(/\bhead phone\b/gi,"Headphone").replace(/\bhand[\s-]*free\b/gi,"Handsfree").replace(/\bblue[\s-]+tooth\b/gi,"Bluetooth").replace(/\btype[\s-]*c\b/gi,"Type-C");
+s=s.replace(/[A-Za-z]+/g,function(w){var l=w.toLowerCase();return KFX_W.hasOwnProperty(l)?KFX_W[l]:w});
+s=s.replace(/\b(\d)g\b/gi,function(m,d){return d+"G"});
+s=s.replace(/\b(\d{1,2})d\b/gi,function(m,d){return d+"D"});
+s=s.replace(/(^|[^A-Za-z0-9])([a-z][a-z0-9]*)(?![A-Za-z0-9])/g,function(m,p,w){return p+(KFX_A.hasOwnProperty(w)?KFX_A[w]:w.charAt(0).toUpperCase()+w.slice(1))});
+s=s.replace(/(^|[^A-Za-z0-9])([A-Za-z]{2,3})(?![A-Za-z0-9])/g,function(m,p,w){var l=w.toLowerCase();return(KFX_A.hasOwnProperty(l)&&/^[A-Z][a-z]+$/.test(w))?p+KFX_A[l]:m});
+return s}
+function kfixWar(w){var s=String(w==null?"":w).trim();var m=s.match(/^(\d+)\s*months?$/i);if(m){var n=parseInt(m[1],10);return n===0?"No Warranty":(n===1?"1 Month":n+" Months")}if(/^no$/i.test(s))return "No Warranty";return s}
+function norm(o){var r={Item:kfix(o.Item)};["SKU","Qty","Rate","MRate","Warranty","FK","FKDate"].forEach(function(k){if(o[k]!==undefined&&o[k]!==null&&o[k]!=="")r[k]=o[k]});if(r.Warranty!==undefined)r.Warranty=kfixWar(r.Warranty);var p=(o.Photos&&o.Photos.length)?o.Photos.slice():(o.Photo?String(o.Photo).split("|").filter(Boolean):[]);if(p.length)r.Photos=p;return mig(r)}
 var PK=48000,smallC={};
 function shrink(u,max){
 if(u.length<=max)return Promise.resolve(u);
@@ -1094,10 +1108,10 @@ var pick=P.ps[0],tn=nrm(t);
 if(tn){var ws=tn.split(" "),bt=9;P.ps.forEach(function(a,j){var tr=aliasTier(nrm(a),tn,ws,j);if(tr<bt){bt=tr;pick=a}})}
 return pick+P.cat}
 var PINK="split_pins_v1",pins=[];
-try{pins=JSON.parse(localStorage.getItem(PINK)||"[]");if(!Array.isArray(pins))pins=[]}catch(e){pins=[]}
+try{localStorage.removeItem(PINK)}catch(e){}
 function pinKey(o){return nrm(o.Item)+"|"+nrm(o.SKU)}
-function pinPos(o){return pins.indexOf(pinKey(o))}
-function togglePin(i){
+function pinPos(o){return -1}
+function togglePin(i){return;
 var k=pinKey(items[i]),p=pins.indexOf(k);
 if(p>=0)pins.splice(p,1);else pins.push(k);
 try{localStorage.setItem(PINK,JSON.stringify(pins))}catch(e){}
@@ -1109,7 +1123,7 @@ function vGet(id,cb){vOpen(function(d){if(!d){cb(null);return}try{var q=d.transa
 function vDel(id){vOpen(function(d){if(!d)return;try{d.transaction("v","readwrite").objectStore("v").delete(id)}catch(e){}})}
 function hydrateVideos(){Array.prototype.forEach.call(document.querySelectorAll("[data-vid]"),function(el){var id=el.getAttribute("data-vid");vGet(id,function(b){if(!b){el.innerHTML='<div class="p0"><div>⚠</div><div>वीडियो नहीं मिला</div></div>';return}var u=URL.createObjectURL(b);vUrls.push(u);el.innerHTML='<video src="'+u+'" controls playsinline preload="metadata"></video>'})})}
 var CATS=[["सभी","🏠",[]],["Mobile","📱",["mobile","phone","smartphone"]],["Charger","🔌",["charger","adapter","adaptor"]],["Cable","🔗",["cable","data cable","aux"]],["Glass","🛡️",["glass","tempered","guard"]],["Cover","📘",["cover","case"]],["Earphone","🎧",["earphone","headphone","neckband","nekband","bluetooth","buds","handsfree","airdopes"]],["Speaker","🔊",["speaker","soundbar"]],["Other","📦",[]]];
-var curCat="सभी";var KM_MAX=100;var KM_REST=false;
+var curCat="सभी";var KM_MAX=100;var KM_REST=true;
 function catList(){var m={},ks=[];items.forEach(function(o){var lb=catLabel(o),k=nrm(lb);if(!m[k]){m[k]={l:lb,n:0};ks.push(k)}m[k].n++});if(!ks.length)return CATS;ks.sort(function(a,b){return m[b].n-m[a].n});var out=[["सभी","🏠",[]]];ks.forEach(function(k){var g=catOf({Item:m[k].l}),ic="📦";for(var i=1;i<CATS.length-1;i++)if(CATS[i][0]===g)ic=CATS[i][1];out.push([m[k].l,ic,[]])});return out}
 function catOf(o){var n=nrm(o.Item);for(var i=1;i<CATS.length-1;i++){var k=CATS[i][2];for(var j=0;j<k.length;j++)if(n.indexOf(k[j])>=0)return CATS[i][0]}return "Other"}
 /* त्योहार बैनर: हर त्योहार से 5 दिन पहले दिखना शुरू, त्योहार के आख़िरी दिन रात 12 बजे अपने-आप हट जाता है.
@@ -1160,7 +1174,7 @@ function catLabel(o){var f=String(o&&o.Item==null?"":o.Item),k=f.lastIndexOf(" \
 function nmNoCat(o,t){var n=shortName(o.Item,t),k=n.lastIndexOf(" \u2013 ");return k>=0?n.slice(0,k):n}
 function render(){
 document.getElementById("stc").textContent="कुल: "+items.length+" आइटम · फोटो "+items.filter(function(o){return o.Photos&&o.Photos.length}).length+"/"+items.length;
-var t=document.getElementById("q").value.trim().toLowerCase(),h="";document.body.classList.toggle("srch",!!t);
+var t=kfixQ(document.getElementById("q").value.trim().toLowerCase()),h="";document.body.classList.toggle("srch",!!t);
 var order=[],best=9;
 items.forEach(function(o,i){if(curCat!=="सभी"&&nrm(catLabel(o))!==nrm(curCat))return;if(onlyNo&&((o.Photos&&o.Photos.length)||(o.Videos&&o.Videos.length)))return;var tr=t?itemTier(o.Item,t):0;if(tr<9){order.push([i,tr]);if(tr<best)best=tr}});
 if(t)order.forEach(function(x){x.push(x[1]>=3?nrm(shortName(items[x[0]].Item,t)):"")});
@@ -1192,7 +1206,7 @@ var sq=stkOf(o.Qty),sb=sq==="Yes"?'<div class="sbd yes">✔ Stock है</div>':
 /* ek SKU/item ke kai rang: kitne rang Stock me hain (jaise 2/5), baaki khatam = auto Out of Stock */
 if(x.vars&&x.vars.length>1){var _ni=x.vars.filter(function(j){return inStk(items[j])}).length;sb=_ni>0?'<div class="sbd yes">✔ Stock है ('+_ni+'/'+x.vars.length+' रंग)</div>':'<div class="sbd no">Coming Soon</div>'}
 var pinned=pinPos(o)>=0;
-h+='<div class="cw"'+(x.gs?' style="grid-column:1"':'')+'><div class="cd'+(pl.length&&!vids.length?' hp':'')+'" data-it="'+i+'"><div class="kc">'+esc(catLabel(o))+'</div><div class="'+(vids.length?'pw vd':pl.length?'pw':'pw np')+'">'+ph+'</div><div class="ov"><div class="ln"><div class="nm">'+esc(_n)+'</div><div class="prw">'+pr+'<button class="pb'+(pinned?' on':'')+'" data-pin="'+i+'" aria-label="Pin">📌</button></div><div class="sub r3"><span class="sk">'+sk+'</span>'+(_cm?'<span class="cmp">'+esc(_cm)+'</span>':'')+'</div>'+cvs+'</div><div class="sbr">'+sb+(o.Warranty?'<span class="wb">🛡️ '+esc(o.Warranty)+'</span>':'')+'</div>'+ofl+'</div>'+(vids.length?'<div class="br"><button class="b2" data-vdel="'+i+'" aria-label="वीडियो हटाएँ">🗑</button></div>':'')+'</div></div>';
+h+='<div class="cw"'+(x.gs?' style="grid-column:1"':'')+'><div class="cd'+(pl.length&&!vids.length?' hp':'')+'" data-it="'+i+'"><div class="kc">'+esc(catLabel(o))+'</div><div class="'+(vids.length?'pw vd':pl.length?'pw':'pw np')+'">'+ph+'</div><div class="ov"><div class="ln"><div class="nm">'+esc(_n)+'</div><div class="prw">'+pr+'</div><div class="sub r3"><span class="sk">'+sk+'</span>'+(_cm?'<span class="cmp">'+esc(_cm)+'</span>':'')+'</div>'+cvs+'</div><div class="sbr">'+sb+(o.Warranty?'<span class="wb">🛡️ '+esc(o.Warranty)+'</span>':'')+'</div>'+ofl+'</div>'+(vids.length?'<div class="br"><button class="b2" data-vdel="'+i+'" aria-label="वीडियो हटाएँ">🗑</button></div>':'')+'</div></div>';
 });
 vUrls.forEach(function(u){try{URL.revokeObjectURL(u)}catch(e){}});vUrls=[];
 document.getElementById("list").innerHTML=h||'<div class="empty">'+(items.length?'कोई आइटम नहीं मिला':'ऑनलाइन डेटा लोड हो रहा है…<br>(इंटरनेट चालू होना चाहिए — ऑफ़लाइन डेटा नहीं दिखता)')+'</div>'
@@ -1203,11 +1217,9 @@ document.getElementById("ap").addEventListener("click",function(e){var c=e.targe
 document.getElementById("cb").addEventListener("click",function(e){var t=e.target.closest("[data-cb]");if(t)openDt(+t.getAttribute("data-cb"))});
 document.getElementById("cats").addEventListener("click",function(e){var c=e.target.closest("[data-c]");if(!c)return;curCat=c.getAttribute("data-c");drawCats();render()});
 document.getElementById("list").addEventListener("click",function(e){
-var _mr=e.target.closest&&e.target.closest(".mr");if(_mr){var _cd=_mr.closest("[data-it]");if(_cd){mrEdit(+_cd.getAttribute("data-it"));return}}
 var ab=e.target.closest("[data-ab]");if(ab){openDt(Number(ab.getAttribute("data-ab")));return}
 var db=e.target.closest("[data-d]"),d=db?db.getAttribute("data-d"):null;
 var sb=e.target.closest("[data-stk]");if(sb){var si=Number(sb.getAttribute("data-stk"));phPw("Stock बदलने के लिए पासवर्ड डालिए:",function(){openStock(si)});return}
-var pn=e.target.closest("[data-pin]");if(pn){var pi=Number(pn.getAttribute("data-pin"));phPw("पिन बदलने के लिए पासवर्ड डालें:",function(){togglePin(pi)});return}
 var skl=e.target.closest(".sk");if(skl){var skc=skl.closest(".cd");if(skc&&skc.getAttribute("data-it")!==null){photoAction(Number(skc.getAttribute("data-it")))}return}
 var cm=e.target.closest("[data-cam]");if(cm){photoAction(Number(cm.getAttribute("data-cam")));return}
 var vd=e.target.closest("[data-vdel]");if(vd){var vi=Number(vd.getAttribute("data-vdel"));phPw("वीडियो हटाने के लिए पासवर्ड डालिए:",function(){var a=items[vi]&&items[vi].Videos||[];a.forEach(vDel);delete items[vi].Videos;save();render()});return}
@@ -1269,7 +1281,7 @@ var ph=(pIdx===-2?pvTmp:(items[pIdx]&&items[pIdx].Photos))||[];
 if(!ph.length){hidePhoto();return}
 if(pPos>=ph.length)pPos=ph.length-1;if(pPos<0)pPos=0;
 document.getElementById("pvi").src=ph[pPos];
-document.getElementById("pvn").textContent=(pPos+1)+" / "+ph.length+(pPos===0&&pIdx!==-2?"  📌 सबसे आगे":"");
+document.getElementById("pvn").textContent=(pPos+1)+" / "+ph.length;
 document.getElementById("pvp").style.visibility=pPos>0?"visible":"hidden";
 document.getElementById("pvx").style.visibility=pPos<ph.length-1?"visible":"hidden"
 }
@@ -1969,6 +1981,7 @@ header{position:relative!important;margin:0!important;padding:6px 14px 8px!impor
 #pv .row{display:none!important}
 #pv.own .row{display:flex!important}
 #pvz{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));right:12px;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.22);color:#fff;font-size:22px;line-height:1;padding:0;z-index:3}
+#pvf{display:none!important}
 </style>
 <script id="kfix2">
 (function(){
@@ -2016,8 +2029,8 @@ var _ob=openBuy;openBuy=function(){kRst(kBy);return _ob.apply(this,arguments)};
 var _cbuy=closeBuy;closeBuy=function(){kRst(kBy);return _cbuy.apply(this,arguments)};
 var _dd=drawDt;
 drawDt=function(){dtI=kFixI(kDt,dtI);if(dtI>=0&&kDt.gone)return;return _dd.apply(this,arguments)};
-var _rn=render;
-render=function(){var r=_rn.apply(this,arguments);try{if(byI>=0)byI=kFixI(kBy,byI)}catch(e){}return r};
+var _rn2=render;
+render=function(){var r=_rn2.apply(this,arguments);try{if(byI>=0)byI=kFixI(kBy,byI)}catch(e){}return r};
 /* ---------- 3) Photo: sirf photo, Flipkart jaisa ---------- */
 function pvInit(){
   var pv=document.getElementById("pv");if(!pv||pv.querySelector("#pvz"))return;
