@@ -1109,7 +1109,7 @@ function vGet(id,cb){vOpen(function(d){if(!d){cb(null);return}try{var q=d.transa
 function vDel(id){vOpen(function(d){if(!d)return;try{d.transaction("v","readwrite").objectStore("v").delete(id)}catch(e){}})}
 function hydrateVideos(){Array.prototype.forEach.call(document.querySelectorAll("[data-vid]"),function(el){var id=el.getAttribute("data-vid");vGet(id,function(b){if(!b){el.innerHTML='<div class="p0"><div>⚠</div><div>वीडियो नहीं मिला</div></div>';return}var u=URL.createObjectURL(b);vUrls.push(u);el.innerHTML='<video src="'+u+'" controls playsinline preload="metadata"></video>'})})}
 var CATS=[["सभी","🏠",[]],["Mobile","📱",["mobile","phone","smartphone"]],["Charger","🔌",["charger","adapter","adaptor"]],["Cable","🔗",["cable","data cable","aux"]],["Glass","🛡️",["glass","tempered","guard"]],["Cover","📘",["cover","case"]],["Earphone","🎧",["earphone","headphone","neckband","nekband","bluetooth","buds","handsfree","airdopes"]],["Speaker","🔊",["speaker","soundbar"]],["Other","📦",[]]];
-var curCat="सभी";
+var curCat="सभी";var KM_MAX=100;
 function catOf(o){var n=nrm(o.Item);for(var i=1;i<CATS.length-1;i++){var k=CATS[i][2];for(var j=0;j<k.length;j++)if(n.indexOf(k[j])>=0)return CATS[i][0]}return "Other"}
 /* त्योहार बैनर: हर त्योहार से 5 दिन पहले दिखना शुरू, त्योहार के आख़िरी दिन रात 12 बजे अपने-आप हट जाता है.
    नया त्योहार / अगले साल की तारीख़ जोड़नी हो तो नीचे FEST में लाइन जोड़ें: [शीर्षक, शुभकामना, emoji, रंग, तारीख़...]
@@ -1163,6 +1163,17 @@ var order=[],best=9;
 items.forEach(function(o,i){if(curCat!=="सभी"&&catOf(o)!==curCat)return;if(onlyNo&&((o.Photos&&o.Photos.length)||(o.Videos&&o.Videos.length)))return;var tr=t?itemTier(o.Item,t):0;if(tr<9){order.push([i,tr]);if(tr<best)best=tr}});
 if(t)order.forEach(function(x){x.push(x[1]>=3?nrm(shortName(items[x[0]].Item,t)):"")});
 order.sort(function(a,b){var pa=pinPos(items[a[0]]),pb=pinPos(items[b[0]]);if((pa>=0)!==(pb>=0))return pa>=0?-1:1;if(pa>=0&&pb>=0)return pa-pb;return a[1]-b[1]||(a[2]||"").localeCompare(b[2]||"",undefined,{numeric:true})||a[0]-b[0]});
+/* NAYA (Home, bina search): har category se sabse sasta 1 item (max KM_MAX), kam se zyada price; fir baaki items, same naam wale paas-paas 2 left 2 right */
+if(!t&&curCat==="\u0938\u092d\u0940"&&!onlyNo){var _pc={},_tk={},_pn=[],_pp=function(j){var r=effRate(items[j].Rate);return r===null?1e12:r};
+order.forEach(function(x){var j=x[0],k=nrm(catLabel(items[j]));if(pinPos(items[j])>=0){_pn.push(x);_tk[k]=1;return}var c=_pc[k];if(c===undefined||(inStk(items[j])&&!inStk(items[c]))||(inStk(items[j])===inStk(items[c])&&_pp(j)<_pp(c)))_pc[k]=j});
+var _top=Object.keys(_pc).filter(function(k){return!_tk[k]}).map(function(k){return[_pc[k],0]});_top.sort(function(a,b){return _pp(a[0])-_pp(b[0])||a[0]-b[0]});_top=_top.slice(0,KM_MAX);
+_pn.sort(function(a,b){return pinPos(items[a[0]])-pinPos(items[b[0]])});
+var _us={};_top.concat(_pn).forEach(function(x){_us[x[0]]=1});
+var _g={},_gk=[];order.forEach(function(x){if(_us[x[0]])return;var k=nrm(nmNoCat(items[x[0]],"").replace(/\s*\[[^\]]+\]/g,"").replace(/\s*\([^()]*\)\s*$/,""));if(!_g[k]){_g[k]=[];_gk.push(k)}_g[k].push(x)});
+_gk.forEach(function(k){_g[k].sort(function(a,b){return _pp(a[0])-_pp(b[0])||a[0]-b[0]})});
+_gk.sort(function(a,b){return _pp(_g[a][0][0])-_pp(_g[b][0][0])});
+var _rs=[];_gk.forEach(function(k){if(_g[k].length>1)_g[k][0].gs=1;_rs=_rs.concat(_g[k])});
+order=_pn.concat(_top,_rs)}
 var _sg={},_go=[];
 order.forEach(function(x){var o0=items[x[0]];if(!colorOf(o0)){_go.push(x);return}var k0=baseKey(o0);if(_sg[k0]===undefined){_sg[k0]=_go.length;x.vars=[x[0]];_go.push(x)}else{_go[_sg[k0]].vars.push(x[0])}});
 _go.forEach(function(x){if(x.vars&&x.vars.length>1){var pk=x.vars.filter(function(j){return inStk(items[j])})[0];if(pk!==undefined)x[0]=pk}});
@@ -1178,7 +1189,7 @@ var sq=stkOf(o.Qty),sb=sq==="Yes"?'<div class="sbd yes">✔ Stock है</div>':
 /* ek SKU/item ke kai rang: kitne rang Stock me hain (jaise 2/5), baaki khatam = auto Out of Stock */
 if(x.vars&&x.vars.length>1){var _ni=x.vars.filter(function(j){return inStk(items[j])}).length;sb=_ni>0?'<div class="sbd yes">✔ Stock है ('+_ni+'/'+x.vars.length+' रंग)</div>':'<div class="sbd no">✘ सभी रंग खत्म</div>'}
 var pinned=pinPos(o)>=0;
-h+='<div class="cw"><div class="cd'+(pl.length&&!vids.length?' hp':'')+'" data-it="'+i+'"><div class="kc">'+esc(catLabel(o))+'</div><div class="'+(vids.length?'pw vd':pl.length?'pw':'pw np')+'">'+ph+'</div><div class="ov"><div class="ln"><div class="nm">'+esc(_n)+'</div><div class="prw">'+pr+'<button class="pb'+(pinned?' on':'')+'" data-pin="'+i+'" aria-label="Pin">📌</button></div><div class="sub r3"><span class="sk">'+sk+'</span>'+(_cm?'<span class="cmp">'+esc(_cm)+'</span>':'')+'</div>'+cvs+'</div><div class="sbr">'+sb+(o.Warranty?'<span class="wb">🛡️ '+esc(o.Warranty)+'</span>':'')+'</div>'+ofl+'</div>'+(vids.length?'<div class="br"><button class="b2" data-vdel="'+i+'" aria-label="वीडियो हटाएँ">🗑</button></div>':'')+'</div></div>';
+h+='<div class="cw"'+(x.gs?' style="grid-column:1"':'')+'><div class="cd'+(pl.length&&!vids.length?' hp':'')+'" data-it="'+i+'"><div class="kc">'+esc(catLabel(o))+'</div><div class="'+(vids.length?'pw vd':pl.length?'pw':'pw np')+'">'+ph+'</div><div class="ov"><div class="ln"><div class="nm">'+esc(_n)+'</div><div class="prw">'+pr+'<button class="pb'+(pinned?' on':'')+'" data-pin="'+i+'" aria-label="Pin">📌</button></div><div class="sub r3"><span class="sk">'+sk+'</span>'+(_cm?'<span class="cmp">'+esc(_cm)+'</span>':'')+'</div>'+cvs+'</div><div class="sbr">'+sb+(o.Warranty?'<span class="wb">🛡️ '+esc(o.Warranty)+'</span>':'')+'</div>'+ofl+'</div>'+(vids.length?'<div class="br"><button class="b2" data-vdel="'+i+'" aria-label="वीडियो हटाएँ">🗑</button></div>':'')+'</div></div>';
 });
 vUrls.forEach(function(u){try{URL.revokeObjectURL(u)}catch(e){}});vUrls=[];
 document.getElementById("list").innerHTML=h||'<div class="empty">'+(items.length?'कोई आइटम नहीं मिला':'ऑनलाइन डेटा लोड हो रहा है…<br>(इंटरनेट चालू होना चाहिए — ऑफ़लाइन डेटा नहीं दिखता)')+'</div>'
