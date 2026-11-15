@@ -861,7 +861,7 @@ function mkStr(o){return o.Rate}
 function offPct(o){if(!hasR(o))return 0;var m=parseFloat(String(mkStr(o)).replace(/,/g,"")),e=effRate(o.Rate);return(m>0&&e!==null&&m>e)?Math.round((m-e)/m*100):0}
 function offLbl(){var c=offRs();return c>0?"ऑफर ₹"+fmtN(c)+" की छूट":""}
 /* ===== माल की सिंक: KING_MOBILE.html वाली वही Google Sheet (Items) -> यह पेज ===== */
-var GAS="https://script.google.com/macros/s/AKfycbzEeBH83lSB2w4TUS1geSCbuBSyoUl91Kin98TSyN9hbL71BZmhO-wiBHMpVAo1PcoUsg/exec";
+var GAS="https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
 var ITEM_POLL_MS=1000;   /* कितने मिलीसेकंड में माल देखना है (1000 = 1 सेकंड) */
 var itemV=null,itemBusy=false,itemFails=0,itemNext=0;
 function itKey(o){return String(o.Item==null?"":o.Item).trim().toLowerCase()+"|"+String(o.SKU==null?"":o.SKU).trim().toLowerCase()}
@@ -1582,7 +1582,7 @@ var ord={id:"KM"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toI
 pushOrder(ord,(o.Photos&&o.Photos[0])||"");
 if(D>0){offConsume(D);offPost("use",ord)}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}
 btn.disabled=false;btn.textContent="✅ Order Now";closeBuy()})}
-var ORDER_URL="https://script.google.com/macros/s/AKfycbzEeBH83lSB2w4TUS1geSCbuBSyoUl91Kin98TSyN9hbL71BZmhO-wiBHMpVAo1PcoUsg/exec";
+var ORDER_URL="https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
 function mkThumb(u,cb){if(!u){cb("");return}var im=new Image();if(!/^data:/.test(u))im.crossOrigin="anonymous";im.onload=function(){try{var f=140/Math.max(im.width,im.height,1),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*f));c.height=Math.max(1,Math.round(im.height*f));c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",0.6))}catch(e){cb("")}};im.onerror=function(){cb("")};im.src=u}
 function pushOrder(ord,photo){mkThumb(photo,function(t){ord.thumb=t;
 try{var a=JSON.parse(localStorage.getItem("kms_orders")||"[]");a.unshift(ord);localStorage.setItem("kms_orders",JSON.stringify(a.slice(0,200)))}catch(e){}
