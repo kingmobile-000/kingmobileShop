@@ -875,10 +875,10 @@ function custGet(){try{var c=JSON.parse(localStorage.getItem(CUSTK)||"null"),u=J
 if(c&&u&&String(c.m)===String(u.m))return{m:c.m,due:Number(c.due)||0,credit:Number(c.credit)||0}}catch(e){}return{m:"",due:0,credit:0}}
 function fmtN(n){return(Math.round(Number(n)*100)/100).toLocaleString("en-IN")}
 function hasR(o){return o&&o.Rate!==undefined&&o.Rate!==null&&o.Rate!==""}
-function effRate(r){var n=parseFloat(String(r==null?"":r).replace(/,/g,""));return isNaN(n)?null:Math.max(0,n-offRs())}
+function effRate(r){var n=parseFloat(String(r==null?"":r).replace(/,/g,""));return isNaN(n)?null:Math.max(0,n)}
 function mkStr(o){return o.Rate}
 function offPct(o){if(!hasR(o))return 0;var m=parseFloat(String(mkStr(o)).replace(/,/g,"")),e=effRate(o.Rate);return(m>0&&e!==null&&m>e)?Math.round((m-e)/m*100):0}
-function offLbl(){var c=offRs();return c>0?"ऑफर ₹"+fmtN(c)+" की छूट":""}
+function offLbl(){return ""}   /* ऑफर की छूट सिर्फ़ पेमेंट (कीमत का ब्योरा) में दिखती है, आइटम की कीमत हर जगह वही रहती है */
 /* ===== माल की सिंक: KING_MOBILE.html वाली वही Google Sheet (Items) -> यह पेज ===== */
 var GAS="https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
 var ITEM_POLL_MS=1000;   /* कितने मिलीसेकंड में माल देखना है (1000 = 1 सेकंड) */
@@ -1528,7 +1528,7 @@ e.innerHTML='<div class="qrb"><div class="qrh">📲 UPI से पेमें�
 function drawBy(){var o=items[byI];if(!o){return}
 var im=(o.Photos&&o.Photos.length)?'<img src="'+esc(o.Photos[0])+'" alt="">':'<span>📷</span>';
 var M=numOf(o.MRate),R0=numOf(o.Rate),R=(R0===null?null:R0-offPU(R0,byQ));
-document.getElementById("bysum").innerHTML='<div class="bys1"><div class="bysi">'+im+'</div><div class="bysd"><div class="bysn">'+esc(kSplit(o).n)+'</div><div class="bysk">'+(kSplit(o).c?'\uD83C\uDFE2 '+esc(kSplit(o).c)+' &nbsp;':'')+'\uD83D\uDCC2 '+esc(kSplit(o).cat)+'</div><div class="bysp">'+(hasR(o)?'<span class="dgm">₹'+esc(mkStr(o))+'</span> <span class="dgr">₹'+fmtN(R)+'</span>':'')+'</div>'+((hasR(o)&&offLbl())?'<div class="ofl">'+offLbl()+'</div>':'')+'<div class="bysk">SKU: '+esc(o.SKU!==undefined&&o.SKU!==null&&o.SKU!==""?o.SKU:0)+(o.Warranty?' · 🛡 '+esc(o.Warranty):'')+'</div></div></div>';
+document.getElementById("bysum").innerHTML='<div class="bys1"><div class="bysi">'+im+'</div><div class="bysd"><div class="bysn">'+esc(kSplit(o).n)+'</div><div class="bysk">'+(kSplit(o).c?'\uD83C\uDFE2 '+esc(kSplit(o).c)+' &nbsp;':'')+'\uD83D\uDCC2 '+esc(kSplit(o).cat)+'</div><div class="bysp">'+(hasR(o)?'<span class="dgm">₹'+esc(mkStr(o))+'</span> <span class="dgr">₹'+fmtN(R0===null?R:R0)+'</span>':'')+'</div>'+((hasR(o)&&offLbl())?'<div class="ofl">'+offLbl()+'</div>':'')+'<div class="bysk">SKU: '+esc(o.SKU!==undefined&&o.SKU!==null&&o.SKU!==""?o.SKU:0)+(o.Warranty?' · 🛡 '+esc(o.Warranty):'')+'</div></div></div>';
 document.getElementById("byqv").textContent=byQ;
 byD="home";
 document.getElementById("byaddr").style.display=byD==="home"?"block":"none";
