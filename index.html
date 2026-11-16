@@ -495,6 +495,7 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 #ofb .ofbx{flex:none;min-width:0;padding:3px 6px;border-width:1.5px;border-radius:10px;line-height:1.2}
 #ofb .ofbx span{font-size:11px}
 #ofb .ofbx b{font-size:20px}
+#ofb{cursor:pointer}
 @media(max-width:340px){#ofb .ofbt{font-size:12px}}</style></div>
 <div id="st"><span id="stm"></span><button id="nf">बिना फोटो</button><span id="stc"></span></div>
 <div id="add">
@@ -849,6 +850,18 @@ d=document.createElement("div");d.id="offmsg";
 d.style.cssText="position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:22px";
 d.innerHTML='<div style="background:#fff;border-radius:14px;max-width:340px;width:100%;padding:22px 18px 16px;text-align:center;font-family:inherit"><div style="font-size:40px;line-height:1">🔒</div><div style="font-size:17px;font-weight:900;color:#b42410;margin:10px 0 6px">ऑफर अभी बंद है</div><div style="font-size:16px;font-weight:700;color:#222;line-height:1.5">आप अपना पहले उधार जमा करें, फिर आप ऑफर उपयोग कर पाएंगे।</div><div style="font-size:14px;font-weight:800;color:#555;margin-top:8px">आपका उधार: ₹'+fmtN(custGet().due)+'</div><button style="margin-top:14px;border:0;background:#e63c1f;color:#fff;font-weight:900;font-size:16px;border-radius:10px;padding:10px 34px;cursor:pointer;font-family:inherit">ठीक है</button></div>';
 d.addEventListener("click",function(){d.remove()});document.body.appendChild(d)}
+/* ऑफर बॉक्स पर टैप करने पर जानकारी: बंद हो तो चालू करने का तरीका बताए */
+function offInfo(ic,tt,bd){var d=document.getElementById("offmsg");if(d)d.remove();
+d=document.createElement("div");d.id="offmsg";
+d.style.cssText="position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:22px";
+d.innerHTML="<div style='background:#fff;border-radius:14px;max-width:340px;width:100%;padding:22px 18px 16px;text-align:center;font-family:inherit'><div style='font-size:40px;line-height:1'>"+ic+"</div><div style='font-size:17px;font-weight:900;color:#b42410;margin:10px 0 6px'>"+tt+"</div><div style='font-size:16px;font-weight:700;color:#222;line-height:1.5'>"+bd+"</div><button style='margin-top:14px;border:0;background:#e63c1f;color:#fff;font-weight:900;font-size:16px;border-radius:10px;padding:10px 34px;cursor:pointer;font-family:inherit'>ठीक है</button></div>";
+d.addEventListener("click",function(){d.remove()});document.body.appendChild(d)}
+function ofbTap(){var a=offAvail();
+if(offLocked()&&a>0){offMsg();return}
+if(!(a>0)){offInfo("🎁","आपका ऑफर अभी ₹0 है","हर बिक्री पर आपको कुछ रुपयों का ऑफर मिलता है।");return}
+if(!offOn()){offInfo("🔒","ऑफर अभी बंद है","इसे चालू करने के लिए Orders में जाइए। वहाँ ऊपर दाईं तरफ़ <b>ऑफर OFF</b> का बटन है, उससे ON कीजिए।");return}
+offInfo("✅","ऑफर चालू है","आपका ₹"+fmtN(a)+" का ऑफर अगले ऑर्डर के कुल पेमेंट से कट जाएगा।")}
+document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("#ofb");if(b)ofbTap()});
 /* ऑर्डर कैंसिल होने पर ऑफर वापस (इसी फ़ोन से लगे ऑफर के लिए, एक ही बार) */
 function offGive(d){var c=custGet();if(!c.m||!(d>0))return;var o=null;try{o=JSON.parse(localStorage.getItem(OUSEK)||"null")}catch(e){}
 if(o&&String(o.m)===String(c.m)&&Number(o.sc)===c.credit){try{localStorage.setItem(OUSEK,JSON.stringify({m:c.m,sc:c.credit,used:Math.max(0,Number(o.used||0)-d)}))}catch(e){}}}
@@ -911,7 +924,7 @@ if((d.v!==undefined&&d.v===itemV)||itOverlay())return;
 var L=d.items.filter(function(x){return String(x&&x.Item).indexOf("~~")!==0}).map(norm);
 if(!L.length){status("⚠ सर्वर जुड़ गया पर Google Sheet के Items टैब से 0 आइटम आए — Sheet में डेटा / Script की Sheet जाँचिए");return}
 itApply(L);itemV=d.v;
-status("✔ सर्वर से "+d.items.length+" आइटम आए · पेज में "+items.length+" दिख रहे हैं")
+status("")
 }).catch(function(e){itemBusy=false;itemFails++;try{console.error("ITEMS FETCH ERROR",e)}catch(x){}status("⚠ डेटा नहीं आ सका: "+(e&&e.message?e.message:e));if(itemFails>=3)itOffline();itemNext=Date.now()+Math.min(5000,1000*itemFails)})}catch(e){itemBusy=false;status("⚠ Error: "+(e&&e.message?e.message:e))}}
 var kldDone=false,kldTm=null;
 function kldWait(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="";document.getElementById("klt").textContent="डेटा आ रहा है…";clearTimeout(kldTm);kldTm=setTimeout(kldFail,9000)}
