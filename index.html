@@ -1200,29 +1200,31 @@ function drawCats(){var h="";catList().forEach(function(c){h+='<div class="ch'+(
 /* Har item ke card par category dikhao: Excel ki category (naam ke baad " – Category"), na ho to naam se pehchani hui */
 function catLabel(o){var f=String(o&&o.Item==null?"":o.Item),k=f.lastIndexOf(" \u2013 ");if(k>=0){var c=f.slice(k+3).trim();if(c)return c}return catOf(o)}
 function nmNoCat(o,t){var n=shortName(o.Item,t),k=n.lastIndexOf(" \u2013 ");return k>=0?n.slice(0,k):n}
+function hpFlag(o){return(o&&((o.Photos&&o.Photos.length)||(o.Videos&&o.Videos.length)))?0:1}
 function render(){
 document.getElementById("stc").textContent="कुल: "+items.length+" आइटम · फोटो "+items.filter(function(o){return o.Photos&&o.Photos.length}).length+"/"+items.length;
 var t=kfixQ(document.getElementById("q").value.trim().toLowerCase()),h="";document.body.classList.toggle("srch",!!t);
 var order=[],best=9;
 items.forEach(function(o,i){if(curCat!=="सभी"&&nrm(catLabel(o))!==nrm(curCat))return;if(onlyNo&&((o.Photos&&o.Photos.length)||(o.Videos&&o.Videos.length)))return;var tr=t?itemTier(o.Item,t):0;if(tr<9){order.push([i,tr]);if(tr<best)best=tr}});
 if(t)order.forEach(function(x){x.push(x[1]>=3?nrm(shortName(items[x[0]].Item,t)):"")});
-order.sort(function(a,b){var pa=pinPos(items[a[0]]),pb=pinPos(items[b[0]]);if((pa>=0)!==(pb>=0))return pa>=0?-1:1;if(pa>=0&&pb>=0)return pa-pb;return a[1]-b[1]||(a[2]||"").localeCompare(b[2]||"",undefined,{numeric:true})||a[0]-b[0]});
+order.sort(function(a,b){var pa=pinPos(items[a[0]]),pb=pinPos(items[b[0]]);if((pa>=0)!==(pb>=0))return pa>=0?-1:1;if(pa>=0&&pb>=0)return pa-pb;if(!t){var ha=hpFlag(items[a[0]]),hb=hpFlag(items[b[0]]);if(ha!==hb)return ha-hb}return a[1]-b[1]||(a[2]||"").localeCompare(b[2]||"",undefined,{numeric:true})||a[0]-b[0]});
 /* NAYA (Home, bina search): har category se sabse sasta 1 item (max KM_MAX), kam se zyada price; fir baaki items, same naam wale paas-paas 2 left 2 right */
 if(!t&&curCat==="\u0938\u092d\u0940"&&!onlyNo){var _pc={},_ph={},_tk={},_pn=[],_pp=function(j){var r=effRate(items[j].Rate);return r===null?1e12:r};
 order.forEach(function(x){var j=x[0],k=nrm(catLabel(items[j]));if(pinPos(items[j])>=0){_pn.push(x);_tk[k]=1;return}var c=_pc[k];if(c===undefined||(inStk(items[j])&&!inStk(items[c]))||(inStk(items[j])===inStk(items[c])&&_pp(j)<_pp(c)))_pc[k]=j;var h=_ph[k],q=function(i){var r=effRate(items[i].Rate);return r===null?-1:r};if(h===undefined||(inStk(items[j])&&!inStk(items[h]))||(inStk(items[j])===inStk(items[h])&&q(j)>q(h)))_ph[k]=j});
-var _kl=Object.keys(_pc).filter(function(k){return!_tk[k]});_kl.sort(function(a,b){return _pp(_pc[a])-_pp(_pc[b])||_pc[a]-_pc[b]});_kl=_kl.slice(0,KM_MAX);
-var _top=[];_kl.forEach(function(k){var lo=[_pc[k],0];lo.gs=1;_top.push(lo);if(_ph[k]!==_pc[k])_top.push([_ph[k],0])});
+var _kl=Object.keys(_pc).filter(function(k){return!_tk[k]});var _hpk=function(k){return Math.min(hpFlag(items[_pc[k]]),hpFlag(items[_ph[k]]))},_pe=function(k){return _ph[k]===_pc[k]?1:0};_kl.sort(function(a,b){return _hpk(a)-_hpk(b)||_pe(a)-_pe(b)||_pp(_pc[a])-_pp(_pc[b])||_pc[a]-_pc[b]});_kl=_kl.slice(0,KM_MAX);
+var _top=[];_kl.forEach(function(k){var lo=[_pc[k],0];if(_ph[k]!==_pc[k]){lo.gs=1;_top.push(lo);_top.push([_ph[k],0])}else{lo.sg=1;_top.push(lo)}});
 _pn.sort(function(a,b){return pinPos(items[a[0]])-pinPos(items[b[0]])});
 var _us={};_top.concat(_pn).forEach(function(x){_us[x[0]]=1});
 var _g={},_gk=[];order.forEach(function(x){if(_us[x[0]])return;var k=nrm(nmNoCat(items[x[0]],"").replace(/\s*\[[^\]]+\]/g,"").replace(/\s*\([^()]*\)\s*$/,""));if(!_g[k]){_g[k]=[];_gk.push(k)}_g[k].push(x)});
 _gk.forEach(function(k){_g[k].sort(function(a,b){return _pp(a[0])-_pp(b[0])||a[0]-b[0]})});
-_gk.sort(function(a,b){return _pp(_g[a][0][0])-_pp(_g[b][0][0])});
-var _rs=[];_gk.forEach(function(k){if(_g[k].length>1)_g[k][0].gs=1;_rs=_rs.concat(_g[k])});
+var _hg=function(k){return Math.min.apply(null,_g[k].map(function(x){return hpFlag(items[x[0]])}))};_gk.sort(function(a,b){return _hg(a)-_hg(b)||_pp(_g[a][0][0])-_pp(_g[b][0][0])});
+var _rs=[];_gk.forEach(function(k){if(_g[k].length>1)_g[k][0].gs=1;else _g[k][0].sg=1;_rs=_rs.concat(_g[k])});
 order=KM_REST?_pn.concat(_top,_rs):_pn.concat(_top)}
 var _sg={},_go=[];
 order.forEach(function(x){var o0=items[x[0]];if(!colorOf(o0)){_go.push(x);return}var k0=baseKey(o0);if(_sg[k0]===undefined){_sg[k0]=_go.length;x.vars=[x[0]];_go.push(x)}else{_go[_sg[k0]].vars.push(x[0])}});
 _go.forEach(function(x){if(x.vars&&x.vars.length>1){var pk=x.vars.filter(function(j){return inStk(items[j])})[0];if(pk!==undefined)x[0]=pk}});
 order=_go;
+if(order.some(function(x){return x.gs})){var _o2=[],_q2=order.slice(),_c2=0;while(_q2.length){var _x=_q2.shift();if(_x.gs&&_c2===1){var _f=-1;for(var _k=0;_k<_q2.length;_k++)if(_q2[_k].sg&&!_q2[_k].gs){_f=_k;break}if(_f>=0)_o2.push(_q2.splice(_f,1)[0]);_c2=0}_o2.push(_x);_c2=_x.gs?1:(_c2+1)%2}order=_o2}
 order.forEach(function(x){var i=x[0],o=items[i];
 var sk="SKU: "+esc(o.SKU!==undefined&&o.SKU!==null&&o.SKU!==""?o.SKU:0);
 var cvs=cvChips(x),_n=nmNoCat(o,t).replace(/\s*\[[^\]]+\]/g,""),_cm="",_mm=/\s*\(([^()]*)\)\s*$/.exec(_n);
@@ -2104,7 +2106,7 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
    आइटम का नाम "Type-C Data Cable = टाइप सी केबल – Cable" वाले format में हो तो सबसे बढ़िया चलता है. */
 (function (root) {
   "use strict";
-  var D = {}, PH = [], STOP = {}, WANT = {}, LINK = {}, END = {}, IC = {}, PC = {};
+  var D = {}, PH = [], STOP = {}, WANT = {}, LINK = {}, END = {}, IC = {}, PC = {}, PKD = null;
 
   /* ---------- 1. सफ़ाई: spelling, मात्राएँ, Type-C जैसे शब्द एक जैसे बनाना ---------- */
   function N(s) {
@@ -2128,7 +2130,7 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
     list.split(",").forEach(function (w) {
       w = N(w.trim()); if (!w) return;
       if (w.indexOf(" ") > 0) { var j = w.replace(/ /g, ""); PH.push([w, j]); w = j; }
-      D[w] = { t: type, c: id };
+      D[w] = { t: type, c: id }; PKD = null;
     });
   }
   function set(o, list) { list.split(" ").forEach(function (w) { if (w) o[N(w)] = 1; }); }
@@ -2139,20 +2141,33 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
   add("h", "earphone", "earphone,earphones,ear phone,handsfree,hands free,handfree,headphone,headphones,head phone,earbuds,earbud,ear buds,tws,airpods,ईयरफोन,इयरफोन,हैंडफ्री,हेडफोन,ईयरबड्स,ईयरबड,ہینڈزفری,ہیڈفون,ایئرفون");
   add("h", "neckband", "neckband,neck band,नेकबैंड,नेक बैंड");
   add("h", "powerbank", "power bank,powerbank,पावर बैंक,पावरबैंक,پاور بینک");
-  add("h", "glass", "glass,tempered,guard,screenguard,screen guard,screen protector,ग्लास,टेम्पर्ड,टेम्पर,गार्ड,काँच,कांच,शीशा,शीसा,گلاس");
-  add("h", "cover", "cover,covers,case,back cover,कवर,केस,कव्हर,کور,کیس");
+  add("h", "glass", "glass,tempered,guard,screenguard,screen guard,screen protector,ग्लास,टेम्पर्ड,टेम्पर,गार्ड,काँच,कांच,शीशा,शीसा,گلاس,galash,galas,gilass,glas,गलास,गलाश");
+  add("h", "cover", "cover,covers,case,back cover,kabar,kavar,kaver,kover,cvr,kabaar,कवर,केस,कव्हर,کور,کیس");
   add("h", "speaker", "speaker,speakers,स्पीकर,سپیکر");
   add("h", "switch", "switch,swich,स्विच,سوئچ");
   add("h", "fan", "fan,pankha,पंखा,पंखे,پنکھا");
-  add("h", "bulb", "bulb,बल्ब,light,लाइट,lamp,लैंप,torch,टॉर्च,بلب");
+  add("h", "bulb", "bulb,bulb,balb,बल्ब,light,lait,लाइट,lamp,लैंप,torch,टॉर्च,بلب");
   add("h", "holder", "holder,stand,होल्डर,स्टैंड,tripod,ट्राइपॉड");
-  add("h", "battery", "battery,बैटरी,بیٹری");
+  add("h", "battery", "battery,cell,बैटरी,सेल,بیٹری");
   add("h", "display", "display,lcd,डिस्प्ले,एलसीडी,touch,टच,screen,स्क्रीन");
   add("h", "memory", "memory card,memorycard,memory,मेमोरी कार्ड,मेमोरी,sd card,sdcard");
   add("h", "pendrive", "pendrive,pen drive,पेनड्राइव,पेन ड्राइव");
   add("h", "otg", "otg");
   add("h", "watch", "watch,smartwatch,smart watch,वॉच,घड़ी,स्मार्टवॉच");
-  add("h", "mic", "mic,microphone,माइक");
+  add("h", "mic", "mic,mike,mek,mekk,microphone,माइक,मेक");
+  /* बिजली का सामान */
+  add("h", "plug", "plug,multiplug,multi plug,प्लग,मल्टीप्लग,pluge");
+  add("h", "socket", "socket,सॉकेट,सोकेट,सॉकिट");
+  add("h", "extension", "extension,extension board,एक्सटेंशन,एक्सटेंशन बोर्ड,एक्स्टेंशन");
+  add("h", "regulator", "regulator,रेगुलेटर,रेगुलटर");
+  add("h", "tubelight", "tube light,tubelight,tyub lait,tyublait,tyub,tubelait,ट्यूब लाइट,ट्यूबलाइट,ट्यूब");
+  add("h", "tape", "tape,tep,टेप,insulation tape,इन्सुलेशन टेप");
+  add("h", "fuse", "fuse,फ्यूज,mcb,एमसीबी");
+  add("h", "bell", "bell,बेल,घंटी,calling bell");
+  add("h", "tester", "tester,टेस्टर");
+  add("h", "remote", "remote,रिमोट");
+  add("h", "inverter", "inverter,इन्वर्टर");
+  add("g", "elec", "electrik,electric,electrical,इलेक्ट्रिक,इलेक्ट्रिकल,बिजली,bijli,electrician");
   add("d", "phone", "mobile,mobiles,phone,phones,smartphone,handset,मोबाइल,फोन,موبائل,فون");
   add("a", "typec", "typec"); add("a", "v8", "v8");
   add("a", "lightning", "lightning,लाइटनिंग");
@@ -2163,7 +2178,8 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
    ["nokia", "नोकिया"], ["jio", "जियो"], ["xiaomi", "शाओमी"]
   ].forEach(function (b) { add("b", b[0], b[0] + "," + b[1]); });
 
-  set(STOP, "ek acchi accha achha अच्छी अच्छा अच्छे बढ़िया बेहतरीन best good nice quality ka ki ke ko me mein se pe par में का की के को से पर " +
+  var GRP = { elec: ["fan", "switch", "bulb", "tubelight", "plug", "socket", "extension", "regulator", "tape", "fuse", "bell", "tester", "holder", "inverter"] };
+  set(STOP, "saman samaan सामान सामग्री item items product cheez चीज चीज़ ek sa si se apne apana apna apane apni अपने अपना अपनी सा सी सें badiya badhiya badhia bdhiya बढ़िया हमाको hamako hamkoo acchi accha achha अच्छी अच्छा अच्छे बढ़िया बेहतरीन best good nice quality ka ki ke ko me mein se pe par में का की के को से पर " +
     "मेरे मेरा मेरी हमारे हमारा हमारी हमको हमें मुझे मुझको हम मैं main mujhe mere meri mera hamara hamare hame hamko hum ghar घर " +
     "koi कोई kuch कुछ aap आप please plz जी and aur और या ya i we a an the my our of to with is are uske उसके iske इसके isme इसमें " +
     "usme उसमें wala wali wale वाला वाली वाले jaisa जैसा sasta सस्ता cheap naya नया new original bhi भी hi ही kya क्या paas पास " +
@@ -2186,28 +2202,73 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
     }
     return p[b.length];
   }
-  function look(w, fuzzy) {
+  /* आवाज़ वाली चाबी: kabar / kavar / cover / कवर सब एक जैसे (kbr) */
+  var DV = {"अ":"a","आ":"a","इ":"a","ई":"a","उ":"a","ऊ":"a","ए":"a","ऐ":"a","ओ":"a","औ":"a","ऑ":"a","क":"k","ख":"k","ग":"g","घ":"g","च":"ch","छ":"ch","ज":"j","झ":"j","ट":"t","ठ":"t","ड":"d","ढ":"d","ण":"n","त":"t","थ":"t","द":"d","ध":"d","न":"n","प":"p","फ":"f","ब":"b","भ":"b","म":"m","य":"y","र":"r","ल":"l","व":"v","श":"s","ष":"s","स":"s","ह":"h"};
+  function PK(w) {
+    var s = w.replace(/[\u0900-\u097f]/g, function (c) { return DV[c] || ""; });
+    s = s.replace(/sh/g, "s").replace(/ch/g, "x").replace(/ph/g, "f").replace(/([bdgkjt])h/g, "$1")
+      .replace(/c(?=[eiy])/g, "s").replace(/[cq]/g, "k").replace(/z/g, "j").replace(/[wv]/g, "b");
+    var f = /^[aeiou]/.test(s) ? "a" : "";
+    return (f + s.replace(/[aeiouyh]/g, "")).replace(/(.)\1+/g, "$1");
+  }
+  function pkd() {
+    if (PKD) return PKD;
+    PKD = {};
+    Object.keys(D).forEach(function (w) {
+      if (/\d/.test(w)) return;
+      var k = PK(w); if (k.length < 3) return;
+      if (PKD[k] === undefined) PKD[k] = D[w]; else if (PKD[k] && PKD[k].c !== D[w].c) PKD[k] = false;
+    });
+    return PKD;
+  }
+  /* fz: 0 = सिर्फ़ सही शब्द, 1 = + आवाज़ से, 2 = + एक अक्षर की गलती भी */
+  function look(w, fz) {
     if (D[w]) return D[w];
     if (/^[a-z]+s$/.test(w) && D[w.slice(0, -1)]) return D[w.slice(0, -1)];
-    if (fuzzy && /^[a-z]{5,}$/.test(w)) {
-      var best = null, bd = w.length >= 8 ? 3 : 2;
-      for (var k in D) if (/^[a-z]+$/.test(k) && Math.abs(k.length - w.length) <= 1) {
-        var d = lev(w, k); if (d < bd) { bd = d; best = D[k]; }
+    if (fz && w.length >= 3 && !/\d/.test(w)) {
+      var k = PK(w), P = pkd();
+      if (k.length < 3) return null;
+      if (P[k]) return P[k];
+      if (fz > 1 && k.length >= 4) {
+        var b = null, amb = false;
+        for (var q in P) if (P[q] && q.length >= 4 && Math.abs(q.length - k.length) <= 1 && lev(k, q) <= 1) {
+          if (b && b.c !== P[q].c) amb = true; b = b || P[q];
+        }
+        return amb ? null : b;
       }
-      return best;
     }
+    return null;
+  }
+  /* दुकान के अपने आइटम के शब्द सीखना (मॉडल/ब्रांड/नाम जो शब्दकोश में नहीं) */
+  var VC = { n: -1, m: {} };
+  function vocab(L) {
+    if (VC.n === L.length) return VC.m;
+    var m = {};
+    L.forEach(function (o) {
+      T(o[root.SmartSearch.key]).split(" ").forEach(function (w) {
+        if (w.length >= 3 && !D[w] && !STOP[w] && !/\d/.test(w)) { var k = PK(w); if (k.length >= 3) m[k] = m[k] || w; }
+      });
+    });
+    VC = { n: L.length, m: m }; return m;
+  }
+  function vmatch(w, m) {
+    if (!m || w.length < 3 || /\d/.test(w)) return null;
+    var k = PK(w); if (k.length < 3) return null;
+    if (m[k]) return m[k];
+    if (k.length >= 4) for (var q in m) if (Math.abs(q.length - k.length) <= 1 && lev(k, q) <= 1) return m[q];
     return null;
   }
 
   /* ---------- 4. सवाल समझना: असली माल कौन सा, और "के लिए" वाला कौन सा ---------- */
-  function parse(q) {
-    var cl = [[]], p = { q: q, want: [], req: {}, soft: {}, brands: [], res: [], natural: false, strict: false };
+  function parse(q, voc) {
+    var cl = [[]], p = { q: q, want: [], req: {}, soft: {}, brands: [], res: [], natural: false, strict: false, toks: [], loose: false };
     T(q).split(" ").forEach(function (w) {
       if (!w) return;
       if (w === "|") { cl.push([]); return; }
       var t = WANT[w] ? "w" : LINK[w] ? "l" : END[w] ? "e" : STOP[w] ? "z" : w === "for" ? "f" : null, x = null;
-      if (!t) { x = look(w, true); t = x ? x.t : "x"; }
+      if (!t) { x = look(w, 2); t = x ? x.t : "x"; }
       cl[cl.length - 1].push({ w: w, t: t, c: x && x.c });
+      if (!/[zwlef]/.test(t)) p.toks.push({ w: w, t: t, c: x && x.c });
       if (t === "e") cl.push([]);
     });
     var ctxHeads = [], devW = [], i, j;
@@ -2224,11 +2285,13 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
         else if (t.t === "a") { if (!ctx[k]) p.req[t.c] = 1; }
         else if (t.t === "s") p.soft[t.c] = 1;
         else if (t.t === "b") { if (p.brands.indexOf(t.c) < 0) p.brands.push(t.c); }
+        else if (t.t === "g") p.group = t.c;
         else if (t.t === "d") devW.push(t.w);
-        else if (t.t === "x") p.res.push(t.w);
+        else if (t.t === "x") p.res.push(vmatch(t.w, voc) || t.w);
       });
     });
     if (!p.want.length) p.want = ctxHeads;
+    if (!p.want.length && p.group) p.want = GRP[p.group].slice();
     if (!p.want.length && p.soft.chg) p.want = ["charger"];
     if (!p.want.length && !p.res.length && !p.brands.length) p.res = devW;
     p.want = p.want.filter(function (h, k, a) { return a.indexOf(h) === k; });
@@ -2239,7 +2302,7 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
   function scan(str, o) {
     var last = null;
     T(str).split(" ").forEach(function (w) {
-      var x = look(w, false); if (!x) return;
+      var x = look(w, 1); if (!x) return;
       if (x.t === "h") { o.h.push(x.c); last = x.c; } else if (x.t === "a" || x.t === "s") o.a[x.c] = 1; else if (x.t === "b") o.b[x.c] = 1;
     });
     return last;
@@ -2251,13 +2314,14 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
     var o = { h: [], a: {}, b: {} }, lasts = [], co = { h: [], a: {}, b: {} };
     nm.split("=").forEach(function (part) { var l = scan(part, o); if (l) lasts.push(l); });
     scan(ct, co);
-    return (IC[name] = { heads: o.h, lasts: lasts, cat: co.h, attrs: o.a, brands: o.b, text: T(name) });
+    var pks = {}; T(name).split(" ").forEach(function (w) { if (!/\d/.test(w)) { var k = PK(w); if (k.length >= 3) pks[k] = 1; } });
+    return (IC[name] = { pks: pks, heads: o.h, lasts: lasts, cat: co.h, attrs: o.a, brands: o.b, text: T(name) });
   }
 
   /* ---------- 6. नंबर देना: 0 = सबसे सही, 9 = दिखाना ही नहीं ---------- */
   function baseTier(p, inf) {
     if (!p.want.length) {
-      if (!p.res.length) return 0;
+      if (!p.res.length) return p.brands.length ? (p.brands.some(function (b) { return inf.brands[b]; }) ? 2 : 9) : 0;
       return p.res.every(function (r) { return inf.text.indexOf(r) >= 0; }) ? 3 : 9;
     }
     var best = 9, m = 0;
@@ -2270,15 +2334,29 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
   function plan(q) {
     var L = root.SmartSearch.list(), key = q + "|" + L.length;
     if (PC[key]) return PC[key];
-    var p = parse(q), rk = Object.keys(p.req);
+    var p = parse(q, vocab(L)), rk = Object.keys(p.req);
     if (rk.length) p.strict = L.some(function (o) {
       var inf = info(o[root.SmartSearch.key]);
       return baseTier(p, inf) < 9 && rk.every(function (k) { return inf.attrs[k]; });
     });
+    p.loose = !L.some(function (o) { return baseTier(p, info(o[root.SmartSearch.key])) < 9; });
     PC = {}; PC[key] = p; return p;
   }
+  /* जब सीधा कुछ न मिले: जितने शब्द मिलते-जुलते हों, उतना ऊपर */
+  function loose(p, inf) {
+    var n = p.toks.filter(function (t) { return t.t !== "d"; }), h = 0;
+    if (!n.length) return 9;
+    n.forEach(function (t) {
+      var k = PK(t.w);
+      if ((t.t === "h" && inf.heads.indexOf(t.c) >= 0) || (t.t === "b" && inf.brands[t.c]) || (t.t === "a" && inf.attrs[t.c]) ||
+          inf.text.indexOf(t.w) >= 0 || (k.length >= 3 && inf.pks[k])) h++;
+    });
+    return h ? 8 - 3 * h / n.length : 9;
+  }
   function tier(name, q) {
-    var p = plan(q), inf = info(name), t = baseTier(p, inf);
+    var p = plan(q), inf = info(name);
+    if (p.loose) return loose(p, inf);
+    var t = baseTier(p, inf);
     if (t >= 9) return 9;
     if (!Object.keys(p.req).every(function (k) { return inf.attrs[k]; })) { if (p.strict) return 9; t += 2; }
     if (p.brands.some(function (b) { return inf.brands[b]; })) t -= 0.5;
@@ -2293,7 +2371,7 @@ window.addEventListener("load",fixH);window.addEventListener("resize",fixH);wind
     plan: function (q) { return plan(q); },
     tier: tier,
     add: add,                                   /* SmartSearch.add("h","cable","नया शब्द,another") */
-    explain: function (q) { var p = plan(q); return { asli_maal: p.want, zaroori_khoobi: Object.keys(p.req), company: p.brands, baaki_shabd: p.res }; },
+    explain: function (q) { var p = plan(q); return { asli_maal: p.want, zaroori_khoobi: Object.keys(p.req), company: p.brands, baaki_shabd: p.res, seedha_nahi_mila_to_milta_julta: p.loose }; },
     search: function (q) {                      /* सीधा उपयोग: SmartSearch.search("वीवो फोन के लिए टाइप सी केबल") */
       var self = this, k = this.key;
       return this.list().map(function (o) { return [o, tier(o[k], q)]; })
@@ -2309,6 +2387,51 @@ SS.src=function(){return typeof items!=="undefined"?items:[]};
 var old=itemTier;
 itemTier=function(full,t){var r=old(full,t);try{var p=SS.plan(t);if(!p.natural&&r<9)return r;return SS.tier(full,t)}catch(e){return r}};
 }catch(e){}})();
+</script>
+<style id="kfix2">
+/* search + category hamesha upar; camera ke niche */
+html #sbar,html.apk #sbar{position:sticky!important;top:0!important;z-index:40!important}
+body.kstk #sbar{padding-top:calc(max(env(safe-area-inset-top,0px),32px) + 6px)!important}
+html #catw{position:sticky!important;top:var(--sbh,64px)!important;z-index:39!important}
+#sbar .sw{display:flex!important;align-items:center}
+#kmic{flex:none;border:0;background:transparent;color:#5f6368;line-height:0;padding:0 2px 0 8px;cursor:pointer;display:flex;align-items:center}#kmic.on{color:#e63c1f}
+#kmic.on{animation:kmp .8s infinite}@keyframes kmp{50%{transform:scale(1.3)}}
+/* photo poori screen, X nahi */
+#pv{background:#000!important;padding:0!important;gap:0!important;z-index:2147483000!important}
+#pv .pvm{flex:1!important;width:100%!important;gap:0!important;position:relative}
+#pv .pvm img,#pv img{max-width:100vw!important;max-height:100vh!important;width:100vw!important;height:100vh!important;object-fit:contain!important;border-radius:0!important}
+#pv #pvc{display:none!important}
+#pv #pvn{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);left:0;right:0;text-align:center;z-index:3;pointer-events:none;text-shadow:0 1px 3px #000}
+#pv .nv{position:absolute;top:50%;transform:translateY(-50%);z-index:2;background:rgba(0,0,0,.35);color:#fff;border:0;width:42px;height:64px;font-size:32px}
+#pv #pvp{left:0}#pv #pvx{right:0}
+#pv .row{position:absolute;bottom:0;left:0;right:0;width:100%!important;max-width:none!important;padding:10px;background:rgba(0,0,0,.6);z-index:3}
+</style>
+<script id="kfix2js">
+(function(){
+var sb=document.getElementById("sbar"),q=document.getElementById("q");
+/* sticky bar: chipka ho to camera ke niche jagah */
+function upd(){if(!sb)return;var r=sb.getBoundingClientRect();document.body.classList.toggle("kstk",r.top<=1);document.documentElement.style.setProperty("--sbh",Math.round(r.height)+"px")}
+window.addEventListener("scroll",upd,{passive:true});window.addEventListener("resize",upd);setInterval(upd,500);upd();
+/* mic: bolkar search */
+var sw=sb&&sb.querySelector(".sw");
+if(sw&&q){var b=document.createElement("button");b.type="button";b.id="kmic";b.setAttribute("aria-label","बोलकर खोजें");b.innerHTML='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="currentColor"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/><path d="M12 18v3.2"/></svg>';sw.appendChild(b);
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition,rec=null;
+b.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();
+ if(!SR){alert("इस ऐप/ब्राउज़र में बोलकर खोजना नहीं चलता। Chrome में खोलकर देखिए।");return}
+ if(rec){try{rec.stop()}catch(x){}return}
+ rec=new SR();rec.lang="en-IN";rec.interimResults=true;rec.continuous=false;
+ rec.onresult=function(ev){var t="";for(var i=0;i<ev.results.length;i++)t+=ev.results[i][0].transcript;q.value=t;q.dispatchEvent(new Event("input",{bubbles:true}))};
+ rec.onerror=function(ev){rec=null;b.classList.remove("on");if(ev&&/not-allowed|service-not-allowed/.test(ev.error))alert("माइक की अनुमति दीजिए")};
+ rec.onend=function(){rec=null;b.classList.remove("on")};
+ b.classList.add("on");try{rec.start()}catch(x){rec=null;b.classList.remove("on")}})}
+/* photo: kahin bhi dabane par band; Back se bhi band */
+var pv=document.getElementById("pv");
+if(pv)pv.addEventListener("click",function(e){if(pv.classList.contains("own"))return;if(e.target.closest&&e.target.closest(".nv,.row"))return;if(typeof hidePhoto==="function")hidePhoto()});
+/* Back: koi bhi poori-screen window khuli ho to pehle wahi band, seedha exit nahi */
+if(typeof kbStep==="function"){var _ks=kbStep;kbStep=function(){var r=_ks.apply(this,arguments);if(r)return r;
+ try{var els=document.querySelectorAll("body *.on");for(var i=els.length-1;i>=0;i--){var e=els[i];if(e.id==="kmic"||(e.closest&&e.closest("#sbar")))continue;var cs=getComputedStyle(e);if(cs.position==="fixed"&&cs.display!=="none"&&e.offsetHeight>innerHeight*.6){e.classList.remove("on");return true}}}catch(x){}
+ return false}}
+})();
 </script>
 </body>
 </html>
