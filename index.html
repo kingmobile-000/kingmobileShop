@@ -35,7 +35,7 @@ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}
 </script>
 
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"><meta name="theme-color" content="#e63c1f">
 <title>KING MOBILE</title>
 <script id="emb" type="application/json">{"t":0,"items":[]}</script>
 <style>
@@ -485,7 +485,7 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 <div id="tg" role="button">👑 KING MOBILE SHOP</div>
 <div id="wlc"></div>
 </header>
-<div id="kaddr">📍 Husainganj, Sagun Nagar, Naher ke pass</div>
+<div id="kaddr">&nbsp;</div>
 <div id="sbar"><button id="mbtn" type="button" aria-label="Menu">☰</button><div class="sw"><span>🔍</span><input type="search" id="q" placeholder="Search item" autocomplete="off"></div></div>
 <div id="ap"></div>
 <div id="catw"><div id="cats"></div></div>
@@ -1212,7 +1212,7 @@ order.sort(function(a,b){var pa=pinPos(items[a[0]]),pb=pinPos(items[b[0]]);if((p
 if(!t&&curCat==="\u0938\u092d\u0940"&&!onlyNo){var _pc={},_ph={},_tk={},_pn=[],_pp=function(j){var r=effRate(items[j].Rate);return r===null?1e12:r};
 order.forEach(function(x){var j=x[0],k=nrm(catLabel(items[j]));if(pinPos(items[j])>=0){_pn.push(x);_tk[k]=1;return}var c=_pc[k];if(c===undefined||(inStk(items[j])&&!inStk(items[c]))||(inStk(items[j])===inStk(items[c])&&_pp(j)<_pp(c)))_pc[k]=j;var h=_ph[k],q=function(i){var r=effRate(items[i].Rate);return r===null?-1:r};if(h===undefined||(inStk(items[j])&&!inStk(items[h]))||(inStk(items[j])===inStk(items[h])&&q(j)>q(h)))_ph[k]=j});
 var _kl=Object.keys(_pc).filter(function(k){return!_tk[k]});var _hpk=function(k){return Math.min(hpFlag(items[_pc[k]]),hpFlag(items[_ph[k]]))},_pe=function(k){return _ph[k]===_pc[k]?1:0};_kl.sort(function(a,b){return _hpk(a)-_hpk(b)||_pe(a)-_pe(b)||_pp(_pc[a])-_pp(_pc[b])||_pc[a]-_pc[b]});_kl=_kl.slice(0,KM_MAX);
-var _top=[],_tw=[],_tn=[];_kl.forEach(function(k){var l=_pc[k],h=_ph[k],two=(h!==l),pl=hpFlag(items[l])===0,ph=two&&hpFlag(items[h])===0;/* jis item me photo hai vo upar (category ke hisaab se ek ke bagal me ek), bina photo wala niche */if(pl)_tw.push([l,0]);if(ph)_tw.push([h,0]);if(!pl&&!ph){var lo=[l,0];if(two){lo.gs=1;_tn.push(lo);_tn.push([h,0])}else{lo.sg=1;_tn.push(lo)}}else if(!pl){var a1=[l,0];a1.sg=1;_tn.push(a1)}else if(two&&!ph){var a2=[h,0];a2.sg=1;_tn.push(a2)}});_top=_tw.concat(_tn);
+var _top=[],_tw=[],_tn=[];_kl.forEach(function(k){var l=_pc[k],h=_ph[k],two=(h!==l),pl=hpFlag(items[l])===0,ph=two&&hpFlag(items[h])===0;/* jis item me photo hai vo upar (category ke hisaab se ek ke bagal me ek), bina photo wala niche */if(pl)_tw.push([l,0]);if(ph)_tw.push([h,0]);if(!pl&&!ph){var lo=[l,0];if(two){lo.gs=1;_tn.push(lo);_tn.push([h,0])}else{lo.sg=1;_tn.push(lo)}}else if(!pl){var a1=[l,0];a1.sg=1;_tn.push(a1)}else if(two&&!ph){var a2=[h,0];a2.sg=1;_tn.push(a2)}});/* baaki sab photo wale item bhi upar: alag-alag category se mix karke (ek-ek karke) */var _ut={};_tw.concat(_tn).forEach(function(x){_ut[x[0]]=1});_pn.forEach(function(x){_ut[x[0]]=1});var _pg={},_pk=[];order.forEach(function(x){var j=x[0];if(_ut[j]||hpFlag(items[j])!==0)return;var k=nrm(catLabel(items[j]));if(!_pg[k]){_pg[k]=[];_pk.push(k)}_pg[k].push([j,0])});_pk.forEach(function(k){_pg[k].sort(function(a,b){return _pp(a[0])-_pp(b[0])||a[0]-b[0]})});var _pm=[],_ri=0,_mo=true;while(_mo){_mo=false;_pk.forEach(function(k){if(_pg[k][_ri]){_pm.push(_pg[k][_ri]);_mo=true}});_ri++}_top=_tw.concat(_pm,_tn);
 _pn.sort(function(a,b){return pinPos(items[a[0]])-pinPos(items[b[0]])});
 var _us={};_top.concat(_pn).forEach(function(x){_us[x[0]]=1});
 var _g={},_gk=[];order.forEach(function(x){if(_us[x[0]])return;var k=nrm(nmNoCat(items[x[0]],"").replace(/\s*\[[^\]]+\]/g,"").replace(/\s*\([^()]*\)\s*$/,""));if(!_g[k]){_g[k]=[];_gk.push(k)}_g[k].push(x)});
