@@ -2463,7 +2463,7 @@ try{var _kmU=getUser();if(_kmU)kmLogReg(_kmU)}catch(e){}
 /* ===== Razorpay Online Payment ===== */
 (function(){
 /* !!! Yahan apni Vercel website ka link likhiye (bina last slash ke), jaise: https://kingmobile.vercel.app */
-var KM_API="https://YOUR-SITE.vercel.app";
+var KM_API=(location.protocol.indexOf("http")===0)?"":"https://YOUR-SITE.vercel.app";
 var SHOP_PH="9558222519";
 function g(i){return document.getElementById(i)}
 function er(t){var e=g("byerr");if(e)e.textContent=t||""}
