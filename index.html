@@ -2718,10 +2718,10 @@ start();
 </style>
 <script id="kloc">
 /* ===== 📍 लोकेशन सिस्टम: दुकान से 10 किमी के अंदर ही ऑर्डर बुक होगा =====
-   SHOP_LAT / SHOP_LNG = दुकान की लोकेशन (Google Maps में दुकान पर देर तक दबाकर जो दो नंबर आएँ, वही यहाँ डालिए)
+   SHOP_LAT / SHOP_LNG = दुकान की लोकेशन (Google Maps से लिए गए दुकान के सही कोऑर्डिनेट)
    MAX_KM = अधिकतम दूरी (किलोमीटर) */
 (function(){
-var SHOP_LAT=25.917306,SHOP_LNG=80.798083,MAX_KM=10,SHOP_PH="9558222519",FRESH=120000;
+var SHOP_LAT=26.002157,SHOP_LNG=80.937765,MAX_KM=10,SHOP_PH="9558222519",FRESH=120000;
 var st={s:"idle",km:null,lat:null,lng:null,t:0},waiters=[],shown=false;
 function g(i){return document.getElementById(i)}
 function km1(n){return (Math.round(n*10)/10).toLocaleString("en-IN")}
