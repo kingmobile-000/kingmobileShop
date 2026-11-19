@@ -480,7 +480,7 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 </style>
 </head>
 <body>
-<div id="kld"><div class="klr" id="klr"></div><div id="klw"></div><div class="kls"></div><div class="klt" id="klt">डेटा आ रहा है…</div><div class="klm" id="klm"></div><button id="klb" type="button">फिर कोशिश करें</button></div>
+<div id="kld"><div id="klw"></div><div class="kls"></div><div class="klt" id="klt"></div><div class="klm" id="klm"></div><button id="klb" type="button">फिर कोशिश करें</button></div>
 <header>
 <div id="tg" role="button">👑 KING MOBILE SHOP</div>
 <div id="wlc"></div>
@@ -826,6 +826,14 @@ html body #dtg .dsl.dno{min-height:160px!important}
 #kld .klr{transition:transform 1.7s ease-in-out!important}
 #kld.go{opacity:0;transition:opacity .45s ease 1.75s!important}
 #kld.go .kls{opacity:0;transition:opacity .3s}
+/* splash: red dot/flood hata diya, "डेटा आ रहा है" hata diya, seedha halka fade */
+#kld .klr{display:none!important}
+#kld .klt:empty{display:none}
+#kld.go{opacity:0!important;transition:opacity .3s ease!important}
+#kld.go #klw .klh1{color:#e8260a!important}
+#kld.go #klw .klh2{color:#111!important}
+#kld.go #klw .klh3{color:#1a237e!important}
+#kld.go .kls{opacity:0!important}
 /* Masonry: neeche wala item upar ki khali jagah me aa jaye (JS .msn lagata hai) */
 #list.msn{grid-auto-rows:1px!important;row-gap:0!important;column-gap:8px!important;align-items:start!important}
 #list.msn>*{align-self:start!important}
@@ -927,9 +935,9 @@ itApply(L);itemV=d.v;
 status("")
 }).catch(function(e){itemBusy=false;itemFails++;try{console.error("ITEMS FETCH ERROR",e)}catch(x){}status("⚠ डेटा नहीं आ सका: "+(e&&e.message?e.message:e));if(itemFails>=3)itOffline();itemNext=Date.now()+Math.min(5000,1000*itemFails)})}catch(e){itemBusy=false;status("⚠ Error: "+(e&&e.message?e.message:e))}}
 var kldDone=false,kldTm=null;
-function kldWait(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="";document.getElementById("klt").textContent="डेटा आ रहा है…";clearTimeout(kldTm);kldTm=setTimeout(kldFail,9000)}
+function kldWait(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="";document.getElementById("klt").textContent="";clearTimeout(kldTm);kldTm=setTimeout(kldFail,9000)}
 function kldFail(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="fail";document.getElementById("klt").textContent="Net nahi connect hai";document.getElementById("klm").textContent="इंटरनेट नहीं जुड़ा है। King Mobile में माल और ऑर्डर देखने के लिए सर्वर (इंटरनेट) का जुड़ा होना बहुत ज़रूरी है।"}
-function kldOk(){if(kldDone)return;kldDone=true;clearTimeout(kldTm);var e=document.getElementById("kld"),r=document.getElementById("klr");if(!e)return;if(r)r.style.transform="scale("+(Math.hypot(window.innerWidth,window.innerHeight)/20+6)+")";e.className="go";setTimeout(function(){e.className="gone"},2500)}
+function kldOk(){if(kldDone)return;kldDone=true;clearTimeout(kldTm);var e=document.getElementById("kld");if(!e)return;e.className="go";setTimeout(function(){e.className="gone"},450)}
 document.getElementById("klb").onclick=function(){kldWait();itemNext=0;itemFails=0;itTick()};
 kldWait();bnrCheck();welcomeDraw();
 (function(){var d0=new Date().toDateString();function ms(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,0,0,5)-n}
