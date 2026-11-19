@@ -2751,16 +2751,15 @@ function locate(cb,force){
  var best=null,wid=null,tm=null,done=false,low=false,kicked=false;st.fp=null;
  function stop(){try{if(wid!=null)navigator.geolocation.clearWatch(wid)}catch(e){}wid=null}
  function fin(err){if(done)return;done=true;stop();clearTimeout(tm);
-  if(best){st.lat=best.latitude;st.lng=best.longitude;st.km=hav(SHOP_LAT,SHOP_LNG,st.lat,st.lng);st.t=Date.now();st.s=st.km<=MAX_KM?"ok":"far"}
+  if(best){st.lat=best.latitude;st.lng=best.longitude;st.acc=Math.round(best.accuracy||0);st.km=hav(SHOP_LAT,SHOP_LNG,st.lat,st.lng);st.t=Date.now();st.s=st.km<=MAX_KM?"ok":"far";if(st.s==="ok")st.fp=fillAddr(st.lat,st.lng)}
   else st.s=(err&&err.code===1)?"deny":"fail";
   draw();flush()}
  function start(hi){
   try{wid=navigator.geolocation.watchPosition(function(p){
     if(done)return;
-    if(!kicked){kicked=true;st.fp=fillAddr(p.coords.latitude,p.coords.longitude)}
-    if(!best){clearTimeout(tm);tm=setTimeout(function(){fin()},3000)}   /* पहली लोकेशन के बाद 6 सेकंड तक और सटीक होने दो */
+    if(!best){clearTimeout(tm);tm=setTimeout(function(){fin()},8000)}   /* पहली (मोटी) लोकेशन के बाद GPS को सटीक होने का समय */   /* पहली लोकेशन के बाद 6 सेकंड तक और सटीक होने दो */
     if(!best||p.coords.accuracy<best.accuracy)best=p.coords;
-    if(p.coords.accuracy<=150)fin()},
+    if(p.coords.accuracy<=50)fin()},
    function(e){if(done||best)return;
     if(e&&e.code===1){fin(e);return}
     if(hi&&!low){low=true;stop();start(false);return}   /* GPS न मिले तो नेटवर्क लोकेशन से कोशिश */
@@ -2776,21 +2775,48 @@ function setF(id,v){var e=g(id);if(!e)return false;if(e.dataset.kph===undefined)
  if(v){e.value=v;e.readOnly=true}else{e.value="";e.readOnly=false;e.placeholder=e.dataset.kph}
  try{e.dispatchEvent(new Event("input",{bubbles:true}))}catch(x){}return !!v}
 /* गाँव/जिला/राज्य/पिनकोड: पुराना भरा हुआ सब हटाओ; सिर्फ़ लाइव लोकेशन से भरेगा, ग्राहक बदल नहीं सकेगा */
-function lockAdr(){ADR.forEach(function(id){var e=g(id);if(!e)return;if(e.dataset.kph===undefined)e.dataset.kph=e.placeholder||"";e.value="";e.readOnly=true;e.placeholder="📍 लोकेशन से अपने-आप भरेगा"})}
+function lockAdr(){ADR.forEach(function(id){var e=g(id);if(!e)return;if(e.dataset.kph===undefined)e.dataset.kph=e.placeholder||"";e.value="";e.readOnly=true;e.placeholder="📍 Order Now दबाने पर अपने-आप भरेगा"})}
 function tmo(u,ms){return new Promise(function(res,rej){var c=window.AbortController?new AbortController():null,t=setTimeout(function(){if(c)c.abort();rej(new Error("t"))},ms);fetch(u,c?{signal:c.signal}:{}).then(function(r){return r.json()}).then(function(j){clearTimeout(t);res(j)},function(e){clearTimeout(t);rej(e)})})}
 function p1(lat,lng){return tmo("https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat="+lat+"&lon="+lng,8000).then(function(j){var a=(j&&j.address)||{},pin=String(a.postcode||"").replace(/\D/g,"");
  return{city:a.village||a.hamlet||a.town||a.city||a.suburb||a.neighbourhood||a.city_district||"",dist:String(a.state_district||a.county||"").replace(/\s+district$/i,""),state:a.state||"",pin:pin.length===6?pin:""}})}
 function p2(lat,lng){return tmo("https://api.bigdatacloud.net/data/reverse-geocode-client?localityLanguage=en&latitude="+lat+"&longitude="+lng,8000).then(function(j){j=j||{};var d="";try{(j.localityInfo.administrative||[]).forEach(function(x){if(x.adminLevel===5&&!d)d=String(x.name||"").replace(/\s+district$/i,"")})}catch(e){}var pin=String(j.postcode||"").replace(/\D/g,"");
  return{city:j.locality||j.city||"",dist:d,state:j.principalSubdivision||"",pin:pin.length===6?pin:""}})}
+function fmtD(k){return k<1?(Math.max(10,Math.round(k*100)*10)+" मीटर"):((Math.round(k*10)/10)+" किमी")}
+function ovp(lat,lng){
+ var q='[out:json][timeout:15];(node(around:6000,'+lat+','+lng+')["place"~"^(village|hamlet|town|suburb|neighbourhood|locality|city)$"]["name"];nwr(around:5000,'+lat+','+lng+')["addr:postcode"];);out tags center 80;';
+ function one(u){return tmo(u+"?data="+encodeURIComponent(q),12000)}
+ return one("https://overpass-api.de/api/interpreter").catch(function(){return one("https://overpass.kumi.systems/api/interpreter")})}
+function nameOf(t){var nm=t.name||"",en=t["name:en"]||(/[A-Za-z]/.test(nm)?nm:""),hi=t["name:hi"]||(/[\u0900-\u097F]/.test(nm)?nm:"");
+ return{en:en,full:(en&&hi&&en.toLowerCase()!==hi.toLowerCase())?en+" ("+hi+")":(en||hi||nm)}}
+function ovParse(j,lat,lng){var pl=[],pc=[],seen={};
+ ((j&&j.elements)||[]).forEach(function(el){var t=el.tags||{},la=el.lat!=null?el.lat:(el.center&&el.center.lat),lo=el.lon!=null?el.lon:(el.center&&el.center.lon);if(la==null||lo==null)return;var d=hav(lat,lng,la,lo);
+  if(t.place&&t.name){var n=nameOf(t),k=n.full.toLowerCase();if(!seen[k]){seen[k]=1;pl.push({n:n.full,en:n.en,d:d})}}
+  var p=String(t["addr:postcode"]||"").replace(/\D/g,"");if(p.length===6)pc.push({p:p,d:d})});
+ pl.sort(function(a,b){return a.d-b.d});pc.sort(function(a,b){return a.d-b.d});return{pl:pl,pc:pc}}
+/* India Post: गाँव के नाम से पिनकोड (उसी जिले का) */
+function ipin(names,dist){var ds=String(dist||"").toLowerCase();if(!ds||!names.length)return Promise.resolve("");
+ return Promise.all(names.map(function(n){return tmo("https://api.postalpincode.in/postoffice/"+encodeURIComponent(n),8000).then(function(j){var po=(j&&j[0]&&j[0].PostOffice)||[];
+  return po.filter(function(o){var d=String(o.District||"").toLowerCase();return d&&(d.indexOf(ds)>=0||ds.indexOf(d)>=0)}).map(function(o){return{p:String(o.Pincode||""),nm:String(o.Name||"").toLowerCase(),q:n.toLowerCase()}})}).catch(function(){return[]})})).then(function(a){
+  for(var i=0;i<a.length;i++){var l=a[i];if(!l.length)continue;var ex=l.filter(function(o){return o.nm.indexOf(o.q)===0});return(ex[0]||l[0]).p}return""})}
+/* असली लाइव लोकेशन से: सबसे नज़दीकी गाँव + जिला + राज्य + पिनकोड */
 function fillAddr(lat,lng){
  var r={city:"",dist:"",state:"",pin:""};
- function merge(x){if(!x)return;for(var k in r)if(!r[k]&&x[k])r[k]=x[k]}
- return p1(lat,lng).catch(function(){return null}).then(function(x){merge(x);
-  if(r.city&&r.dist&&r.state&&r.pin)return;
-  return p2(lat,lng).catch(function(){return null}).then(merge)}).then(function(){
-  var n=0;if(setF("byc",r.city))n++;if(setF("byd",r.dist))n++;if(setF("bys",r.state))n++;if(setF("byp",r.pin))n++;
-  if(r.city||r.dist||r.pin)note("✅ लोकेशन से पता भरा गया ("+[r.city,r.dist,r.pin].filter(Boolean).join(", ")+")। कृपया जाँच लें, और मकान नंबर / गली / लैंडमार्क खुद लिखिए।");
-  else note("⚠ लोकेशन से पता नहीं भर पाया — कृपया खाली खाने खुद भरिए।")}).catch(function(){ADR.forEach(function(id){setF(id,"")})})}
+ var pN=p1(lat,lng).catch(function(){return null}),pO=ovp(lat,lng).then(function(j){return ovParse(j,lat,lng)}).catch(function(){return null});
+ return Promise.all([pN,pO]).then(function(x){var nm=x[0],ov=x[1];
+  if(nm){r.city=nm.city;r.dist=nm.dist;r.state=nm.state;r.pin=nm.pin}
+  if(r.dist&&r.state)return ov;
+  return p2(lat,lng).catch(function(){return null}).then(function(y){if(y){r.city=r.city||y.city;r.dist=r.dist||y.dist;r.state=r.state||y.state;r.pin=r.pin||y.pin}return ov})
+ }).then(function(ov){
+  var near="",dn="";
+  if(ov&&ov.pl.length){r.city=ov.pl[0].n;dn=fmtD(ov.pl[0].d);near=ov.pl.slice(0,3).map(function(p){return p.n+" ("+fmtD(p.d)+")"}).join(", ")}
+  st.near=near;
+  var names=(ov?ov.pl:[]).filter(function(p){return p.en}).slice(0,4).map(function(p){return p.en});
+  return ipin(names,r.dist).then(function(ip){
+   var pin=ip||((ov&&ov.pc.length&&ov.pc[0].d<=4)?ov.pc[0].p:"")||r.pin;
+   setF("byc",r.city);setF("byd",r.dist);setF("bys",r.state);setF("byp",pin);
+   if(r.city)note("✅ लोकेशन से पता भरा गया: सबसे नज़दीकी गाँव "+r.city+(dn?" (आपकी लोकेशन से लगभग "+dn+")":"")+(near&&ov.pl.length>1?"। आसपास: "+near:"")+"। मकान नंबर / गली / लैंडमार्क खुद लिखिए।");
+   else note("⚠ लोकेशन से गाँव का नाम नहीं मिल पाया — कृपया खाली खाने खुद भरिए।")})
+ }).catch(function(){ADR.forEach(function(id){setF(id,"")})})}
 function addBtn(){var h=g("byaddr");if(!h||g("klocn"))return;var n=document.createElement("div");n.id="klocn";var f=h.firstElementChild;h.insertBefore(n,f?f.nextSibling:h.firstChild)}
 addBtn();
 function modal(h){var d=g("klocm");if(d)d.remove();d=document.createElement("div");d.id="klocm";d.innerHTML='<div class="kb">'+h+'</div>';d.addEventListener("click",function(e){if(e.target===d)d.remove()});document.body.appendChild(d);return d}
@@ -2820,7 +2846,7 @@ function run(go){
  function begin(){spin(true,"📍 आपकी लोकेशन भरी जा रही है…");
   locate(function(s){
    if(s.s==="ok"){spin(true,"📍 आपका पता भरा जा रहा है…");
-    Promise.race([st.fp||Promise.resolve(),new Promise(function(r){setTimeout(r,5000)})]).then(function(){spin(false);go()})}
+    Promise.race([st.fp||Promise.resolve(),new Promise(function(r){setTimeout(r,16000)})]).then(function(){spin(false);go()})}
    else if(s.s==="far"){spin(false);showFar()}
    else{spin(false);askModal(s.s==="deny"?"deny":"fail",begin)}},true)}
  permState(function(ps){if(ps==="denied")askModal("deny",begin);else begin()})}
@@ -2835,9 +2861,12 @@ function guardDone(fn){return function(){var self=this,a=arguments;
  if(st.s==="wait")return;run(function(){return fn.apply(self,a)})}}
 confirmBuy=guardNow(confirmBuy);sendBuy=guardDone(sendBuy);
 /* फॉर्म खुलने पर पुरानी लोकेशन हटा दो, ताकि हर ऑर्डर पर नई लोकेशन ही ली जाए */
-var _ob=openBuy;openBuy=function(){st.s="idle";st.lat=null;st.km=null;st.t=0;var r=_ob.apply(this,arguments);try{draw();addBtn();note("");lockAdr();var b=g("by");if(b&&b.classList.contains("on"))run(function(){})}catch(e){}return r};
+var _ob=openBuy;openBuy=function(){st.s="idle";st.lat=null;st.km=null;st.t=0;var r=_ob.apply(this,arguments);try{draw();addBtn();note("");lockAdr();}catch(e){}return r};
 /* ऑर्डर के नोट में ग्राहक की लोकेशन का Google Maps लिंक भी जुड़ जाए */
-if(typeof pushOrder==="function"){var _po=pushOrder;pushOrder=function(ord){try{if(ord&&st.lat!=null&&st.km!=null){var tg="📍 https://maps.google.com/?q="+st.lat.toFixed(6)+","+st.lng.toFixed(6)+" ("+km1(st.km)+" km)";if(String(ord.note||"").indexOf("maps.google.com")<0)ord.note=(ord.note?ord.note+" | ":"")+tg}}catch(e){}return _po.apply(this,arguments)}}
+if(typeof pushOrder==="function"){var _po=pushOrder;pushOrder=function(ord){try{if(ord&&st.lat!=null&&st.km!=null){
+ var la=st.lat.toFixed(6),lo=st.lng.toFixed(6);ord.lat=la;ord.lng=lo;ord.locKm=km1(st.km);ord.locAcc=st.acc||"";ord.near=st.near||"";
+ var tg="📍 Pin: https://www.google.com/maps/search/?api=1&query="+la+","+lo+" ("+km1(st.km)+" km, GPS ±"+(st.acc||"?")+" m)";
+ if(String(ord.note||"").indexOf("google.com/maps")<0)ord.note=(ord.note?ord.note+" | ":"")+tg+(st.near?" | नज़दीकी गाँव: "+st.near:"")}}catch(e){}return _po.apply(this,arguments)}}
 })();
 </script>
 </body>
