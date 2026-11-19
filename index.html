@@ -3790,9 +3790,9 @@ function takeFile(f){
  var mod=f.lastModified?new Date(f.lastModified):null,now=new Date();
  var okDate=okDay(mod);
  var u=URL.createObjectURL(f),im=new Image();
- im.onload=function(){try{var d=mkJpg(im,1400);if(!d)d=mkJpg(im,800);
+ im.onload=function(){var fhP=new Promise(function(r){sha(f,r)});try{var d=mkJpg(im,1400);if(!d)d=mkJpg(im,800);
   if(!d)shot={data:"",okDate:okDate,mod:mod,utr:"",st:"blank"};
-  else shot={data:d,okDate:okDate,mod:mod,utr:"",st:okDate?"run":"date",big:okDate?mkBig(im):null};}catch(e){shot=null}
+  else shot={data:d,okDate:okDate,mod:mod,utr:"",st:okDate?"run":"date",big:okDate?mkBig(im):null};if(shot)shot.fhP=fhP}catch(e){shot=null}
   try{URL.revokeObjectURL(u)}catch(e){}paintAll();if(shot&&shot.okDate&&shot.st==="run")readUtr(shot)};
  im.onerror=function(){shot=null;try{URL.revokeObjectURL(u)}catch(e){}paintAll()};
  im.src=u}
@@ -3853,10 +3853,42 @@ function findUtr(txt){
  return""}
 window.kmFindUtr=findUtr;
 var PASSES=[["g","11",""],["b","6",""],["g","6",""],["f","11",""],["g","11","0123456789T"]];
+/* ---------- दोबारा-इस्तेमाल रोकना: वही Transaction ID / वही फोटो-फाइल / वही ऑर्डर नंबर ---------- */
+var USEDK="kms_usedshots";
+function usedRead(){try{var a=JSON.parse(localStorage.getItem(USEDK)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
+function usedAdd(id,u,h,o){try{var a=usedRead();a.push({id:String(id),u:String(u||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase(),h:h||"",o:o||""});if(a.length>300)a=a.slice(-300);localStorage.setItem(USEDK,JSON.stringify(a))}catch(e){}}
+function sha(f,cb){try{if(!(window.crypto&&crypto.subtle&&f.arrayBuffer)){cb("");return}
+ f.arrayBuffer().then(function(b){return crypto.subtle.digest("SHA-256",b)}).then(function(d){var a=new Uint8Array(d),h="",i;for(i=0;i<a.length;i++)h+=("0"+a[i].toString(16)).slice(-2);cb(h)}).catch(function(){cb("")})}catch(e){cb("")}}
+function ownNo(){try{var o=findOrd(tgtId),m=o&&String(o.no||"").match(/\d+/);return m?String(parseInt(m[0],10)):""}catch(e){return""}}
+function findOrns(t){var out=[],re=/\bORN\s*[-:.#]?\s*([0-9OoIl|]{4,6})\b/gi,m,d;t=String(t||"");
+ while((m=re.exec(t))){d=m[1].replace(/[Oo]/g,"0").replace(/[Il|]/g,"1");if(/^\d{4,6}$/.test(d)){var n=String(parseInt(d,10));if(out.indexOf(n)<0)out.push(n)}}return out}
+function ornMsg(s,pv){var o=null;try{o=findOrd(tgtId)}catch(e){}
+ return(pv||"")+'<div class="kmbad">❌ इस फोटो में ऑर्डर नंबर <b>ORN '+H(s.ornBad||s.orn||"")+'</b> दिख रहा है, जबकि यह ऑर्डर <b>'+H((o&&o.no)||"")+'</b> का है।<br>कृपया अपने इसी ऑर्डर के पेमेंट का स्क्रीनशॉट लगाइए।</div>'}
+/* cb("") = ठीक, वरना "utr" / "photo" / "orn" / "ornmis" */
+function dupCheck(s,cb){
+ var id=String(tgtId),u=String(s.utr||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase(),o=s.orn||"",called=false;
+ function once(w){if(called)return;called=true;cb(w)}
+ Promise.resolve(s.fhP).then(function(h){s.fh=h||"";
+  var a=usedRead(),i,x;
+  for(i=0;i<a.length;i++){x=a[i];if(String(x.id)===id)continue;
+   if(u&&x.u===u){once("utr");return}if(s.fh&&x.h===s.fh){once("photo");return}if(o&&x.o===o){once("orn");return}}
+  if(typeof ORDER_URL==="undefined"||!ORDER_URL){once("");return}
+  var so=null;try{so=findOrd(id)}catch(e){}
+  var tm=setTimeout(function(){once("")},12000);
+  try{fetch(ORDER_URL+(ORDER_URL.indexOf("?")<0?"?":"&")+"action=shotcheck&id="+encodeURIComponent(id)+"&mobile="+encodeURIComponent(so?t10(so.mobile):"")+"&utr="+encodeURIComponent(u)+"&fhash="+encodeURIComponent(s.fh)+"&orn="+encodeURIComponent(o)+"&t="+Date.now())
+   .then(function(r){return r.json()}).then(function(j){clearTimeout(tm);once(j&&j.dup?(j.why||"utr"):"")}).catch(function(){clearTimeout(tm);once("")})}
+  catch(e){clearTimeout(tm);once("")}}).catch(function(){once("")})}
+function okFlow(s){if(shot!==s)return;s.st="chk";paintAll();
+ dupCheck(s,function(w){if(shot!==s)return;if(w){s.st="dup";s.why=w}else s.st="ok";paintAll()})}
 function readUtr(s){
- var done=false,all="",tm=setTimeout(function(){fin("err")},150000);
- function fin(st){if(done)return;done=true;clearTimeout(tm);ocrLog=null;s.chars=all.replace(/\s/g,"").length;if(shot===s){s.st=st;paintAll()}try{s.big.width=s.big.height=0}catch(e){}try{delete s.big}catch(e){}}
- function hit(u){s.utr=u;fin("ok")}
+ var done=false,all="",own=ownNo(),tm=setTimeout(function(){fin("err")},150000);
+ function fin(st){if(done)return;done=true;clearTimeout(tm);ocrLog=null;s.all=all;s.chars=all.replace(/\s/g,"").length;
+  if(shot===s){if(st==="ok")okFlow(s);else{s.st=st;paintAll()}}
+  try{s.big.width=s.big.height=0}catch(e){}try{delete s.big}catch(e){}}
+ /* ID मिल गई: फोटो में दिखा ऑर्डर नंबर इसी ऑर्डर का होना चाहिए (कोई और ORN दिखे तो बाकी तरीकों से भी ढूँढो) */
+ function decide(){if(!s.utr)return false;var seen=findOrns(all);
+  if(!seen.length||(own&&seen.indexOf(own)>=0)){s.orn=(own&&seen.indexOf(own)>=0)?own:(seen[0]||"");fin("ok");return true}
+  return false}
  ocrLog=function(m){var e=E("kmocrp");if(e&&m&&m.status==="recognizing text")e.textContent=" "+Math.round((m.progress||0)*100)+"%"};
  function tess(){
   warmOcr();
@@ -3864,22 +3896,32 @@ function readUtr(s){
    if(!w){fin("err");return}
    var k=0;(function next(){
     if(done||shot!==s){if(!done){done=true;clearTimeout(tm);ocrLog=null}return}
-    if(k>=PASSES.length||!s.big){fin("bad");return}
+    if(k>=PASSES.length||!s.big){
+     if(s.utr){var sn=findOrns(all);s.ornBad=sn[0]||"";fin(sn.length?"orn":"ok")}else fin("bad");return}
     var P=PASSES[k++],cv;try{cv=variant(s.big,P[0])}catch(e){next();return}
     w.setParameters({tessedit_pageseg_mode:P[1],tessedit_char_whitelist:P[2],preserve_interword_spaces:"1"})
      .then(function(){return w.recognize(cv)})
-     .then(function(r){try{cv.width=cv.height=0}catch(e){}var t=(r&&r.data&&r.data.text)||"";all+=t+"\n";var u=findUtr(t);if(u)hit(u);else next()})
+     .then(function(r){try{cv.width=cv.height=0}catch(e){}var t=(r&&r.data&&r.data.text)||"";all+=t+"\n";
+       if(!s.utr){var u=findUtr(t);if(u)s.utr=u}
+       if(decide())return;next()})
      .catch(function(){try{cv.width=cv.height=0}catch(e){}next()})})()}).catch(function(){fin("err")})}
  /* कुछ फोन (Chrome) में अपना टेक्स्ट-रीडर होता है, पहले वही आज़माओ */
- try{if(window.TextDetector&&s.big){new TextDetector().detect(s.big).then(function(r){var t=(r||[]).map(function(x){return x.rawValue}).join("\n");all+=t+"\n";var u=findUtr(t);if(u)hit(u);else tess()}).catch(tess);return}}catch(e){}
+ try{if(window.TextDetector&&s.big){new TextDetector().detect(s.big).then(function(r){var t=(r||[]).map(function(x){return x.rawValue}).join("\n");all+=t+"\n";var u=findUtr(t);if(u){s.utr=u;if(decide())return}tess()}).catch(tess);return}}catch(e){}
  tess()}
 window.kmUtrOk=function(){var i=E("kmutr");if(!i||!shot)return;var v=i.value.replace(/[^A-Za-z0-9]/g,"").toUpperCase();
  if(v.length<12||v.length>30||(v.match(/\d/g)||[]).length<8){i.style.borderColor="#dc2626";i.value=v;i.placeholder="12 अंक की ID लिखिए";return}
- shot.utr=v;shot.manual=true;shot.st="ok";paintAll()};
+ var own=ownNo(),seen=findOrns(shot.all||"");
+ if(seen.length&&!(own&&seen.indexOf(own)>=0)){shot.ornBad=seen[0];shot.st="orn";paintAll();return}
+ shot.utr=v;shot.manual=true;shot.orn=(own&&seen.indexOf(own)>=0)?own:"";okFlow(shot)};
 function shotStatus(){
  if(!shot)return"";
  if(shot.st==="blank")return'<div class="kmbad">⚠ यह फोटो खाली / काली है (कई पेमेंट ऐप स्क्रीनशॉट लेने नहीं देते)। कृपया दूसरा स्क्रीनशॉट लगाइए, या पेमेंट स्क्रीन की फोटो दूसरे फोन के कैमरे से खींचिए।</div>';
  var pv='<img class="kmpv" src="'+shot.data+'" alt="">';
+ if(shot.st==="chk")return pv+'<div class="kmtx">⏳ जाँच रहे हैं कि यह फोटो पहले इस्तेमाल तो नहीं हुआ…</div>';
+ if(shot.st==="dup"){var DW={utr:"इसकी UPI Transaction ID पहले ही किसी दूसरे ऑर्डर में लग चुकी है",photo:"यही फोटो पहले ही लग चुका है",orn:"इसमें दिख रहा ऑर्डर नंबर पहले ही किसी दूसरे ऑर्डर में लग चुका है"};
+  if(shot.why==="ornmis")return ornMsg(shot,pv);
+  return'<div class="kmbad">❌ फोटो कैंसिल — यह फोटो पहले ही इस्तेमाल हो चुका है (किसी अन्य ऑर्डर या अन्य व्यक्ति के द्वारा)।<br><span style="font-size:12px">'+(DW[shot.why]||DW.utr)+'</span><br>कृपया अपने ही पेमेंट का नया स्क्रीनशॉट लगाइए।</div>'}
+ if(shot.st==="orn")return ornMsg(shot,pv);
  if(!shot.okDate)return pv+'<div class="kmbad">⚠ यह स्क्रीनशॉट ऑर्डर की तारीख / आज की तारीख का नहीं है। पेमेंट वाले दिन का ही स्क्रीनशॉट लगाइए (उस पर तारीख और ऑर्डर नंबर दिखना चाहिए)।</div>';
  if(shot.st==="run")return pv+'<div class="kmtx">⏳ फोटो पढ़ रहे हैं… कुछ सेकंड रुकिए<span id="kmocrp"></span></div>';
  if(shot.st==="bad"){if((shot.chars||0)<25)return pv+'<div class="kmbad">फोटो की क्वालिटी कम सही है, कृपया सही कैमरे से खींच के लगाएं।</div>';
@@ -3941,10 +3983,10 @@ function sendShot(){
  var id=tgtId,sh=shot,o=findOrd(id);if(!o||o.shot){popClose();return}
  var b=E("kmpgo");if(b){b.disabled=true;b.innerHTML="⏳ फोटो भेज रहे हैं…"}
  mkThumb(sh.data,function(th){
-  var body=JSON.stringify({action:"shot",id:id,no:o.no||"",mobile:o.mobile,name:o.name,time:o.time,photoTime:sh.mod?sh.mod.toISOString():"",data:sh.data,thumb:th||"",utr:sh.utr,utrSrc:sh.manual?"manual":"auto"});
+  var body=JSON.stringify({action:"shot",id:id,no:o.no||"",mobile:o.mobile,name:o.name,time:o.time,photoTime:sh.mod?sh.mod.toISOString():"",data:sh.data,thumb:th||"",utr:sh.utr,utrSrc:sh.manual?"manual":"auto",fhash:sh.fh||"",orn:sh.orn||"",no:o.no||""});
   var fin=function(){
    var a=readAll();a.forEach(function(x){if(String(x.id)===String(id)){x.shot="1";x.sthumb=th||"";x.utr=sh.utr}});writeAll(a);
-   fullCache[id]=sh.data;shot=null;tgtId="";
+   usedAdd(id,sh.utr,sh.fh,sh.orn);fullCache[id]=sh.data;shot=null;tgtId="";
    popOpen('<div class="kmph">✔ फोटो जुड़ गया</div><div class="kmpt">आपका पेमेंट का फोटो लग गया है और ऑर्डर दुकान तक पहुँच रहा है। धन्यवाद 🙏</div><button class="kmpb" id="kmok" style="background:#16a34a">ठीक है</button>');
    E("kmok").onclick=popClose;
    try{refreshOrders()}catch(e){}
@@ -3952,7 +3994,7 @@ function sendShot(){
   var bad=function(m){if(b){b.disabled=false;b.innerHTML="✅ फोटो भेजें"}var d=E("kmshp2");if(d)d.insertAdjacentHTML("beforeend",'<div class="kmbad">⚠ '+H(m||"फोटो नहीं जा सका, नेट जाँचकर दोबारा दबाइए")+'</div>')};
   try{
    fetch(ORDER_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body}).then(function(r){return r.json()})
-   .then(function(j){if(j&&(j.ok||j.locked))fin();else bad(j&&j.error)})
+   .then(function(j){if(j&&(j.ok||j.locked))fin();else if(j&&(j.dup||j.orn)){if(shot===sh){shot.st="dup";shot.why=j.why||"utr"}if(b){b.disabled=true;b.innerHTML="✅ फोटो भेजें"}paintAll()}else bad(j&&j.error)})
    .catch(function(){
      try{fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body}).then(fin).catch(function(){bad()})}catch(e){bad()}})
   }catch(e){bad()}})}
