@@ -3862,6 +3862,34 @@ function sha(f,cb){try{if(!(window.crypto&&crypto.subtle&&f.arrayBuffer)){cb("")
 function ownNo(){try{var o=findOrd(tgtId),m=o&&String(o.no||"").match(/\d+/);return m?String(parseInt(m[0],10)):""}catch(e){return""}}
 function findOrns(t){var out=[],re=/\bORN\s*[-:.#]?\s*([0-9OoIl|]{4,6})\b/gi,m,d;t=String(t||"");
  while((m=re.exec(t))){d=m[1].replace(/[Oo]/g,"0").replace(/[Il|]/g,"1");if(/^\d{4,6}$/.test(d)){var n=String(parseInt(d,10));if(out.indexOf(n)<0)out.push(n)}}return out}
+/* ---------- पेमेंट जाँच: रकम (ऑर्डर नंबर के पैसे के साथ) + हमारा UPI ID + Note में ऑर्डर नंबर ---------- */
+function expAmt(){try{var o=findOrd(tgtId);if(!o)return"";var a=o.upiamt;if(!a)a=kmUpiAmt(o.total,o.no);return a?Number(a).toFixed(2):""}catch(e){return""}}
+function ownPad(){try{var o=findOrd(tgtId),m=o&&String(o.no||"").match(/\d+/);return m?m[0]:""}catch(e){return""}}
+function amtsIn(t){var out=[],re=/(\d{1,7})\s*[.,]\s*(\d{2})(?!\d)/g,m;t=String(t||"").replace(/(\d),(?=\d{3}(?:\D|$))/g,"$1");
+ while((m=re.exec(t)))out.push(m[1].replace(/^0+(?=\d)/,"")+"."+m[2]);return out}
+function payCheck(t){
+ var T=String(t||""),ex=expAmt(),r={ok:false,amt:"none",upi:false,ord:"none",ornSeen:"",amts:[],ex:ex,own:ownNo(),pad:ownPad()},i;
+ r.amts=amtsIn(T);
+ if(!ex)r.amt="ok";
+ else{
+  if(r.amts.indexOf(ex)>=0)r.amt="ok";
+  else{for(i=0;i<r.amts.length;i++){var a=r.amts[i];if(a.length===ex.length+1&&a.slice(1)===ex&&/[27]/.test(a.charAt(0))){r.amt="ok";break}}
+   if(r.amt!=="ok"&&r.amts.length)r.amt="bad"}}
+ var pa=String(UPI2).split("@"),low=T.toLowerCase().replace(/\s/g,""),dg=T.replace(/[^0-9]/g,"");
+ r.upi=(pa[1]&&low.indexOf(pa[1].toLowerCase())>=0)||(pa[0]&&/^\d{8,}$/.test(pa[0])&&dg.indexOf(pa[0])>=0)||((low.replace(/[^a-z]/g,"").match(/kingmobile/g)||[]).length>=2);
+ var seen=findOrns(T);r.ornSeen=seen[0]||"";
+ if(r.own&&seen.indexOf(r.own)>=0)r.ord="ok";
+ else if(seen.length)r.ord="bad";
+ else if(r.pad){var z=T.replace(/[Oo]/g,"0"),k=z.indexOf(r.pad);while(k>=0){if(!/\d/.test(z.charAt(k-1)||"")&&!/\d/.test(z.charAt(k+r.pad.length)||"")){r.ord="ok";break}k=z.indexOf(r.pad,k+1)}}
+ r.ok=(r.amt==="ok"&&!!r.upi&&r.ord==="ok");return r}
+function payMsg(s,pv){var p=s.pc||{},L=[],o=null;try{o=findOrd(tgtId)}catch(e){}
+ var ex=p.ex||expAmt(),no=(o&&o.no)||"";
+ if(p.amt==="bad")L.push("रकम गलत है: फोटो में ₹"+H((p.amts||[]).slice(0,3).join(" / "))+" दिख रही है, जबकि ₹"+H(ex)+" देनी थी (रकम में ऑर्डर नंबर के आखिरी 2 अंक पैसे बनकर जुड़ते हैं)");
+ else if(p.amt==="none")L.push("फोटो में रकम ₹"+H(ex)+" नहीं दिख रही");
+ if(!p.upi)L.push("पेमेंट हमारे UPI ID "+H(UPI2)+" पर होना चाहिए, फोटो में यह ID नहीं दिखी");
+ if(p.ord==="bad")L.push("Note में ORN "+H(p.ornSeen||s.ornBad||"")+" दिख रहा है, जबकि यह ऑर्डर "+H(no)+" का है");
+ else if(p.ord==="none")L.push("Note में ऑर्डर नंबर "+H(no)+" नहीं दिखा");
+ return(pv||"")+'<div class="kmbad">❌ पेमेंट की जाँच पास नहीं हुई:<br>'+L.map(function(x){return"• "+x}).join("<br>")+'<br><span style="font-size:12px">QR स्कैन करके ही पेमेंट कीजिए (रकम और Note अपने-आप भरते हैं), फिर पेमेंट-डिटेल वाला पूरा स्क्रीनशॉट लगाइए जिसमें रकम, UPI ID और Note साफ़ दिखे।</span></div>'}
 function ornMsg(s,pv){var o=null;try{o=findOrd(tgtId)}catch(e){}
  return(pv||"")+'<div class="kmbad">❌ इस फोटो में ऑर्डर नंबर <b>ORN '+H(s.ornBad||s.orn||"")+'</b> दिख रहा है, जबकि यह ऑर्डर <b>'+H((o&&o.no)||"")+'</b> का है।<br>कृपया अपने इसी ऑर्डर के पेमेंट का स्क्रीनशॉट लगाइए।</div>'}
 /* cb("") = ठीक, वरना "utr" / "photo" / "orn" / "ornmis" */
@@ -3887,7 +3915,7 @@ function readUtr(s){
   try{s.big.width=s.big.height=0}catch(e){}try{delete s.big}catch(e){}}
  /* ID मिल गई: फोटो में दिखा ऑर्डर नंबर इसी ऑर्डर का होना चाहिए (कोई और ORN दिखे तो बाकी तरीकों से भी ढूँढो) */
  function decide(){if(!s.utr)return false;var seen=findOrns(all);
-  if(!seen.length||(own&&seen.indexOf(own)>=0)){s.orn=(own&&seen.indexOf(own)>=0)?own:(seen[0]||"");fin("ok");return true}
+  var pc=payCheck(all);if(pc.ok){s.pc=pc;s.orn=own;fin("ok");return true}
   return false}
  ocrLog=function(m){var e=E("kmocrp");if(e&&m&&m.status==="recognizing text")e.textContent=" "+Math.round((m.progress||0)*100)+"%"};
  function tess(){
@@ -3897,7 +3925,7 @@ function readUtr(s){
    var k=0;(function next(){
     if(done||shot!==s){if(!done){done=true;clearTimeout(tm);ocrLog=null}return}
     if(k>=PASSES.length||!s.big){
-     if(s.utr){var sn=findOrns(all);s.ornBad=sn[0]||"";fin(sn.length?"orn":"ok")}else fin("bad");return}
+     if(s.utr){var pc2=payCheck(all);s.pc=pc2;s.ornBad=pc2.ornSeen||"";fin(pc2.ok?"ok":"pay")}else fin("bad");return}
     var P=PASSES[k++],cv;try{cv=variant(s.big,P[0])}catch(e){next();return}
     w.setParameters({tessedit_pageseg_mode:P[1],tessedit_char_whitelist:P[2],preserve_interword_spaces:"1"})
      .then(function(){return w.recognize(cv)})
@@ -3910,9 +3938,9 @@ function readUtr(s){
  tess()}
 window.kmUtrOk=function(){var i=E("kmutr");if(!i||!shot)return;var v=i.value.replace(/[^A-Za-z0-9]/g,"").toUpperCase();
  if(v.length<12||v.length>30||(v.match(/\d/g)||[]).length<8){i.style.borderColor="#dc2626";i.value=v;i.placeholder="12 अंक की ID लिखिए";return}
- var own=ownNo(),seen=findOrns(shot.all||"");
- if(seen.length&&!(own&&seen.indexOf(own)>=0)){shot.ornBad=seen[0];shot.st="orn";paintAll();return}
- shot.utr=v;shot.manual=true;shot.orn=(own&&seen.indexOf(own)>=0)?own:"";okFlow(shot)};
+ var own=ownNo(),pc=payCheck(shot.all||"");
+ shot.utr=v;shot.manual=true;shot.pc=pc;if(!pc.ok){shot.ornBad=pc.ornSeen||"";shot.st="pay";paintAll();return}
+ shot.orn=own;okFlow(shot)};
 function shotStatus(){
  if(!shot)return"";
  if(shot.st==="blank")return'<div class="kmbad">⚠ यह फोटो खाली / काली है (कई पेमेंट ऐप स्क्रीनशॉट लेने नहीं देते)। कृपया दूसरा स्क्रीनशॉट लगाइए, या पेमेंट स्क्रीन की फोटो दूसरे फोन के कैमरे से खींचिए।</div>';
@@ -3921,6 +3949,7 @@ function shotStatus(){
  if(shot.st==="dup"){var DW={utr:"इसकी UPI Transaction ID पहले ही किसी दूसरे ऑर्डर में लग चुकी है",photo:"यही फोटो पहले ही लग चुका है",orn:"इसमें दिख रहा ऑर्डर नंबर पहले ही किसी दूसरे ऑर्डर में लग चुका है"};
   if(shot.why==="ornmis")return ornMsg(shot,pv);
   return'<div class="kmbad">❌ फोटो कैंसिल — यह फोटो पहले ही इस्तेमाल हो चुका है (किसी अन्य ऑर्डर या अन्य व्यक्ति के द्वारा)।<br><span style="font-size:12px">'+(DW[shot.why]||DW.utr)+'</span><br>कृपया अपने ही पेमेंट का नया स्क्रीनशॉट लगाइए।</div>'}
+ if(shot.st==="pay")return payMsg(shot,pv);
  if(shot.st==="orn")return ornMsg(shot,pv);
  if(!shot.okDate)return pv+'<div class="kmbad">⚠ यह स्क्रीनशॉट ऑर्डर की तारीख / आज की तारीख का नहीं है। पेमेंट वाले दिन का ही स्क्रीनशॉट लगाइए (उस पर तारीख और ऑर्डर नंबर दिखना चाहिए)।</div>';
  if(shot.st==="run")return pv+'<div class="kmtx">⏳ फोटो पढ़ रहे हैं… कुछ सेकंड रुकिए<span id="kmocrp"></span></div>';
@@ -3940,7 +3969,7 @@ drawQR=function(R,q){
  var am=(R!==null&&R!==undefined)?(Math.round(R*q*100)/100).toFixed(2):"";if(am&&pendNo)am=kmUpiAmt(am,pendNo);
  var no=pendNo?'<div class="qro">आपका ऑर्डर नंबर<br><b>'+H(pendNo)+'</b> <button type="button" class="qrc" onclick="try{navigator.clipboard.writeText(\''+H(pendNo)+'\')}catch(x){}this.textContent=\'✔ कॉपी\'">कॉपी</button></div><div class="qrn">QR स्कैन करते ही रकम और Note अपने-आप भर जाएँगे। न भरें तो ऊपर की रकम और यही ऑर्डर नंबर खुद भरिए</div>'
   :'';
- e.innerHTML='<div class="qrb"><div class="qrh">📲 UPI से पेमेंट</div>'+(pendNo?'<img class="qri" src="'+qrImg(am)+'" alt="UPI QR"><div class="qrn">QR को किसी भी UPI ऐप (GPay / PhonePe / Paytm) से स्कैन कीजिए</div>':'<div class="qrn" style="border:2px dashed #0b57d0;border-radius:12px;padding:26px 10px;font-weight:800;color:#0b57d0">QR SCAN Now दबाइए<br>आपका QR और ऑर्डर नंबर बन जाएगा</div>')+no+(am?'<div class="qru">रकम: <b>₹'+am+'</b></div>':'')+
+ e.innerHTML='<div class="qrb"><div class="qrh">📲 UPI से पेमेंट</div>'+(pendNo?'<img class="qri" src="'+qrImg(am)+'" alt="UPI QR"><div class="qrn">QR को किसी भी UPI ऐप (GPay / PhonePe / Paytm) से स्कैन कीजिए</div>':'<div class="qrn" style="border:2px dashed #0b57d0;border-radius:12px;padding:26px 10px;font-weight:800;color:#0b57d0">QR SCAN Now दबाइए<br>आपका QR और ऑर्डर नंबर बन जाएगा</div>')+no+(pendNo?'<div class="qru">Note: <b>'+H(pendNo)+' KING MOBILE</b></div>':'')+(am?'<div class="qru">रकम: <b>₹'+am+'</b></div>':'')+
  '<div class="qrn" style="font-weight:800;color:#b45309">पेमेंट के बाद उसका स्क्रीनशॉट लगाना ज़रूरी है, तभी ऑर्डर दुकान तक जाएगा</div>'+
  '<div class="kmsh"><a href="tel:'+HELP+'">📞 Helpline<span class="kmhs">'+HELP+'</span></a></div></div>'};
 /* ---------- bottom button: UPI me "QR SCAN Now" ---------- */
@@ -3964,7 +3993,7 @@ function popReady(yes){
 function pop1(){
  var am=amtPay();
  popOpen('<div class="kmph">🧾 आपका ऑर्डर नंबर</div><div class="kmpn">'+H(pendNo)+'</div>'+
- '<img class="kmpq" src="'+qrImg(am)+'" alt="UPI QR">'+(am?'<div class="kmpt" style="margin:0">रकम: <b>₹'+am+'</b></div>':'')+
+ '<img class="kmpq" src="'+qrImg(am)+'" alt="UPI QR">'+(am?'<div class="kmpt" style="margin:0">रकम: <b>₹'+am+'</b></div>':'')+(pendNo?'<div class="kmpt" style="margin:0">Note: <b>'+H(pendNo)+' KING MOBILE</b></div>':'')+
  '<div class="kmpt">आप स्कैन करके पेमेंट कर सकते हैं।<br>पेमेंट के बाद उसका स्क्रीनशॉट ज़रूर लगाइए, तभी ऑर्डर दुकान तक जाएगा। धन्यवाद 🙏</div>'+
  '<button class="kmpb" id="kmpy" style="background:#16a34a">✅ पेमेंट हो गया</button><button class="kmpb" id="kmpx" style="background:#dc2626">❌ पेमेंट नहीं हुआ</button>');
  E("kmpx").onclick=function(){popClose()};
@@ -3972,7 +4001,7 @@ function pop1(){
 /* 3) फोटो लगाना (ऑर्डर बनने के तुरंत बाद, या बाद में My Orders से) – एक बार लगने पर बदला/हटाया नहीं जा सकता */
 function attachPop(id){
  var o=findOrd(id);if(!o||o.shot)return;tgtId=id;tgtTime=o.time;shot=null;try{warmOcr()}catch(e){}
- popOpen('<div class="kmph">📸 पेमेंट का फोटो लगाइए</div><div class="kmpt">ऑर्डर नंबर <b>'+H(o.no||"")+'</b><br>आपने जो पेमेंट किया उसका स्क्रीनशॉट गैलरी या कैमरा से लगाइए।<br>स्क्रीनशॉट में <b>तारीख</b> और <b>ऑर्डर नंबर</b> दिखना चाहिए।<br>फोटो लगते ही आपका ऑर्डर दुकान तक पहुँच जाएगा।<br><span style="color:#b45309">⚠ फोटो एक बार लगने के बाद हटाया या बदला नहीं जा सकता।</span></div>'+
+ popOpen('<div class="kmph">📸 पेमेंट का फोटो लगाइए</div><div class="kmpt">ऑर्डर नंबर <b>'+H(o.no||"")+'</b><br>आपने जो पेमेंट किया उसका स्क्रीनशॉट गैलरी या कैमरा से लगाइए।<br>स्क्रीनशॉट में <b>तारीख</b>, <b>रकम ₹'+H(expAmt())+'</b>, हमारा <b>UPI ID</b> और Note में <b>ऑर्डर नंबर</b> दिखना चाहिए।<br>फोटो लगते ही आपका ऑर्डर दुकान तक पहुँच जाएगा।<br><span style="color:#b45309">⚠ फोटो एक बार लगने के बाद हटाया या बदला नहीं जा सकता।</span></div>'+
  CAMGAL+'<div id="kmshp2"></div>'+
  '<button class="kmpb" id="kmpgo" style="background:#16a34a" disabled>✅ फोटो भेजें</button><button class="kmpb" id="kmpbk" style="background:#6b7280">बाद में लगाऊँगा<br><span style="font-size:12px;font-weight:700">(ऑर्डर Pending रहेगा)</span></button>');
  paintAll();
@@ -3983,7 +4012,7 @@ function sendShot(){
  var id=tgtId,sh=shot,o=findOrd(id);if(!o||o.shot){popClose();return}
  var b=E("kmpgo");if(b){b.disabled=true;b.innerHTML="⏳ फोटो भेज रहे हैं…"}
  mkThumb(sh.data,function(th){
-  var body=JSON.stringify({action:"shot",id:id,no:o.no||"",mobile:o.mobile,name:o.name,time:o.time,photoTime:sh.mod?sh.mod.toISOString():"",data:sh.data,thumb:th||"",utr:sh.utr,utrSrc:sh.manual?"manual":"auto",fhash:sh.fh||"",orn:sh.orn||"",no:o.no||""});
+  var body=JSON.stringify({action:"shot",id:id,no:o.no||"",mobile:o.mobile,name:o.name,time:o.time,photoTime:sh.mod?sh.mod.toISOString():"",data:sh.data,thumb:th||"",utr:sh.utr,utrSrc:sh.manual?"manual":"auto",fhash:sh.fh||"",orn:sh.orn||"",no:o.no||"",pamt:(sh.pc&&sh.pc.ex)?sh.pc.ex:"",pok:(sh.pc&&sh.pc.ok)?"1":"0"});
   var fin=function(){
    var a=readAll();a.forEach(function(x){if(String(x.id)===String(id)){x.shot="1";x.sthumb=th||"";x.utr=sh.utr}});writeAll(a);
    usedAdd(id,sh.utr,sh.fh,sh.orn);fullCache[id]=sh.data;shot=null;tgtId="";
