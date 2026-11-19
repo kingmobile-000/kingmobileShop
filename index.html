@@ -2723,6 +2723,7 @@ start();
 #klocs .rg{width:74px;height:74px;border-radius:50%;border:8px solid rgba(255,255,255,.35);border-top-color:#fff;animation:klrot .9s linear infinite}
 #klocs .tx{color:#fff;font-size:18px;font-weight:900;text-align:center;padding:0 24px;line-height:1.5;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 @keyframes klrot{to{transform:rotate(360deg)}}
+#byc[readonly],#byd[readonly],#bys[readonly],#byp[readonly]{background:#eef0f3!important;color:#222!important;font-weight:700}
 </style>
 <script id="kloc">
 /* ===== 📍 लोकेशन सिस्टम: दुकान से 10 किमी के अंदर ही ऑर्डर बुक होगा =====
@@ -2770,8 +2771,12 @@ function locate(cb,force){
  tm=setTimeout(function(){fin()},120000)}
 /* ===== लोकेशन से पता अपने-आप भरना: गाँव/शहर, जिला, राज्य, पिनकोड ===== */
 function note(t){var e=g("klocn");if(!e)return;e.textContent=t||"";e.className=t?"on":""}
-function setF(id,v){var e=g(id);if(!e||!v)return false;var c=e.value.trim();
- if(!c||e.dataset.kauto==="1"||(id==="bys"&&c==="Uttar Pradesh")){e.value=v;e.dataset.kauto="1";try{e.dispatchEvent(new Event("input",{bubbles:true}))}catch(x){}return true}return false}
+var ADR=["byc","byd","bys","byp"];
+function setF(id,v){var e=g(id);if(!e)return false;if(e.dataset.kph===undefined)e.dataset.kph=e.placeholder||"";
+ if(v){e.value=v;e.readOnly=true}else{e.value="";e.readOnly=false;e.placeholder=e.dataset.kph}
+ try{e.dispatchEvent(new Event("input",{bubbles:true}))}catch(x){}return !!v}
+/* गाँव/जिला/राज्य/पिनकोड: पुराना भरा हुआ सब हटाओ; सिर्फ़ लाइव लोकेशन से भरेगा, ग्राहक बदल नहीं सकेगा */
+function lockAdr(){ADR.forEach(function(id){var e=g(id);if(!e)return;if(e.dataset.kph===undefined)e.dataset.kph=e.placeholder||"";e.value="";e.readOnly=true;e.placeholder="📍 लोकेशन से अपने-आप भरेगा"})}
 function tmo(u,ms){return new Promise(function(res,rej){var c=window.AbortController?new AbortController():null,t=setTimeout(function(){if(c)c.abort();rej(new Error("t"))},ms);fetch(u,c?{signal:c.signal}:{}).then(function(r){return r.json()}).then(function(j){clearTimeout(t);res(j)},function(e){clearTimeout(t);rej(e)})})}
 function p1(lat,lng){return tmo("https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat="+lat+"&lon="+lng,8000).then(function(j){var a=(j&&j.address)||{},pin=String(a.postcode||"").replace(/\D/g,"");
  return{city:a.village||a.hamlet||a.town||a.city||a.suburb||a.neighbourhood||a.city_district||"",dist:String(a.state_district||a.county||"").replace(/\s+district$/i,""),state:a.state||"",pin:pin.length===6?pin:""}})}
@@ -2785,8 +2790,7 @@ function fillAddr(lat,lng){
   return p2(lat,lng).catch(function(){return null}).then(merge)}).then(function(){
   var n=0;if(setF("byc",r.city))n++;if(setF("byd",r.dist))n++;if(setF("bys",r.state))n++;if(setF("byp",r.pin))n++;
   if(r.city||r.dist||r.pin)note("✅ लोकेशन से पता भरा गया ("+[r.city,r.dist,r.pin].filter(Boolean).join(", ")+")। कृपया जाँच लें, और मकान नंबर / गली / लैंडमार्क खुद लिखिए।");
-  else note("⚠ लोकेशन से पता नहीं भर पाया — कृपया गाँव / जिला / पिनकोड खुद लिखिए।")}).catch(function(){})}
-['byc','byd','bys','byp'].forEach(function(id){var e=g(id);if(e)e.addEventListener("input",function(ev){if(ev.isTrusted)delete e.dataset.kauto})});
+  else note("⚠ लोकेशन से पता नहीं भर पाया — कृपया खाली खाने खुद भरिए।")}).catch(function(){ADR.forEach(function(id){setF(id,"")})})}
 function addBtn(){var h=g("byaddr");if(!h||g("klocn"))return;var n=document.createElement("div");n.id="klocn";var f=h.firstElementChild;h.insertBefore(n,f?f.nextSibling:h.firstChild)}
 addBtn();
 function modal(h){var d=g("klocm");if(d)d.remove();d=document.createElement("div");d.id="klocm";d.innerHTML='<div class="kb">'+h+'</div>';d.addEventListener("click",function(e){if(e.target===d)d.remove()});document.body.appendChild(d);return d}
@@ -2831,7 +2835,7 @@ function guardDone(fn){return function(){var self=this,a=arguments;
  if(st.s==="wait")return;run(function(){return fn.apply(self,a)})}}
 confirmBuy=guardNow(confirmBuy);sendBuy=guardDone(sendBuy);
 /* फॉर्म खुलने पर पुरानी लोकेशन हटा दो, ताकि हर ऑर्डर पर नई लोकेशन ही ली जाए */
-var _ob=openBuy;openBuy=function(){st.s="idle";st.lat=null;st.km=null;st.t=0;var r=_ob.apply(this,arguments);try{draw();addBtn();note("");var b=g("by");if(b&&b.classList.contains("on"))run(function(){})}catch(e){}return r};
+var _ob=openBuy;openBuy=function(){st.s="idle";st.lat=null;st.km=null;st.t=0;var r=_ob.apply(this,arguments);try{draw();addBtn();note("");lockAdr();var b=g("by");if(b&&b.classList.contains("on"))run(function(){})}catch(e){}return r};
 /* ऑर्डर के नोट में ग्राहक की लोकेशन का Google Maps लिंक भी जुड़ जाए */
 if(typeof pushOrder==="function"){var _po=pushOrder;pushOrder=function(ord){try{if(ord&&st.lat!=null&&st.km!=null){var tg="📍 https://maps.google.com/?q="+st.lat.toFixed(6)+","+st.lng.toFixed(6)+" ("+km1(st.km)+" km)";if(String(ord.note||"").indexOf("maps.google.com")<0)ord.note=(ord.note?ord.note+" | ":"")+tg}}catch(e){}return _po.apply(this,arguments)}}
 })();
