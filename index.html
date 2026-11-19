@@ -478,7 +478,22 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 .xpg .xbar{gap:6px!important}
 .xpg .xbar>.xbk{flex:none;width:40px;height:40px;margin-left:-8px;border:0;background:none;color:#fff;font-size:28px;line-height:1;padding:0}
 </style>
-</head>
+<style id="kmpendcss">
+.xc{flex-wrap:wrap}
+.xc .kmpt2{flex:none;align-self:center;width:62px;text-align:center;cursor:pointer}
+.xc .kmpt2 img{display:block;width:62px;height:62px;object-fit:cover;border-radius:8px;border:1.5px solid #0b57d0;background:#eee}
+.xc .kmpt2 small{display:block;font-size:10px;font-weight:800;color:#0b57d0;line-height:1.2;margin-top:3px}
+.xc .kmpt2.add{border:2px dashed #e63c1f;border-radius:10px;padding:8px 2px}.xc .kmpt2.add small{color:#b42410}
+.kmpe{font-size:24px;display:block}
+.kmpn2{flex:0 0 100%;background:#fff4e5;color:#92400e;border:1px solid #f5c26b;border-radius:10px;padding:8px 10px;font-size:12.5px;font-weight:800;line-height:1.5}
+.xst.xpd{background:#fff4e5;color:#b45309;border:1px solid #f5c26b}
+.kmpd{display:flex;gap:12px;align-items:center;cursor:pointer;font-weight:800;font-size:14px;line-height:1.6}
+.kmpd img{width:90px;height:90px;object-fit:cover;border-radius:10px;border:1.5px solid #0b57d0}
+#kmfv{position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483200;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:10px}
+.kmfc{background:#fff;color:#111;border-radius:14px;max-width:460px;width:100%;max-height:96vh;overflow:auto;padding:12px;text-align:center}
+.kmfh{font-size:16px;font-weight:900;margin-bottom:8px}.kmfimg{max-width:100%;border-radius:8px;border:1px solid #ccc}.kmfm{font-weight:800;color:#b45309;margin:6px 0}
+</style>
+<style>.kmtx{color:#0b57d0;font-weight:800;font-size:13px;margin:6px 0}</style></head>
 <body>
 <div id="kld"><div class="klr" id="klr"></div><div id="klw"></div><div class="kls"></div><div class="klt" id="klt">डेटा आ रहा है…</div><div class="klm" id="klm"></div><button id="klb" type="button">फिर कोशिश करें</button></div>
 <header>
@@ -1623,6 +1638,16 @@ var UKEY="kms_user",OKEY="kms_orders",curPg="home",odId=null,pendingBuy=null;
 var SL={New:"Order Placed",Confirmed:"Order Confirmed",Shipped:"Shipped",OutForDelivery:"Out For Delivery",Done:"Delivery Done",DelCancelled:"Delivery Cancelled",Cancelled:"Order Cancelled"};
 function normSt(s){s=String(s==null?"":s).trim();var m={"":"New","नया":"New","कन्फर्म":"Confirmed","डिलीवर्ड":"Done","रद्द":"Cancelled"};return m.hasOwnProperty(s)?m[s]:s}
 function stc(s){return {New:"n",Confirmed:"c",Shipped:"s",OutForDelivery:"o",Done:"d"}[s]||"x"}
+function kmUpiAmt(b,no){var n=Number(b);if(b===""||b==null||!isFinite(n))return"";var m=/(\d+)\s*$/.exec(String(no||"")),p=m?parseInt(m[1].slice(-2),10):0;return((Math.round(n*100)+p)/100).toFixed(2)}
+function kmPayTxt(o){var p=String(o.payment||"");if(p==="UPI")return o.shot?"✅ UPI Done":(kmIsPend(o)?"⏳ UPI – पेमेंट का फोटो बाकी":"UPI");if(p.toLowerCase().indexOf("cash")>=0)return"💵 Cash";return p||"—"}
+function kmIsPend(o){return !!o&&String(o.payment)==="UPI"&&String(o.pendpay)==="1"&&!o.shot&&["Cancelled","DelCancelled","Done"].indexOf(normSt(o.status))<0}
+function kmPtile(o){if(!o||String(o.payment)!=="UPI")return"";
+if(o.shot)return'<div class="kmpt2" data-pshot="'+esc(o.id)+'">'+(o.sthumb?'<img alt="" src="'+esc(o.sthumb)+'">':'<span class="kmpe">📷</span>')+'<small>पेमेंट का फोटो</small></div>';
+if(kmIsPend(o))return'<div class="kmpt2 add" data-pshot="'+esc(o.id)+'"><span class="kmpe">📷</span><small>फोटो जोड़ें</small></div>';return""}
+function kmPnote(o){return kmIsPend(o)?'<div class="kmpn2">⚠ यह ऑर्डर अभी दुकान तक नहीं गया है। आपने पेमेंट का फोटो नहीं जोड़ा है। अगर आपने पेमेंट कर दिया है तो दाईं तरफ़ के 📷 फोटो वाले विकल्प पर दबाकर पेमेंट का फोटो जोड़ दीजिए।<br><span style="font-weight:700">(फोटो एक बार जुड़ने के बाद हटाया या बदला नहीं जा सकता)</span></div>':""}
+function kmPdet(o){if(!o||String(o.payment)!=="UPI")return"";
+if(o.shot)return'<div class="xsec"><div class="xh2">📷 पेमेंट का फोटो</div><div class="kmpd" data-pshot="'+esc(o.id)+'">'+(o.sthumb?'<img alt="" src="'+esc(o.sthumb)+'">':'')+'<div>पेमेंट का फोटो जुड़ गया है ✔<br><span style="color:#0b57d0">पूरा फोटो देखने के लिए दबाइए</span></div></div></div>';
+if(kmIsPend(o))return'<div class="xsec"><div class="xh2">⏳ Pending – पेमेंट का फोटो बाकी है</div><div class="xbox" style="background:#fff4e5;color:#92400e;font-size:14px">यह ऑर्डर अभी दुकान तक नहीं गया है। आपने पेमेंट का फोटो नहीं जोड़ा है। अगर आपने पेमेंट कर दिया है तो नीचे के बटन से फोटो जोड़ दीजिए।</div><button class="xbtn" data-pshot="'+esc(o.id)+'">📷 पेमेंट का फोटो जोड़ें</button><div class="xs2" style="text-align:center">फोटो एक बार जुड़ने के बाद हटाया या बदला नहीं जा सकता</div></div>';return""}
 function t10(m){var d=String(m||"").replace(/\D/g,"");return d.length>10?d.slice(-10):d}
 function getUser(){try{var u=JSON.parse(localStorage.getItem(UKEY)||"null");return(u&&u.m)?u:null}catch(e){return null}}
 function setUser(u){try{if(u)localStorage.setItem(UKEY,JSON.stringify(u));else localStorage.removeItem(UKEY)}catch(e){}try{welcomeDraw()}catch(e){}}
@@ -1641,7 +1666,7 @@ arr.forEach(function(r){if(!r||!r.id)return;r.id=String(r.id);r.mobile=t10(r.mob
 if(!l){a.push(r);by[r.id]=r;ch=true;return}
 l.status=normSt(l.status);
 if(l._dirty){if(r.status===l.status){delete l._dirty;ch=true}return}
-var was=l.status;["no","status","dboy","cancelby","upd"].forEach(function(k){if(r[k]!==undefined&&String(l[k]||"")!==String(r[k]||"")){l[k]=r[k];ch=true}});if(was!==l.status){hmark(l,l.status,r.upd);ch=true}if(mh(l,r))ch=true;
+var was=l.status;["no","status","dboy","cancelby","upd","shot","sthumb","pendpay","upiamt","utr"].forEach(function(k){if(r[k]!==undefined&&String(l[k]||"")!==String(r[k]||"")){l[k]=r[k];ch=true}});if(was!==l.status){hmark(l,l.status,r.upd);ch=true}if(mh(l,r))ch=true;
 if(!l.thumb&&r.thumb){l.thumb=r.thumb;ch=true}});
 if(offSweep(a))ch=true;
 if(ch)writeAll(a)}
@@ -1672,7 +1697,7 @@ var a=myOrders();
 if(!a.length){document.getElementById("xpo").innerHTML=h+'<div class="xemp"><div class="big">📦</div>अभी तक कोई ऑर्डर नहीं<br>कोई आइटम चुनकर <b>Buy Now</b> दबाइए</div>';return}
 a.forEach(function(o){var s=normSt(o.status),M=fnum(o.total),R=fnum(o.rate);
 var tot=M!==null?M:(R!==null?R*(fnum(o.qty)||1):null);
-h+='<div class="xc" data-od="'+esc(o.id)+'"><div class="xi">'+(o.thumb?'<img alt="" src="'+esc(o.thumb)+'">':'📦')+'</div><div class="xm"><div class="xn">'+esc(o.item)+'</div><div class="xs2">'+esc(o.no||"")+' · '+esc(fdt(o.time))+'</div>'+(tot!==null?'<div class="xp">'+inr(tot)+'</div>':'')+'<span class="xst '+stc(s)+'">'+esc(SL[s]||s)+'</span></div><div class="xar">›</div></div>'});
+h+='<div class="xc" data-od="'+esc(o.id)+'"><div class="xi">'+(o.thumb?'<img alt="" src="'+esc(o.thumb)+'">':'📦')+'</div><div class="xm"><div class="xn">'+esc(o.item)+'</div><div class="xs2">'+esc(o.no||"")+' · '+esc(fdt(o.time))+'</div>'+(tot!==null?'<div class="xp">'+inr(tot)+'</div>':'')+(kmIsPend(o)?'<span class="xst xpd">⏳ Pending</span>':'<span class="xst '+stc(s)+'">'+esc(SL[s]||s)+'</span>')+'</div>'+kmPtile(o)+'<div class="xar">›</div>'+kmPnote(o)+'</div>'});
 document.getElementById("xpo").innerHTML=h}
 function refreshOrders(){if(curPg==="orders")drawOrders();if(odId)drawOd()}
 document.getElementById("xpo").addEventListener("click",function(e){
@@ -1688,6 +1713,7 @@ var ix={New:0,Confirmed:1,Shipped:2,OutForDelivery:3,Done:4,DelCancelled:3}[s];
 var steps=["Order Placed","Order Confirmed","Shipped","Out For Delivery","Delivery Done"];
 var h='<div class="xbar"><button id="xodx" aria-label="वापस">←</button><span>Order Details</span></div>';
 h+='<div class="xsec"><div class="xs2" style="font-size:13px">ऑर्डर नंबर</div><div style="font-size:22px;font-weight:900;color:#000">'+esc(o.no||"#"+o.id)+'</div><div class="xs2">'+esc(fdt(o.time))+'</div></div>';
+h+=kmPdet(o);
 h+='<div class="xsec"><div class="xh2">📍 ऑर्डर की स्थिति</div>';
 if(s==="Cancelled"){h+='<div class="xbox r">❌ ऑर्डर रद्द हो गया<br><span style="font-weight:700;font-size:14px">'+(o.cancelby==="Customer"?'आपने यह ऑर्डर खुद रद्द किया था':'दुकान की तरफ़ से रद्द किया गया')+(o.upd?' · '+esc(fdt(o.upd)):'')+'</span></div>'}
 else{h+='<div class="xtk">';steps.forEach(function(t,i){var c=i<=ix?" on":"",cur=i===ix&&s!=="DelCancelled"?" cur":"",nx=i<ix?" nx":"";h+='<div class="xs'+c+cur+nx+'"><i></i>'+t+(i<=ix?stepDt(o,["New","Confirmed","Shipped","OutForDelivery","Done"][i],i,i===ix&&s!=="DelCancelled"):'')+'</div>'});
@@ -1703,7 +1729,7 @@ h+='<div class="xsec"><div class="xh2">🛒 आइटम की पूरी ज
 +'<div style="margin-top:10px">'+(o.sku!==""&&o.sku!=null?'<div class="xkv"><span>SKU</span><span>'+esc(o.sku)+'</span></div>':'')+(o.warranty?'<div class="xkv"><span>Warranty</span><span>🛡 '+esc(o.warranty)+'</span></div>':'')+'<div class="xkv"><span>मात्रा</span><span>'+esc(o.qty||1)+'</span></div>'+(tot!==null?'<div class="xkv"><span>कुल रकम</span><span style="font-size:18px">'+inr(tot)+'</span></div>':'')+'</div></div>';
 h+='<div class="xsec"><div class="xh2">👤 आपकी जानकारी</div><div class="xkv"><span>नाम</span><span>'+esc(o.name)+'</span></div><div class="xkv"><span>मोबाइल</span><span>'+esc(m)+'</span></div><div class="xkv"><span>सामान</span><span>'+"🚚 घर पर मँगवाना"+'</span></div>'
 +(o.delivery==="घर"?'<div class="xkv"><span>पता</span><span>'+esc(o.address)+(o.city?', '+esc(o.city):'')+(o.pin?' - '+esc(o.pin):'')+'</span></div>':'')
-+'<div class="xkv"><span>पेमेंट</span><span>'+esc(o.payment||"—")+'</span></div>'+(o.note?'<div class="xkv"><span>नोट</span><span>'+esc(o.note)+'</span></div>':'')+'</div>';
++'<div class="xkv"><span>पेमेंट</span><span>'+esc(kmPayTxt(o))+'</span></div>'+(o.upiamt?'<div class="xkv"><span>UPI से देने की रकम</span><span style="font-weight:900">₹'+esc(o.upiamt)+'</span></div>':'')+(o.utr?'<div class="xkv"><span>UPI Transaction ID</span><span style="font-weight:900">'+esc(o.utr)+'</span></div>':'')+(o.note?'<div class="xkv"><span>नोट</span><span>'+esc(o.note)+'</span></div>':'')+'</div>';
 h+='<div class="xsec"><div class="xh2">🏪 KING MOBILE SHOP</div><div class="xrow" style="margin-top:0"><a class="xa" href="tel:9558222519">📞 कॉल करें</a><a class="xw" target="_blank" href="https://wa.me/919558222519">💬 WhatsApp</a></div>';
 if(s==="New"||s==="Confirmed")h+='<button class="xbtn g" id="xcan">✖ Cancel Order</button>';
 h+='</div>';
@@ -1893,18 +1919,24 @@ function kbStep(){
   return kbTab()}
 function kbTab(){try{return window.parent!==window&&typeof parent.kbTabBack==="function"&&!!parent.kbTabBack()}catch(e){return false}}
 (function(){
-var armed=false,tm=null,started=false;
+var armed=false,tm=null,started=false,last=0,gn=0;
 function toast(t){var e=document.getElementById("kbToast");if(!e){e=document.createElement("div");e.id="kbToast";e.style.cssText="position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:rgba(20,20,20,.92);color:#fff;padding:10px 16px;border-radius:999px;font:700 14px system-ui,sans-serif;z-index:2147483647;max-width:90%;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none";document.body.appendChild(e)}e.textContent=t;e.style.opacity="1";clearTimeout(e._t);e._t=setTimeout(function(){e.style.opacity="0"},2200)}
-function guard(){try{history.pushState({kb:"guard"},"")}catch(x){}}
-function start(){if(started)return;started=true;try{var s=history.state;if(!(s&&s.kb))history.replaceState({kb:"base"},"");if(!(s&&s.kb==="guard"))guard()}catch(x){}}
-["click","pointerup","touchend","keydown"].forEach(function(ev){window.addEventListener(ev,function(){start();if(armed){armed=false;clearTimeout(tm);guard()}},true)});
+function nOf(s){return(s&&typeof s.n==="number")?s.n:((s&&s.kb==="guard")?1:0)}
+function guard(){try{gn=Math.max(gn,last)+1;history.pushState({kb:"guard",n:gn},"");last=gn}catch(x){}}
+/* guard wapas: naya entry nahi banate (popstate me bana entry Chrome 'skip' kar deta hai), purana guard forward se wapas lete hain */
+function restore(){var s=history.state;if(s&&s.kb==="guard")return;try{history.forward()}catch(x){}setTimeout(function(){var t=history.state;if(!(t&&t.kb==="guard"))guard()},250)}
+function start(){if(started)return;started=true;try{var s=history.state;if(!(s&&s.kb)){history.replaceState({kb:"base",n:0},"");last=0}else last=nOf(s);gn=last;if(!(s&&s.kb==="guard"))guard()}catch(x){}}
+["click","pointerup","touchend","keydown"].forEach(function(ev){window.addEventListener(ev,function(){start();if(armed){armed=false;clearTimeout(tm);restore()}},true)});
 window.addEventListener("popstate",function(ev){
-  var s=ev.state;if(s&&s.kb==="guard")return;
+  var s=ev.state,n=nOf(s),prev=last;last=n;
   if(!started)return;
+  var isG=!!(s&&s.kb==="guard");
+  if(isG&&n>=prev)return;
   var did=false;try{did=!!kbStep()}catch(x){}
-  if(did){armed=false;clearTimeout(tm);guard();return}
+  if(did){armed=false;clearTimeout(tm);if(!isG)restore();return}
+  if(isG){try{history.back()}catch(x){}return}
   armed=true;toast("\u092c\u093e\u0939\u0930 \u0928\u093f\u0915\u0932\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u090f\u0915 \u092c\u093e\u0930 \u0914\u0930 Back \u0926\u092c\u093e\u0907\u090f");
-  clearTimeout(tm);tm=setTimeout(function(){armed=false;guard()},2500)});
+  clearTimeout(tm);tm=setTimeout(function(){armed=false;restore()},2500)});
 })();
 </script>
 <script>
@@ -3707,10 +3739,11 @@ window.kmQrM=function(t){var q=new QRCode(-1,ECL.M);q.addData(t);q.make();var n=
 (function(){
 if(window.__kmPay2)return;window.__kmPay2=1;
 var HELP="9558222519",HOLD_MS=7*24*3600*1000,PK="kms_pendno";
-var shot=null,busy=false;
+var shot=null,busy=false,tgtId="",tgtTime="",fullCache={};
 function E(id){return document.getElementById(id)}
 function H(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function sameDay(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function okDay(mod){if(!mod)return true;var n=new Date();if(sameDay(mod,n))return true;if(tgtTime){var t=new Date(tgtTime);if(!isNaN(t)&&sameDay(mod,t))return true}return false}
 function pmap(){try{var p=JSON.parse(localStorage.getItem(PK)||"{}");return(p&&typeof p==="object"&&!p.no)?p:{}}catch(e){return{}}}
 function pk(m,k){return t10(m)+"#"+k}
 function pendRead(m,k){var p=pmap()[pk(m,k)];if(p&&p.t&&Date.now()-p.t<HOLD_MS)return p;return null}
@@ -3723,6 +3756,7 @@ function reserveNo(v,o,cb){
    .then(function(r){return r.json()}).then(function(j){if(done)return;done=true;clearTimeout(tm);if(j&&j.ok&&j.no)cb(String(j.no));else fb()}).catch(function(){if(done)return;done=true;clearTimeout(tm);if(tries<2)go();else fb()})}catch(e){if(!done){done=true;clearTimeout(tm);fb()}}})();
  function fb(){var p=pendRead(v.m,itemKey(o));if(p){cb(p.no);return}getOrderNo(cb)}}
 function itemKey(o){return o?String((o.SKU==null?"":o.SKU)+"|"+(o.Item||"")):""}
+function amtPay(){return kmUpiAmt(amtNow(),pendNo)}
 function amtNow(){var o=items[byI];if(!o)return"";var R0=numOf(o.Rate);if(R0===null)return"";var R=R0-offPU(R0,byQ);return(Math.round(R*byQ*100)/100).toFixed(2)}
 var UPI2="7800222519@okbizaxis";
 function upiLink(am){var tn=(pendNo?pendNo+" ":"")+"KING MOBILE",tr=pendNo?"KM"+String(pendNo).replace(/[^A-Za-z0-9]/g,""):"";
@@ -3750,20 +3784,46 @@ window.kmShotCam=function(){mkInp("kmCam",true).click()};
 window.kmShotGal=function(){mkInp("kmGal",false).click()};
 function takeFile(f){
  var mod=f.lastModified?new Date(f.lastModified):null,now=new Date();
- var okDate=!mod||sameDay(mod,now);
+ var okDate=okDay(mod);
  var u=URL.createObjectURL(f),im=new Image();
  im.onload=function(){try{var M=1400,k=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*k));c.height=Math.max(1,Math.round(im.height*k));c.getContext("2d").drawImage(im,0,0,c.width,c.height);
-  shot={data:c.toDataURL("image/jpeg",0.72),okDate:okDate,mod:mod};}catch(e){shot=null}
-  try{URL.revokeObjectURL(u)}catch(e){}paintAll()};
+  shot={data:c.toDataURL("image/jpeg",0.72),okDate:okDate,mod:mod,utr:"",st:okDate?"run":"date"};}catch(e){shot=null}
+  try{URL.revokeObjectURL(u)}catch(e){}paintAll();if(shot&&shot.okDate)readUtr(shot)};
  im.onerror=function(){shot=null;try{URL.revokeObjectURL(u)}catch(e){}paintAll()};
  im.src=u}
+/* ---------- फोटो से UPI Transaction ID अपने-आप पढ़ना (OCR) ---------- */
+var OCR_JS="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";
+function loadOcr(cb){if(window.Tesseract){cb(true);return}
+ var s=document.createElement("script");s.src=OCR_JS;s.onload=function(){cb(!!window.Tesseract)};s.onerror=function(){cb(false)};document.head.appendChild(s)}
+function findUtr(txt){
+ var lines=String(txt||"").split(/\r?\n/),KEY=/(transaction\s*id|trans\s*id|txn\s*id|utr|upi\s*ref|ref(erence)?\s*(no|id|number))/i;
+ function d12(x){var t=x.replace(/(\d)\s+(?=\d)/g,"$1"),re=/(^|[^0-9A-Za-z|])([0-9OoIl|]{12})(?![0-9A-Za-z|])/g,m,out=[];
+  while((m=re.exec(t))){var w=m[2],dg=(w.match(/\d/g)||[]).length;if(dg>=9){var v=w.replace(/[Oo]/g,"0").replace(/[Il|]/g,"1");if(/^\d{12}$/.test(v)&&!/^(\d)\1{11}$/.test(v))out.push(v)}}return out}
+ var i,j,c;
+ for(i=0;i<lines.length;i++){if(!KEY.test(lines[i]))continue;
+  var tm=(lines[i]+" "+(lines[i+1]||"")).match(/\bT\d{18,25}\b/);if(tm)return tm[0];
+  for(j=i;j<Math.min(lines.length,i+3);j++){c=d12(lines[j]);if(c.length)return c[0]}}
+ for(i=0;i<lines.length;i++){c=d12(lines[i]);if(c.length)return c[0]}
+ var all=lines.join(" ").match(/\bT\d{18,25}\b/);return all?all[0]:""}
+window.kmFindUtr=findUtr;
+function readUtr(s){
+ var done=false,tm=setTimeout(function(){if(done)return;done=true;if(shot===s){s.st="err";paintAll()}},90000);
+ loadOcr(function(ok){
+  if(!ok){if(done)return;done=true;clearTimeout(tm);if(shot===s){s.st="err";paintAll()}return}
+  try{Tesseract.recognize(s.data,"eng").then(function(r){if(done)return;done=true;clearTimeout(tm);if(shot!==s)return;
+    var u=findUtr(r&&r.data&&r.data.text);if(u){s.utr=u;s.st="ok"}else s.st="bad";paintAll()})
+   .catch(function(){if(done)return;done=true;clearTimeout(tm);if(shot===s){s.st="err";paintAll()}})}
+  catch(e){if(done)return;done=true;clearTimeout(tm);if(shot===s){s.st="err";paintAll()}}})}
 function shotStatus(){
  if(!shot)return"";
  var pv='<img class="kmpv" src="'+shot.data+'" alt="">';
- if(!shot.okDate)return pv+'<div class="kmbad">⚠ यह स्क्रीनशॉट आज की तारीख का नहीं है। आज किए पेमेंट का ही स्क्रीनशॉट लगाइए (उस पर आज की तारीख और ऑर्डर नंबर दिखना चाहिए)।</div>';
- return pv+'<div class="kmok">✔ स्क्रीनशॉट लग गया</div>'}
+ if(!shot.okDate)return pv+'<div class="kmbad">⚠ यह स्क्रीनशॉट ऑर्डर की तारीख / आज की तारीख का नहीं है। पेमेंट वाले दिन का ही स्क्रीनशॉट लगाइए (उस पर तारीख और ऑर्डर नंबर दिखना चाहिए)।</div>';
+ if(shot.st==="run")return pv+'<div class="kmtx">⏳ फोटो जाँच रहे हैं… कुछ सेकंड रुकिए</div>';
+ if(shot.st==="bad")return'<div class="kmbad">फोटो की क्वालिटी कम सही है, कृपया सही कैमरे से खींच के लगाएं।</div>';
+ if(shot.st==="err")return pv+'<div class="kmbad">⚠ अभी फोटो की जाँच नहीं हो पा रही (इंटरनेट की दिक्कत)। नेट जाँचकर फोटो दोबारा लगाइए।</div>';
+ return pv+'<div class="kmok">✔ स्क्रीनशॉट लग गया<br>UPI Transaction ID: <b>'+H(shot.utr)+'</b></div>'}
 function paintAll(){var s=E("kmshp");if(s)s.innerHTML=shotStatus();var p=E("kmshp2");if(p)p.innerHTML=shotStatus();
- var b=E("kmpgo");if(b)b.disabled=!(shot&&shot.okDate)}
+ var b=E("kmpgo");if(b)b.disabled=!(shot&&shot.okDate&&shot.utr&&shot.st==="ok")}
 /* ---------- order page me QR block ---------- */
 var _dq0=drawQR;
 drawQR=function(R,q){
@@ -3771,12 +3831,12 @@ drawQR=function(R,q){
  var e=E("byqr");if(!e)return;
  if(byP!=="UPI"){e.style.display="none";e.innerHTML="";return}
  e.style.display="block";
- var am=(R!==null&&R!==undefined)?(Math.round(R*q*100)/100).toFixed(2):"";
+ var am=(R!==null&&R!==undefined)?(Math.round(R*q*100)/100).toFixed(2):"";if(am&&pendNo)am=kmUpiAmt(am,pendNo);
  var no=pendNo?'<div class="qro">आपका ऑर्डर नंबर<br><b>'+H(pendNo)+'</b> <button type="button" class="qrc" onclick="try{navigator.clipboard.writeText(\''+H(pendNo)+'\')}catch(x){}this.textContent=\'✔ कॉपी\'">कॉपी</button></div><div class="qrn">QR स्कैन करते ही रकम और Note अपने-आप भर जाएँगे। न भरें तो ऊपर की रकम और यही ऑर्डर नंबर खुद भरिए</div>'
   :'';
  e.innerHTML='<div class="qrb"><div class="qrh">📲 UPI से पेमेंट</div>'+(pendNo?'<img class="qri" src="'+qrImg(am)+'" alt="UPI QR"><div class="qrn">QR को किसी भी UPI ऐप (GPay / PhonePe / Paytm) से स्कैन कीजिए</div>':'<div class="qrn" style="border:2px dashed #0b57d0;border-radius:12px;padding:26px 10px;font-weight:800;color:#0b57d0">QR SCAN Now दबाइए<br>आपका QR और ऑर्डर नंबर बन जाएगा</div>')+no+(am?'<div class="qru">रकम: <b>₹'+am+'</b></div>':'')+
- '<div class="qrn" style="font-weight:800;color:#b45309">📸 पेमेंट का स्क्रीनशॉट लगाइए</div>'+
- '<div class="kmsh"><button type="button" onclick="kmShotCam()">📷 Camera</button><button type="button" onclick="kmShotGal()">🖼 Gallery</button><a href="tel:'+HELP+'">📞 Helpline<span class="kmhs">'+HELP+'</span></a></div><div id="kmshp">'+shotStatus()+'</div></div>'};
+ '<div class="qrn" style="font-weight:800;color:#b45309">पेमेंट के बाद उसका स्क्रीनशॉट लगाना ज़रूरी है, तभी ऑर्डर दुकान तक जाएगा</div>'+
+ '<div class="kmsh"><a href="tel:'+HELP+'">📞 Helpline<span class="kmhs">'+HELP+'</span></a></div></div>'};
 /* ---------- bottom button: UPI me "QR SCAN Now" ---------- */
 var _dby=drawBy;
 drawBy=function(){var r=_dby.apply(this,arguments);var b=E("bysend");if(b&&!b.disabled&&window.KM_ONLINE_CLOSED!==true)b.textContent=(byP==="UPI")?"📷 QR SCAN Now":"✅ Order Now";return r};
@@ -3787,21 +3847,64 @@ openBuy=function(i){shot=null;pendNo="";var r=_ob.apply(this,arguments);
 /* ---------- popup ---------- */
 function popClose(){var d=E("kmpop");if(d)d.remove()}
 function popOpen(h){popClose();var d=document.createElement("div");d.id="kmpop";d.innerHTML='<div class="kmpc">'+h+'</div>';document.body.appendChild(d);return d}
+var CAMGAL='<div class="kmsh"><button type="button" onclick="kmShotCam()">📷 Camera</button><button type="button" onclick="kmShotGal()">🖼 Gallery</button></div>';
+/* 1) "क्या आप पेमेंट के लिए तैयार हैं?" Yes / No */
+function popReady(yes){
+ popOpen('<div class="kmph">💳 पेमेंट</div><div class="kmpt" style="font-size:18px">आप पेमेंट करने के लिए तैयार हैं?</div>'+
+ '<button class="kmpb" id="kmry" style="background:#16a34a">✅ हाँ (Yes)</button><button class="kmpb" id="kmrn" style="background:#dc2626">❌ नहीं (No)</button>');
+ E("kmrn").onclick=function(){popClose()};
+ E("kmry").onclick=function(){popClose();yes()}}
+/* 2) QR scanner popup */
 function pop1(){
- var am=amtNow();
- var d=popOpen('<div class="kmph">🧾 आपका ऑर्डर नंबर</div><div class="kmpn">'+H(pendNo)+'</div>'+
+ var am=amtPay();
+ popOpen('<div class="kmph">🧾 आपका ऑर्डर नंबर</div><div class="kmpn">'+H(pendNo)+'</div>'+
  '<img class="kmpq" src="'+qrImg(am)+'" alt="UPI QR">'+(am?'<div class="kmpt" style="margin:0">रकम: <b>₹'+am+'</b></div>':'')+
- '<div class="kmpt">आप स्कैन करके पेमेंट कर सकते हैं।<br>रकम और Note अपने-आप भर जाएँगे (न भरें तो Note में यही ऑर्डर नंबर खुद लिखिए)।<br>आपने जो पेमेंट किया है उसका स्क्रीनशॉट लगा दीजिए, धन्यवाद 🙏</div>'+
+ '<div class="kmpt">आप स्कैन करके पेमेंट कर सकते हैं।<br>पेमेंट के बाद उसका स्क्रीनशॉट ज़रूर लगाइए, तभी ऑर्डर दुकान तक जाएगा। धन्यवाद 🙏</div>'+
  '<button class="kmpb" id="kmpy" style="background:#16a34a">✅ पेमेंट हो गया</button><button class="kmpb" id="kmpx" style="background:#dc2626">❌ पेमेंट नहीं हुआ</button>');
  E("kmpx").onclick=function(){popClose()};
- E("kmpy").onclick=pop2}
-function pop2(){
- popOpen('<div class="kmph">📸 पेमेंट का स्क्रीनशॉट लगाइए</div><div class="kmpt">आपने जो पेमेंट किया उसका स्क्रीनशॉट गैलरी या कैमरा से लगाइए।<br>स्क्रीनशॉट में <b>आज की तारीख</b> और <b>ऑर्डर नंबर '+H(pendNo)+'</b> दिखना चाहिए।</div>'+
- '<div class="kmsh"><button type="button" onclick="kmShotCam()">📷 Camera</button><button type="button" onclick="kmShotGal()">🖼 Gallery</button></div><div id="kmshp2">'+shotStatus()+'</div>'+
- '<button class="kmpb" id="kmpgo" style="background:#16a34a" disabled>✅ ऑर्डर पक्का करें</button><button class="kmpb" id="kmpbk" style="background:#6b7280">← वापस</button>');
+ E("kmpy").onclick=function(){popClose();finalOrder()}}
+/* 3) फोटो लगाना (ऑर्डर बनने के तुरंत बाद, या बाद में My Orders से) – एक बार लगने पर बदला/हटाया नहीं जा सकता */
+function attachPop(id){
+ var o=findOrd(id);if(!o||o.shot)return;tgtId=id;tgtTime=o.time;shot=null;
+ popOpen('<div class="kmph">📸 पेमेंट का फोटो लगाइए</div><div class="kmpt">ऑर्डर नंबर <b>'+H(o.no||"")+'</b><br>आपने जो पेमेंट किया उसका स्क्रीनशॉट गैलरी या कैमरा से लगाइए।<br>स्क्रीनशॉट में <b>तारीख</b> और <b>ऑर्डर नंबर</b> दिखना चाहिए।<br>फोटो लगते ही आपका ऑर्डर दुकान तक पहुँच जाएगा।<br><span style="color:#b45309">⚠ फोटो एक बार लगने के बाद हटाया या बदला नहीं जा सकता।</span></div>'+
+ CAMGAL+'<div id="kmshp2"></div>'+
+ '<button class="kmpb" id="kmpgo" style="background:#16a34a" disabled>✅ फोटो भेजें</button><button class="kmpb" id="kmpbk" style="background:#6b7280">बाद में लगाऊँगा<br><span style="font-size:12px;font-weight:700">(ऑर्डर Pending रहेगा)</span></button>');
  paintAll();
- E("kmpbk").onclick=pop1;
- E("kmpgo").onclick=function(){if(!(shot&&shot.okDate))return;popClose();finalOrder()}}
+ E("kmpbk").onclick=function(){popClose();shot=null;tgtId=""};
+ E("kmpgo").onclick=sendShot}
+function sendShot(){
+ if(!(shot&&shot.okDate&&shot.utr&&shot.st==="ok")||!tgtId)return;
+ var id=tgtId,sh=shot,o=findOrd(id);if(!o||o.shot){popClose();return}
+ var b=E("kmpgo");if(b){b.disabled=true;b.innerHTML="⏳ फोटो भेज रहे हैं…"}
+ mkThumb(sh.data,function(th){
+  var body=JSON.stringify({action:"shot",id:id,no:o.no||"",mobile:o.mobile,name:o.name,time:o.time,photoTime:sh.mod?sh.mod.toISOString():"",data:sh.data,thumb:th||"",utr:sh.utr});
+  var fin=function(){
+   var a=readAll();a.forEach(function(x){if(String(x.id)===String(id)){x.shot="1";x.sthumb=th||"";x.utr=sh.utr}});writeAll(a);
+   fullCache[id]=sh.data;shot=null;tgtId="";
+   popOpen('<div class="kmph">✔ फोटो जुड़ गया</div><div class="kmpt">आपका पेमेंट का फोटो लग गया है और ऑर्डर दुकान तक पहुँच रहा है। धन्यवाद 🙏</div><button class="kmpb" id="kmok" style="background:#16a34a">ठीक है</button>');
+   E("kmok").onclick=popClose;
+   try{refreshOrders()}catch(e){}
+   [3000,9000].forEach(function(t){setTimeout(function(){try{syncOrders()}catch(e){}},t)})};
+  var bad=function(m){if(b){b.disabled=false;b.innerHTML="✅ फोटो भेजें"}var d=E("kmshp2");if(d)d.insertAdjacentHTML("beforeend",'<div class="kmbad">⚠ '+H(m||"फोटो नहीं जा सका, नेट जाँचकर दोबारा दबाइए")+'</div>')};
+  try{
+   fetch(ORDER_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body}).then(function(r){return r.json()})
+   .then(function(j){if(j&&(j.ok||j.locked))fin();else bad(j&&j.error)})
+   .catch(function(){
+     try{fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body}).then(fin).catch(function(){bad()})}catch(e){bad()}})
+  }catch(e){bad()}})}
+/* 4) पूरा फोटो देखना */
+function viewShot(o){
+ var d=E("kmfv");if(d)d.remove();d=document.createElement("div");d.id="kmfv";
+ d.innerHTML='<div class="kmfc"><div class="kmfh">📷 पेमेंट का फोटो · '+H(o.no||"")+'</div><img id="kmfi" class="kmfimg" alt="" src="'+(fullCache[o.id]||o.sthumb||"")+'"><div id="kmfm" class="kmfm">'+(fullCache[o.id]?"":"⏳ पूरा फोटो आ रहा है…")+'</div><button class="kmpb" id="kmfx" style="background:#6b7280">बंद करें</button></div>';
+ document.body.appendChild(d);
+ E("kmfx").onclick=function(){d.remove()};d.addEventListener("click",function(e){if(e.target===d)d.remove()});
+ if(fullCache[o.id])return;
+ try{fetch(ORDER_URL+(ORDER_URL.indexOf("?")<0?"?":"&")+"action=myshot&id="+encodeURIComponent(o.id)+"&mobile="+encodeURIComponent(t10(o.mobile))+"&t="+Date.now())
+  .then(function(r){return r.json()}).then(function(j){var m=E("kmfm"),im=E("kmfi");if(!m)return;
+   if(j&&j.ok&&j.data){fullCache[o.id]=j.data;im.src=j.data;m.textContent=""}else m.textContent="⚠ पूरा फोटो अभी नहीं आया, थोड़ी देर बाद दोबारा खोलिए"})
+  .catch(function(){var m=E("kmfm");if(m)m.textContent="⚠ नेट की दिक्कत – दोबारा खोलिए"})}catch(e){}}
+window.kmPshot=function(id){var o=findOrd(id);if(!o)return;if(o.shot)viewShot(o);else if(kmIsPend(o))attachPop(id)};
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest("[data-pshot]");if(!t)return;e.preventDefault();e.stopPropagation();kmPshot(t.getAttribute("data-pshot"))},true);
 /* ---------- validation + QR SCAN Now ---------- */
 function valid(){
  var er=E("byerr"),n=E("byn").value.trim(),m=E("bym").value.replace(/\D/g,"");if(m.length>10)m=m.slice(-10);
@@ -3812,17 +3915,24 @@ function valid(){
  if(byD==="home"&&!c){er.textContent="⚠ गाँव / शहर लिखिए";E("byc").focus();return null}
  if(byD==="home"&&pc.length!==6){er.textContent="⚠ पिनकोड 6 अंक का होना चाहिए";E("byp").focus();return null}
  er.textContent="";return{n:n,m:m}}
+function dupPend(m,o){var a=readAll(),k=String(o.Item||""),sk=String(o.SKU==null?"":o.SKU);
+ for(var i=0;i<a.length;i++){var x=a[i];if(t10(x.mobile)!==m||String(x.payment)!=="UPI")continue;
+  if(String(x.item||"")!==k||String(x.sku==null?"":x.sku)!==sk)continue;
+  if(["New","Confirmed","Shipped","OutForDelivery"].indexOf(normSt(x.status))>=0)return x}return null}
 function scanNow(){
  var o=items[byI];if(!o)return;
  try{if(typeof kGoneBy==="function"&&kGoneBy())return}catch(e){}
  var v=valid();if(!v)return;
- var go=function(){
+ var dup=dupPend(v.m,o);
+ if(dup){popOpen('<div class="kmph">⚠ पहले से Pending है</div><div class="kmpt" style="font-size:16px">आपका यही आइटम पहले से Pending में पड़ा है'+(dup.no?' (ऑर्डर नंबर <b>'+H(dup.no)+'</b>)':'')+'।<br>कृपया पहले उस ऑर्डर को Done या Cancel कीजिए, धन्यवाद 🙏</div><button class="kmpb" id="kmdx" style="background:#6b7280">बंद करें</button>');E("kmdx").onclick=popClose;return}
+ var reserve=function(){
   var key=itemKey(o);
   if(busy)return;busy=true;var b=E("bysend");if(b){b.disabled=true;b.textContent="⏳ ऑर्डर नंबर बन रहा है…"}
   reserveNo(v,o,function(no){busy=false;if(b){b.disabled=false}
    if(!no){drawBy();var er=E("byerr");if(er)er.textContent="⚠ नेट की दिक्कत से ऑर्डर नंबर नहीं बन सका, दोबारा दबाइए";return}
    pendNo=no;pendWrite(v.m,key,no);
    drawBy();pop1()})};
+ var go=function(){popReady(reserve)};
  if(typeof kmGateAll==="function"&&typeof kmMobiles==="function")kmGateAll(kmMobiles(),go);else go()}
 /* ---------- final order (sendBuy purane tareeke se, ab number = pendNo) ---------- */
 var _ps=sendBuy;
@@ -3830,17 +3940,16 @@ function finalOrder(){window.__kmFinal=1;try{_ps()}finally{window.__kmFinal=0}}
 var _cb=confirmBuy;
 confirmBuy=function(){if(byP==="UPI"&&!window.KM_ONLINE_CLOSED){scanNow();return}return _cb.apply(this,arguments)};
 sendBuy=function(){if(byP==="UPI"&&!window.KM_ONLINE_CLOSED&&!window.__kmFinal){scanNow();return}return _ps.apply(this,arguments)};
-/* ---------- order jaate hi screenshot bhi backend ko ---------- */
+/* ---------- order jaate hi: UPI order "pending" (dukan ko tab dikhega jab payment photo lag jaye) ---------- */
 var _po=pushOrder;
 pushOrder=function(ord,photo){
- var sh=null;
- if(ord&&ord.payment==="UPI"&&shot&&shot.okDate){sh=shot;ord.note=(ord.note?ord.note+" | ":"")+"📷 पेमेंट स्क्रीनशॉट लगा है"}
+ if(ord&&ord.payment==="UPI"&&!window.KM_ONLINE_CLOSED){ord.pendpay="1";var ua=kmUpiAmt(ord.total,ord.no);if(ua)ord.upiamt=ua}
  var r=_po.apply(this,arguments);
- if(sh){try{var body=JSON.stringify({action:"shot",id:ord.id,no:ord.no||"",mobile:ord.mobile,name:ord.name,time:ord.time,photoTime:sh.mod?sh.mod.toISOString():"",data:sh.data});
-  var send=function(){return fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body})};
-  send().catch(function(){setTimeout(function(){try{send().catch(function(){})}catch(e){}},4000)})}catch(e){}}
  if(ord&&ord.payment==="UPI"){shot=null;pendWrite(ord.mobile,String(ord.sku==null?"":ord.sku)+"|"+(ord.item||""),null)}
  return r};
+var _ao=window.afterOrder;
+window.afterOrder=function(o){var r=_ao?_ao.apply(this,arguments):undefined;
+ try{if(o&&o.payment==="UPI"&&String(o.pendpay)==="1"&&!o.shot)setTimeout(function(){attachPop(o.id)},350)}catch(e){}return r};
 window.kmPayState=function(){return{pendNo:pendNo,shot:!!shot}};
 })();
 
