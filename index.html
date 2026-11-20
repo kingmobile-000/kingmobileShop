@@ -469,9 +469,15 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 #bysend{flex:1;width:auto!important;border-radius:4px!important;padding:14px 8px!important;font-size:17px!important}
 </style>
 <style id="ordph">#xpo .xi:has(img),#xod .xi:has(img){cursor:zoom-in}#pv.tmp #pvf,#pv.tmp #pvr,#pv.tmp #pvd{display:none!important}#pv .pvm img{max-width:100%;max-height:70vh;object-fit:contain}</style>
-<style id="knonav">/* Navigation is displayed by the final responsive layout rules. */</style>
-
-<style id="km-bottom-navigation-layout">/* Preserve the original header, search, categories and all app controls. */</style>
+<style id="knonav">
+/* नीचे का मेन्यू (Home/Categories/Orders/Call/Complaint/Login) हटाया – सब कुछ ऊपर के ☰ मेन्यू में है */
+#xnav{display:none!important}
+.xpg{bottom:0!important}
+#list{padding-bottom:24px!important}
+#xcf .sh{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))!important}
+.xpg .xbar{gap:6px!important}
+.xpg .xbar>.xbk{flex:none;width:40px;height:40px;margin-left:-8px;border:0;background:none;color:#fff;font-size:28px;line-height:1;padding:0}
+</style>
 </head>
 <body>
 <div id="kld"><div class="klr" id="klr"></div><div id="klw"></div><div class="kls"></div><div class="klt" id="klt">डेटा आ रहा है…</div><div class="klm" id="klm"></div><button id="klb" type="button">फिर कोशिश करें</button></div>
@@ -512,14 +518,14 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 <input type="text" id="byn" placeholder="आपका पूरा नाम *" autocomplete="name">
 <input type="text" id="bym" inputmode="numeric" maxlength="14" placeholder="मोबाइल नंबर * (10 अंक)" autocomplete="tel"></div>
 <div class="bysec"><div class="byh">🚚 घर पर डिलीवरी</div>
-<div id="byaddr"><div id="km-radius-banner" role="note">📍 डिलीवरी सेवा: किंग मोबाइल शॉप, हुसैनगंज से 10 किलोमीटर की दूरी में उपलब्ध है। कृपया इसी सीमा के भीतर का पता भरें।</div><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
+<div id="byaddr"><div id="km-radius-banner" role="note">📍 डिलीवरी सेवा: किंग मोबाइल शॉप, हुसैनगंज नहर के पास से 10 किलोमीटर की परिधि में उपलब्ध है। कृपया इसी सीमा के भीतर का पता भरें।</div><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
 <div class="bysec"><input type="text" id="byt" placeholder="कुछ और बताना हो तो लिखिए (वैकल्पिक)"></div>
 <div class="bysec" id="byno" style="display:none"></div>
 <div class="bysec" id="bypd"></div>
 <div id="bywarn" style="background:#fff3e0;color:#b45309;font-weight:800;font-size:13px;line-height:1.5;padding:8px 14px">⚠ ध्यान दें: अगर आप आइटम बुक करके बार-बार कैंसल करेंगे, तो आपकी ID ब्लॉक हो जाएगी।</div>
 <div id="byerr"></div>
 <div id="byfoot"><div id="byft"></div><button id="bysend">✅ Order Now</button></div></div>
-<style>#sbar{display:flex;align-items:center;gap:8px}#sbar .sw{flex:1;min-width:0}#mbtn{flex:none;width:46px;height:46px;border:0;border-radius:12px;background:#fff;color:#e63c1f;font-size:26px;line-height:1;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.2)}#mdr{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:90;background:rgba(0,0,0,.5)}#mdr.on{display:block}#mdp{position:absolute;left:0;top:0;bottom:0;width:78%;max-width:320px;background:#fff;box-shadow:2px 0 16px rgba(0,0,0,.3);overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}#mdh{background:#ff4a18;color:#fff;font-weight:900;font-size:18px;padding:20px 16px}.mdi{display:flex;align-items:center;gap:14px;width:100%;border:0;border-bottom:1px solid #eee;background:#fff;padding:15px 18px;font-size:16px;font-weight:700;color:#222;text-align:left}.mdi i{font-style:normal;font-size:22px;width:30px;text-align:center}.mdi.upd{color:#16a34a}</style><div id="mdr"><div id="mdp"><div id="mdh">👑 KING MOBILE SHOP</div><div id="mdl"></div></div></div><script>var UPDATE_URL="https://drive.google.com/drive/folders/1XvPxzH5MZMsKMbXW0FvKE6ld-l0FFKIx";(function(){var $=function(i){return document.getElementById(i)};function nav(s){var e=document.querySelector('#xnav '+s);if(e)e.click()}function upd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('Update का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var p=U.indexOf('://'),sc=p>0?U.slice(0,p).toLowerCase():'';if(/Android/i.test(navigator.userAgent||'')&&(sc==='https'||sc==='http')){var it='intent://'+U.slice(p+3)+'#Intent;scheme='+sc+';package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(U)+';end';try{(window.top||window).location.href=it;return}catch(e){}try{location.href=it;return}catch(e){}}var w=null;try{w=window.open(U,'_blank')}catch(e){}if(!w)location.href=U}function snd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('App का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var m='📲 KING MOBILE SHOP का App इंस्टॉल करने के लिए यह लिंक खोलिए:\n'+U;function wa(){try{if(navigator.clipboard)navigator.clipboard.writeText(U)}catch(e){}var u='https://wa.me/?text='+encodeURIComponent(m),w=null;try{w=window.open(u,'_blank')}catch(e){}if(!w)location.href=u}if(navigator.share){navigator.share({title:'KING MOBILE SHOP',text:m}).catch(function(e){if(e&&e.name==='AbortError')return;wa()})}else wa()}function items(){var a=$('xnl');return[['📞','Call 9558222519',function(){var c=$('ctc');if(c)c.click();else location.href='tel:9558222519'}],['📲','App Send',snd,1],['🌐','भाषा / Language',function(){if(window.kmLangOpen)window.kmLangOpen()}]]}function shut(){var d=$('mdr');if(d)d.classList.remove('on')}function openM(){var d=$('mdr'),l=$('mdl');if(!d||!l)return;l.innerHTML='';items().forEach(function(it){var b=document.createElement('button');b.type='button';b.className='mdi'+(it[3]?' upd':'');var i=document.createElement('i');i.textContent=it[0];var t=document.createElement('span');t.textContent=it[1];b.appendChild(i);b.appendChild(t);b.onclick=function(){shut();setTimeout(it[2],60)};l.appendChild(b)});d.classList.add('on')}document.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest)return;if(t.closest('#mbtn')){openM();return}if(t.id==='mdr')shut()})})();</script><nav id="xnav"><button data-xp="home" class="on"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span>Home</span></button><button data-xp="cats"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><span>Categories</span></button><button data-xp="acct"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.8 3.7-6 7.5-6s6.9 2.2 7.5 6z"/></svg><span>Account</span><span id="xnl" style="display:none">Login</span></button><button data-xp="orders" data-m="c"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5l6.2-6.2a4 4 0 0 0 5-5l-2.6 2.6-2.2-.6-.6-2.2z"/></svg><span>Complaint</span></button><button data-xp="orders" data-m="o"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg><span>Orders</span></button><a class="ctn" id="ctc" href="tel:9558222519" aria-label="Call 9558222519" style="display:none"></a></nav>
+<style>#sbar{display:flex;align-items:center;gap:8px}#sbar .sw{flex:1;min-width:0}#mbtn{flex:none;width:46px;height:46px;border:0;border-radius:12px;background:#fff;color:#e63c1f;font-size:26px;line-height:1;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.2)}#mdr{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:90;background:rgba(0,0,0,.5)}#mdr.on{display:block}#mdp{position:absolute;left:0;top:0;bottom:0;width:78%;max-width:320px;background:#fff;box-shadow:2px 0 16px rgba(0,0,0,.3);overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}#mdh{background:#ff4a18;color:#fff;font-weight:900;font-size:18px;padding:20px 16px}.mdi{display:flex;align-items:center;gap:14px;width:100%;border:0;border-bottom:1px solid #eee;background:#fff;padding:15px 18px;font-size:16px;font-weight:700;color:#222;text-align:left}.mdi i{font-style:normal;font-size:22px;width:30px;text-align:center}.mdi.upd{color:#16a34a}</style><div id="mdr"><div id="mdp"><div id="mdh">👑 KING MOBILE SHOP</div><div id="mdl"></div></div></div><script>var UPDATE_URL="https://drive.google.com/drive/folders/1XvPxzH5MZMsKMbXW0FvKE6ld-l0FFKIx";(function(){var $=function(i){return document.getElementById(i)};function nav(s){var e=document.querySelector('#xnav '+s);if(e)e.click()}function upd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('Update का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var p=U.indexOf('://'),sc=p>0?U.slice(0,p).toLowerCase():'';if(/Android/i.test(navigator.userAgent||'')&&(sc==='https'||sc==='http')){var it='intent://'+U.slice(p+3)+'#Intent;scheme='+sc+';package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(U)+';end';try{(window.top||window).location.href=it;return}catch(e){}try{location.href=it;return}catch(e){}}var w=null;try{w=window.open(U,'_blank')}catch(e){}if(!w)location.href=U}function snd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('App का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var m='📲 KING MOBILE SHOP का App इंस्टॉल करने के लिए यह लिंक खोलिए:\n'+U;function wa(){try{if(navigator.clipboard)navigator.clipboard.writeText(U)}catch(e){}var u='https://wa.me/?text='+encodeURIComponent(m),w=null;try{w=window.open(u,'_blank')}catch(e){}if(!w)location.href=u}if(navigator.share){navigator.share({title:'KING MOBILE SHOP',text:m}).catch(function(e){if(e&&e.name==='AbortError')return;wa()})}else wa()}function items(){var a=$('xnl');return[['📞','Call 9558222519',function(){var c=$('ctc');if(c)c.click();else location.href='tel:9558222519'}],['📲','App Send',snd,1],['🌐','भाषा / Language',function(){if(window.kmLangOpen)window.kmLangOpen()}]]}function shut(){var d=$('mdr');if(d)d.classList.remove('on')}function openM(){var d=$('mdr'),l=$('mdl');if(!d||!l)return;l.innerHTML='';items().forEach(function(it){var b=document.createElement('button');b.type='button';b.className='mdi'+(it[3]?' upd':'');var i=document.createElement('i');i.textContent=it[0];var t=document.createElement('span');t.textContent=it[1];b.appendChild(i);b.appendChild(t);b.onclick=function(){shut();setTimeout(it[2],60)};l.appendChild(b)});d.classList.add('on')}document.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest)return;if(t.closest('#mbtn')){openM();return}if(t.id==='mdr')shut()})})();</script><div id="knvbg"></div><nav id="xnav"><button data-xp="home" class="on"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span>Home</span></button><button data-xp="cats"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><span>Categories</span></button><button data-xp="acct"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.8 3.7-6 7.5-6s6.9 2.2 7.5 6z"/></svg><span>Account</span><span id="xnl" style="display:none">Login</span></button><button data-xp="orders" data-m="c"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5l6.2-6.2a4 4 0 0 0 5-5l-2.6 2.6-2.2-.6-.6-2.2z"/></svg><span>Complaint</span></button><button data-xp="orders" data-m="o"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg><span>Orders</span></button><a class="ctn" id="ctc" href="tel:9558222519" aria-label="Call 9558222519" style="display:none"></a></nav>
 <div class="xpg" id="xpc"></div><div class="xpg" id="xpo"></div><div class="xpg" id="xpa"></div>
 <div id="xod"></div><div id="xlg"></div><div id="xok"></div>
 <div id="md"><div class="mb"><div id="mm"></div><input type="password" id="mi"><div class="row"><button class="p" id="mo">OK</button><button id="mc">रद्द करें</button></div></div></div>
@@ -2449,7 +2455,37 @@ html body #xnav button svg{display:block}
 html body #xnav button.on{background:#ececf0!important;color:#e63c1f!important;font-weight:800!important}
 body:not(.kbd) .xpg{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important}
 html body:not(.kbd){padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-</style><script id="kmloginreg">
+</style>
+<style id="kpnav">
+/* ===== Bottom menu (Home / Categories / Account / Complaint / Orders) hamesha dikhe: Item page, Buy Now, Order detail ke upar bhi ===== */
+:root{--knv:calc(84px + env(safe-area-inset-bottom,0px))}
+html body #xnav{z-index:19}
+/* menu ke peeche saaf safed patti, taaki piche ka content menu ke aaju-baaju na dikhe */
+#knvbg{display:none;position:fixed;left:0;right:0;bottom:0;height:var(--knv);z-index:19;background:#fff}
+html.kov:not(.kbd) #knvbg{display:block}
+/* Item detail: Buy Now button menu ke theek upar */
+html:not(.kbd) #dti .dbt{bottom:var(--knv);padding-bottom:10px}
+html:not(.kbd) body #dto{padding-bottom:calc(110px + var(--knv))!important}
+/* Buy Now / Order form: Order Now bar menu ke theek upar */
+html:not(.kbd) #by{padding-bottom:calc(90px + var(--knv))}
+html:not(.kbd) #byfoot{bottom:var(--knv);padding-bottom:8px!important}
+/* Order detail page */
+html:not(.kbd) #xod{padding-bottom:calc(30px + var(--knv))}
+</style>
+<script id="kpnavjs">
+(function(){
+var r=document.documentElement;
+function chk(){try{r.classList.toggle("kov",!!document.querySelector("#dt.on,#by.on,#xod.on"))}catch(e){}}
+function go(){chk();try{new MutationObserver(chk).observe(document.body,{attributes:true,attributeFilter:["class"],subtree:true})}catch(e){}}
+if(document.body)go();else document.addEventListener("DOMContentLoaded",go);
+/* Buy Now khula ho aur menu ka koi button dabe to pehle Buy Now band ho, phir wo page khule */
+var n=document.getElementById("xnav");
+if(n)n.addEventListener("click",function(e){
+ if(!(e.target.closest&&e.target.closest("[data-xp]")))return;
+ try{var by=document.getElementById("by");if(by&&by.classList.contains("on")&&typeof closeBuy==="function")closeBuy()}catch(x){}
+},true);
+})();
+</script><script id="kmloginreg">
 /* Customer ka Login Google Sheet ke "Logins" tab me bhejta hai (ek phone se din me ek baar) - Order Check ke All Customers me dikhane ke liye */
 function kmLogReg(u){try{if(!u||!u.m||typeof ORDER_URL==="undefined"||!ORDER_URL)return;var k=u.m+"|"+new Date().toISOString().slice(0,10),p="";try{p=localStorage.getItem("kms_lgreg")||""}catch(e){}if(p===k)return;try{localStorage.setItem("kms_lgreg",k)}catch(e){}
 fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"login",mobile:u.m,name:u.n||""})}).catch(function(){try{localStorage.removeItem("kms_lgreg")}catch(e){}})}catch(e){}}
@@ -2753,10 +2789,10 @@ start();
     var english=en();
     var title=english?'Delivery service area':'डिलीवरी सेवा क्षेत्र';
     var p1=english?'King Mobile Shop currently provides home delivery within a 10 km radius of King Mobile Shop, near the canal in Hussain Ganj.':'किंग मोबाइल शॉप फिलहाल हुसैनगंज में नहर के पास स्थित दुकान से 10 किलोमीटर की परिधि के गाँवों और शहरों में ही होम डिलीवरी सेवा उपलब्ध करा रहा है।';
-    var p2=english?'Orders with a delivery address beyond this service area cannot be accepted online. Please call us before placing an order so we can discuss the available service.':'';
+    var p2=english?'Orders with a delivery address beyond this service area cannot be accepted online. Please call us before placing an order so we can discuss the available service.':'10 किलोमीटर से अधिक दूरी का पता होने पर ऑनलाइन ऑर्डर स्वीकार नहीं किया जा सकेगा। ऑर्डर करने से पहले कृपया हमें कॉल करके उपलब्ध सेवा की जानकारी ले लें।';
     var p3=english?'We are keeping this limit so that warranty support, service visits and other commitments can be completed on time. Your trust and reliable service are our priority.':'यह सीमा इसलिए रखी गई है ताकि वारंटी, सर्विस विज़िट और अन्य सहायता समय पर पहुँचाई जा सके। हम आपसे किया गया हर वादा निभाने और बेहतर सेवा देने को प्राथमिकता देते हैं।';
     var d=document.createElement('div');d.id='km-radius-notice';
-    d.innerHTML='<div class="kmrn-card" role="dialog" aria-modal="true"><h3>'+title+'</h3><p>'+p1+'</p><p>'+p2+'</p><p>'+p3+'</p><a class="kmrn-call" href="tel:9558222519">'+(english?'Call King Mobile Shop: 9558222519 📞':'किंग मोबाइल शॉप से संपर्क करें: 9558222519 📞')+'</a><button type="button" class="kmrn-close">'+(english?'I Understand':'समझ गया / गई')+'</button></div>';
+    d.innerHTML='<div class="kmrn-card" role="dialog" aria-modal="true"><h3>'+title+'</h3><p>'+p1+'</p><p>'+p2+'</p><p>'+p3+'</p><a class="kmrn-call" href="tel:9558222519">'+(english?'Call King Mobile Shop: 9558222519':'किंग मोबाइल शॉप से बात करें: 9558222519')+'</a><button type="button" class="kmrn-close">'+(english?'I Understand':'समझ गया / गई')+'</button></div>';
     d.addEventListener('click',function(e){if(e.target===d||e.target.closest('.kmrn-close'))d.remove()});document.body.appendChild(d);
   }
   // Address field tap/click opens the service-area explanation. Green notice remains above address fields.
@@ -2766,65 +2802,6 @@ start();
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('[data-buy],.buy,[onclick*="openBuy"]')){setTimeout(function(){try{if(typeof byP!=='undefined'&&typeof drawBy==='function'){byP='UPI';drawBy()}}catch(x){}},0)}},true);
 })();
 </script>
-
-
-<style id="km-professional-bottom-controls">
-/* Keep the KING MOBILE title/header at the top; retain search and category functionality. */
-body>header{display:block!important}
-body>#sbar,body>#ap,body>#catw{display:block}
-#sbar{display:flex!important}
-#sbar .sw{display:flex!important}
-
-/* All original navigation options, including Orders, stay visible in a compact bottom-right bar. */
-html body #xnav{
-  display:flex!important;position:fixed!important;
-  left:66px!important;right:10px!important;
-  bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;
-  width:auto!important;z-index:1100!important;
-  background:#fff!important;border:1px solid #e2e5e9!important;
-  border-radius:18px!important;padding:5px!important;gap:2px!important;
-  box-shadow:0 5px 20px rgba(0,0,0,.18)!important;overflow:hidden!important
-}
-html body #xnav button{
-  display:flex!important;flex:1 1 0!important;min-width:0!important;
-  border:0!important;border-radius:12px!important;background:transparent!important;
-  padding:7px 1px 6px!important;gap:3px!important;color:#555!important;
-  font-size:10px!important;font-weight:700!important;
-  flex-direction:column!important;align-items:center!important;justify-content:center!important
-}
-html body #xnav button svg{display:block!important;width:23px!important;height:23px!important}
-html body #xnav button span{display:block!important;line-height:1.1!important;white-space:nowrap!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important}
-html body #xnav button.on{background:#fff0ec!important;color:#e63c1f!important;font-weight:900!important}
-
-/* Move the existing menu control to the bottom-left on the home screen. */
-#sbar #mbtn{
-  position:fixed!important;left:10px!important;right:auto!important;
-  bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;top:auto!important;
-  width:46px!important;height:46px!important;z-index:1101!important;
-  border-radius:14px!important;background:#fff!important;color:#e63c1f!important;
-  border:1px solid #e2e5e9!important;box-shadow:0 4px 16px rgba(0,0,0,.18)!important
-}
-/* On inner screens, hide the menu button and show the actual Back button in its place. */
-body.nh #sbar #mbtn{display:none!important}
-#dt.on #dtx,#by.on #byx,.xpg.on .xbar>button:first-child{
-  position:fixed!important;left:10px!important;right:auto!important;
-  top:auto!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;
-  z-index:1102!important;width:46px!important;height:46px!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  border-radius:14px!important;background:#fff!important;color:#e63c1f!important;
-  border:1px solid #e2e5e9!important;box-shadow:0 4px 16px rgba(0,0,0,.18)!important;
-  font-size:25px!important
-}
-#dt.on #dtb,#by.on #byb{padding-left:12px!important}
-#list,#hm,#st{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))!important}
-body:not(.kbd){padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))!important}
-body:not(.kbd) .xpg{bottom:calc(82px + env(safe-area-inset-bottom,0px))!important}
-@media(max-width:380px){
-  html body #xnav{left:62px!important;right:7px!important}
-  html body #xnav button{font-size:9px!important}
-  html body #xnav button svg{width:21px!important;height:21px!important}
-}
-</style>
 
 </body>
 </html>
