@@ -513,12 +513,12 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 <div id="bysum"></div>
 <div class="bysec"><div class="byh">मात्रा (Quantity)</div><div class="byq"><button data-bq="-1">−</button><b id="byqv">1</b><button data-bq="1">+</button></div></div>
 <div class="bysec" id="bypay"><div class="byh">पेमेंट कैसे करेंगे?</div><div class="kpr">👍 Recommended – आपके लिए</div>
-<div class="byc2"><button data-bp="Cash" id="bpCash" class="on"><i class="rd"></i><span>💵 Cash on Delivery<small>माल मिलने पर नकद दीजिए</small><em class="pex"><span class="pyb" role="button">Place Order</span></em></span></button><button data-bp="UPI" id="bpUPI"><i class="rd"></i><span>📲 UPI / Card / NetBanking<small>हर तरह का UPI ऐप</small><small class="gn">🔒 Razorpay से सुरक्षित पेमेंट</small><em class="pex"><span class="pyb" role="button">अभी पेमेंट करें</span></em></span></button></div><div id="byqr" style="display:none"></div></div>
+<div class="byc2"><button data-bp="UPI" id="bpUPI" class="on"><i class="rd"></i><span>📲 UPI / Card / NetBanking<small>हर तरह का UPI ऐप</small><small class="gn">🔒 Razorpay से सुरक्षित पेमेंट</small><em class="pex"><span class="pyb" role="button">अभी पेमेंट करें</span></em></span></button><button data-bp="Cash" id="bpCash"><i class="rd"></i><span>💵 Cash on Delivery<small>माल मिलने पर नकद दीजिए</small><em class="pex"><span class="pyb" role="button">Place Order</span></em></span></button></div><div id="byqr" style="display:none"></div></div>
 <div class="bysec"><div class="byh">आपकी जानकारी</div>
 <input type="text" id="byn" placeholder="आपका पूरा नाम *" autocomplete="name">
 <input type="text" id="bym" inputmode="numeric" maxlength="14" placeholder="मोबाइल नंबर * (10 अंक)" autocomplete="tel"></div>
 <div class="bysec"><div class="byh">🚚 घर पर डिलीवरी</div>
-<div id="byaddr"><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
+<div id="byaddr"><div id="km-radius-banner" role="note">📍 डिलीवरी सेवा: किंग मोबाइल शॉप, हुसैनगंज नहर के पास से 10 किलोमीटर की परिधि में उपलब्ध है। कृपया इसी सीमा के भीतर का पता भरें।</div><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
 <div class="bysec"><input type="text" id="byt" placeholder="कुछ और बताना हो तो लिखिए (वैकल्पिक)"></div>
 <div class="bysec" id="byno" style="display:none"></div>
 <div class="bysec" id="bypd"></div>
@@ -1519,9 +1519,9 @@ if(e.target.closest("#dstk")){var si=dtI;phPw("Stock बदलने के ल�
 });
 var _r0=render;render=function(){_r0();if(dtI>=0)drawDt()};
 
-var byI=-1,byQ=1,byD="shop",byP="Cash",pendNo="";
+var byI=-1,byQ=1,byD="shop",byP="UPI",pendNo="";
 function drawNo(t){var e=document.getElementById("byno");if(e)e.innerHTML=t?'<div class="byh">🧾 ऑर्डर नंबर</div><div style="font-size:24px;font-weight:900;color:#e63c1f;letter-spacing:.5px">'+esc(t)+'</div><div style="font-size:12px;color:#555;font-weight:700">यह नंबर संभालकर रखिए – इसी से आपका ऑर्डर मिलेगा</div>':'<div class="byh">🧾 ऑर्डर नंबर</div><div style="font-size:14px;color:#555;font-weight:700">ऑर्डर भेजते ही नंबर बन जाएगा</div>'}
-function openBuy(i){var o=items[i];if(!o)return;if(!getUser()){pendingBuy=i;openLogin("पहले Login कीजिए, फिर ऑर्डर होगा");return}byI=i;byQ=1;byD="home";byP="Cash";pendFail=false;
+function openBuy(i){var o=items[i];if(!o)return;if(!getUser()){pendingBuy=i;openLogin("पहले Login कीजिए, फिर ऑर्डर होगा");return}byI=i;byQ=1;byD="home";byP="UPI";pendFail=false;
 var sv={};try{sv=JSON.parse(localStorage.getItem("kms_buyer")||"{}")}catch(e){}
 document.getElementById("byn").value=sv.n||"";document.getElementById("bym").value=sv.m||"";document.getElementById("bya").value=sv.a||"";document.getElementById("byc").value=sv.c||"";document.getElementById("byp").value=sv.p||"";document.getElementById("byk").value=sv.k||"";document.getElementById("byd").value=sv.d||"";document.getElementById("bys").value=sv.s||"Uttar Pradesh";document.getElementById("byt").value="";
 document.getElementById("byerr").textContent="";applyUserToBuy();drawBy();document.getElementById("byno").style.display="none";var b=document.getElementById("by");b.classList.add("on");b.scrollTop=0}
@@ -2468,7 +2468,7 @@ try{var _kmU=getUser();if(_kmU)kmLogReg(_kmU)}catch(e){}
 /* ===== Razorpay Online Payment ===== */
 (function(){
 /* !!! Yahan apni Vercel website ka link likhiye (bina last slash ke), jaise: https://kingmobile.vercel.app */
-var KM_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:"";
+var KM_API="https://kingmobilehusainganj.vercel.app";if(/YOUR-SITE/.test(KM_API)){KM_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:""}
 var SHOP_PH="9558222519";
 function g(i){return document.getElementById(i)}
 function er(t){var e=g("byerr");if(e)e.textContent=t||""}
@@ -2737,5 +2737,37 @@ start();
 })();
 
 </script>
+
+<style id="km-radius-ui">
+#km-radius-banner{display:block!important;margin:0 0 12px;padding:11px 12px;border-radius:10px;background:#dcfce7;border:1px solid #22c55e;color:#14532d;font-size:13px;line-height:1.55;font-weight:800}
+#km-radius-notice{position:fixed;inset:0;z-index:2147483600;background:rgba(0,0,0,.68);display:flex;align-items:center;justify-content:center;padding:18px;font-family:inherit}
+#km-radius-notice .kmrn-card{width:100%;max-width:420px;background:#fff;color:#172033;border-radius:18px;padding:22px 19px;box-shadow:0 18px 55px rgba(0,0,0,.35);text-align:left}
+#km-radius-notice h3{margin:0 0 10px;font-size:20px;line-height:1.35;color:#166534}
+#km-radius-notice p{font-size:14px;line-height:1.65;margin:8px 0}
+#km-radius-notice .kmrn-call{display:block;text-align:center;text-decoration:none;background:#16a34a;color:white;border-radius:11px;padding:12px;margin-top:15px;font-weight:900}
+#km-radius-notice .kmrn-close{width:100%;margin-top:9px;border:0;border-radius:10px;padding:11px;background:#eef2f7;color:#172033;font-weight:800;font-size:15px}
+</style>
+<script id="km-radius-and-payment-default">
+(function(){
+  var en=function(){try{return window.kmLang&&window.kmLang()==="en"}catch(e){return false}};
+  function showRadius(){
+    var old=document.getElementById('km-radius-notice');if(old)old.remove();
+    var english=en();
+    var title=english?'Delivery service area':'डिलीवरी सेवा क्षेत्र';
+    var p1=english?'King Mobile Shop currently provides home delivery within a 10 km radius of King Mobile Shop, near the canal in Hussain Ganj.':'किंग मोबाइल शॉप फिलहाल हुसैनगंज में नहर के पास स्थित दुकान से 10 किलोमीटर की परिधि के गाँवों और शहरों में ही होम डिलीवरी सेवा उपलब्ध करा रहा है।';
+    var p2=english?'Orders with a delivery address beyond this service area cannot be accepted online. Please call us before placing an order so we can discuss the available service.':'10 किलोमीटर से अधिक दूरी का पता होने पर ऑनलाइन ऑर्डर स्वीकार नहीं किया जा सकेगा। ऑर्डर करने से पहले कृपया हमें कॉल करके उपलब्ध सेवा की जानकारी ले लें।';
+    var p3=english?'We are keeping this limit so that warranty support, service visits and other commitments can be completed on time. Your trust and reliable service are our priority.':'यह सीमा इसलिए रखी गई है ताकि वारंटी, सर्विस विज़िट और अन्य सहायता समय पर पहुँचाई जा सके। हम आपसे किया गया हर वादा निभाने और बेहतर सेवा देने को प्राथमिकता देते हैं।';
+    var d=document.createElement('div');d.id='km-radius-notice';
+    d.innerHTML='<div class="kmrn-card" role="dialog" aria-modal="true"><h3>'+title+'</h3><p>'+p1+'</p><p>'+p2+'</p><p>'+p3+'</p><a class="kmrn-call" href="tel:9558222519">'+(english?'Call King Mobile Shop: 9558222519':'किंग मोबाइल शॉप से बात करें: 9558222519')+'</a><button type="button" class="kmrn-close">'+(english?'I Understand':'समझ गया / गई')+'</button></div>';
+    d.addEventListener('click',function(e){if(e.target===d||e.target.closest('.kmrn-close'))d.remove()});document.body.appendChild(d);
+  }
+  // Address field tap/click opens the service-area explanation. Green notice remains above address fields.
+  document.addEventListener('click',function(e){var t=e.target;if(t&&t.closest&&t.closest('#bya,#byk,#byc,#byd,#bys,#byp'))showRadius()},true);
+  // Keep Online payment first and selected whenever a fresh order form is opened.
+  var open=window.openBuy;
+  document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('[data-buy],.buy,[onclick*="openBuy"]')){setTimeout(function(){try{if(typeof byP!=='undefined'&&typeof drawBy==='function'){byP='UPI';drawBy()}}catch(x){}},0)}},true);
+})();
+</script>
+
 </body>
 </html>
