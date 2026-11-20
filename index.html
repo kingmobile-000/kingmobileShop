@@ -2781,14 +2781,15 @@ var GKEY="AIzaSyDOGVGHUwrTVNzF5Z26lAxGNh9UYCWQ_Ec";
 /* सिर्फ़ Google Maps (Geocoding API): लाइव लोकेशन के आसपास के गाँव ढूँढकर, असली दूरी नापकर सबसे नज़दीकी गाँव चुनता है */
 function fmtD(k){return k<1?(Math.max(10,Math.round(k*100)*10)+" मीटर"):((Math.round(k*10)/10)+" किमी")}
 function gpick(res,types){for(var t=0;t<types.length;t++){for(var i=0;i<res.length;i++){var c=res[i].address_components||[];for(var k=0;k<c.length;k++){if(c[k].types.indexOf(types[t])>=0&&c[k].long_name)return c[k].long_name}}}return""}
-function gj(u){return tmo(u,10000).then(function(j){if(j&&j.status==="ZERO_RESULTS")return[];if(!j||j.status!=="OK")throw new Error((j&&j.status)||"bad");return j.results||[]})}
+function gj(u){return tmo(u,10000).then(function(j){if(j&&j.status==="ZERO_RESULTS")return[];if(!j||j.status!=="OK")throw new Error(((j&&j.status)||"bad")+(j&&j.error_message?" - "+j.error_message:""));return j.results||[]})}
 var VT=["sublocality_level_1","sublocality_level_2","sublocality","locality","neighborhood"];
 function vnames(res,out){res.forEach(function(r){(r.address_components||[]).forEach(function(c){if(!c.long_name)return;for(var i=0;i<VT.length;i++){if(c.types.indexOf(VT[i])>=0){var k=c.long_name.toLowerCase();out[k]=out[k]||{n:c.long_name,c:0};out[k].c++;return}}})})}
+var GERR=null;
 function fillAddr(lat,lng){
- st.near="";var KL=Math.cos(lat*Math.PI/180),pts=[[lat,lng]];
+ GERR=null;st.near="";var KL=Math.cos(lat*Math.PI/180),pts=[[lat,lng]];
  for(var i=0;i<6;i++){var an=i*Math.PI/3;pts.push([lat+(2.5/111)*Math.cos(an),lng+(2.5/(111*KL))*Math.sin(an)])}
- return Promise.all(pts.map(function(p){return gj("https://maps.googleapis.com/maps/api/geocode/json?latlng="+p[0]+","+p[1]+"&language=en&key="+GKEY).catch(function(){return null})})).then(function(all){
-  if(!all[0]&&!all.some(function(x){return x&&x.length}))throw new Error("none");
+ return Promise.all(pts.map(function(p){return gj("https://maps.googleapis.com/maps/api/geocode/json?latlng="+p[0]+","+p[1]+"&language=en&key="+GKEY).catch(function(e){GERR=GERR||e;return null})})).then(function(all){
+  if(!all[0]&&!all.some(function(x){return x&&x.length}))throw (GERR||new Error("none"));
   var C=all[0]||[],A=[].concat.apply([],all.filter(Boolean));
   var dist=(gpick(C,["administrative_area_level_2"])||gpick(A,["administrative_area_level_2"])).replace(/\s+district$/i,""),
       state=gpick(C,["administrative_area_level_1"])||gpick(A,["administrative_area_level_1"]),
@@ -2810,7 +2811,7 @@ function fillAddr(lat,lng){
    setF("byc",city);setF("byd",dist);setF("bys",state);setF("byp",pin.length===6?pin:"");
    if(city)note("✅ Google Maps से पता भरा गया: सबसे नज़दीकी गाँव "+city+(dn?" (आपकी लोकेशन से लगभग "+dn+")":"")+(pl.length>1?"। आसपास: "+st.near:"")+"। मकान नंबर / गली / लैंडमार्क खुद लिखिए।");
    else note("⚠ Google Maps से गाँव का नाम नहीं मिल पाया। कृपया अपने गाँव का नाम खुद लिखिए।")})
- }).catch(function(){ADR.forEach(function(id){setF(id,"")});note("⚠ Google Maps से पता नहीं मिल पाया। कृपया पता खुद लिखिए।")})}
+ }).catch(function(e){ADR.forEach(function(id){setF(id,"")});note("⚠ Google Maps से पता नहीं मिल पाया ["+String((e&&e.message)||e).slice(0,160)+"]। कृपया पता खुद लिखिए।")})}
 function addBtn(){var h=g("byaddr");if(!h||g("klocn"))return;var n=document.createElement("div");n.id="klocn";var f=h.firstElementChild;h.insertBefore(n,f?f.nextSibling:h.firstChild)}
 addBtn();
 function modal(h){var d=g("klocm");if(d)d.remove();d=document.createElement("div");d.id="klocm";d.innerHTML='<div class="kb">'+h+'</div>';d.addEventListener("click",function(e){if(e.target===d)d.remove()});document.body.appendChild(d);return d}
