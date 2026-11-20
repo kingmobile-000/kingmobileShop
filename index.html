@@ -5,7 +5,7 @@
 /* KING LOGIN KEEPER: login ko browser ke localStorage ke alawa cookie + IndexedDB me bhi rakhta hai.
    Browser localStorage saaf kar de to login apne-aap wapas aa jata hai. Logout dabane par sab hat jata hai. */
 (function(){
-var K=["kms_user","kms_orders","kms_buyer","kms_boy_mobile","kms_boy_info","kms_boy_tok","kms_idov","kms_idov_all","kms_update_url"],CK=["kms_user","kms_boy_mobile","kms_boy_info","kms_boy_tok","kms_update_url"],LS=null;
+var K=["kms_user","kms_orders","kms_buyer","kms_boy_mobile","kms_boy_info","kms_boy_tok","kms_idov","kms_idov_all","kms_update_url","kms_lang"],CK=["kms_user","kms_boy_mobile","kms_boy_info","kms_boy_tok","kms_update_url","kms_lang"],LS=null;
 try{LS=window.localStorage}catch(e){return}
 var S=Storage.prototype,_s=S.setItem,_r=S.removeItem,db=null,pend=[],seen={};
 function ckGet(n){try{var m=document.cookie.match(new RegExp("(?:^|; )"+n+"=([^;]*)"));return m?decodeURIComponent(m[1]):null}catch(e){return null}}
@@ -512,8 +512,8 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 <div id="by"><div id="byb"><button id="byx" aria-label="वापस">←</button><span>ऑर्डर की जानकारी</span></div>
 <div id="bysum"></div>
 <div class="bysec"><div class="byh">मात्रा (Quantity)</div><div class="byq"><button data-bq="-1">−</button><b id="byqv">1</b><button data-bq="1">+</button></div></div>
-<div class="bysec"><div class="byh">पेमेंट कैसे करेंगे?</div>
-<div class="byc2"><button data-bp="Cash" id="bpCash" class="on"><i class="rd"></i><span>💵 Cash on Delivery<small>माल मिलने पर नकद दीजिए</small></span></button><button data-bp="UPI" id="bpUPI"><i class="rd"></i><span>📲 Online Payment (UPI / Card)<small>🔒 Razorpay से सुरक्षित पेमेंट</small></span></button></div><div id="byqr" style="display:none"></div></div>
+<div class="bysec" id="bypay"><div class="byh">पेमेंट कैसे करेंगे?</div><div class="kpr">👍 Recommended – आपके लिए</div>
+<div class="byc2"><button data-bp="Cash" id="bpCash" class="on"><i class="rd"></i><span>💵 Cash on Delivery<small>माल मिलने पर नकद दीजिए</small><em class="pex"><span class="pyb" role="button">Place Order</span></em></span></button><button data-bp="UPI" id="bpUPI"><i class="rd"></i><span>📲 UPI / Card / NetBanking<small>हर तरह का UPI ऐप</small><small class="gn">🔒 Razorpay से सुरक्षित पेमेंट</small><em class="pex"><span class="pyb" role="button">अभी पेमेंट करें</span></em></span></button></div><div id="byqr" style="display:none"></div></div>
 <div class="bysec"><div class="byh">आपकी जानकारी</div>
 <input type="text" id="byn" placeholder="आपका पूरा नाम *" autocomplete="name">
 <input type="text" id="bym" inputmode="numeric" maxlength="14" placeholder="मोबाइल नंबर * (10 अंक)" autocomplete="tel"></div>
@@ -525,7 +525,7 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 <div id="bywarn" style="background:#fff3e0;color:#b45309;font-weight:800;font-size:13px;line-height:1.5;padding:8px 14px">⚠ ध्यान दें: अगर आप आइटम बुक करके बार-बार कैंसल करेंगे, तो आपकी ID ब्लॉक हो जाएगी।</div>
 <div id="byerr"></div>
 <div id="byfoot"><div id="byft"></div><button id="bysend">✅ Order Now</button></div></div>
-<style>#sbar{display:flex;align-items:center;gap:8px}#sbar .sw{flex:1;min-width:0}#mbtn{flex:none;width:46px;height:46px;border:0;border-radius:12px;background:#fff;color:#e63c1f;font-size:26px;line-height:1;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.2)}#mdr{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:90;background:rgba(0,0,0,.5)}#mdr.on{display:block}#mdp{position:absolute;left:0;top:0;bottom:0;width:78%;max-width:320px;background:#fff;box-shadow:2px 0 16px rgba(0,0,0,.3);overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}#mdh{background:#ff4a18;color:#fff;font-weight:900;font-size:18px;padding:20px 16px}.mdi{display:flex;align-items:center;gap:14px;width:100%;border:0;border-bottom:1px solid #eee;background:#fff;padding:15px 18px;font-size:16px;font-weight:700;color:#222;text-align:left}.mdi i{font-style:normal;font-size:22px;width:30px;text-align:center}.mdi.upd{color:#16a34a}</style><div id="mdr"><div id="mdp"><div id="mdh">👑 KING MOBILE SHOP</div><div id="mdl"></div></div></div><script>var UPDATE_URL="https://drive.google.com/drive/folders/1XvPxzH5MZMsKMbXW0FvKE6ld-l0FFKIx";(function(){var $=function(i){return document.getElementById(i)};function nav(s){var e=document.querySelector('#xnav '+s);if(e)e.click()}function upd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('Update का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var p=U.indexOf('://'),sc=p>0?U.slice(0,p).toLowerCase():'';if(/Android/i.test(navigator.userAgent||'')&&(sc==='https'||sc==='http')){var it='intent://'+U.slice(p+3)+'#Intent;scheme='+sc+';package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(U)+';end';try{(window.top||window).location.href=it;return}catch(e){}try{location.href=it;return}catch(e){}}var w=null;try{w=window.open(U,'_blank')}catch(e){}if(!w)location.href=U}function snd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('App का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var m='📲 KING MOBILE SHOP का App इंस्टॉल करने के लिए यह लिंक खोलिए:\n'+U;function wa(){try{if(navigator.clipboard)navigator.clipboard.writeText(U)}catch(e){}var u='https://wa.me/?text='+encodeURIComponent(m),w=null;try{w=window.open(u,'_blank')}catch(e){}if(!w)location.href=u}if(navigator.share){navigator.share({title:'KING MOBILE SHOP',text:m}).catch(function(e){if(e&&e.name==='AbortError')return;wa()})}else wa()}function items(){var a=$('xnl');return[['📞','Call 9558222519',function(){var c=$('ctc');if(c)c.click();else location.href='tel:9558222519'}],['📲','App Send',snd,1]]}function shut(){var d=$('mdr');if(d)d.classList.remove('on')}function openM(){var d=$('mdr'),l=$('mdl');if(!d||!l)return;l.innerHTML='';items().forEach(function(it){var b=document.createElement('button');b.type='button';b.className='mdi'+(it[3]?' upd':'');var i=document.createElement('i');i.textContent=it[0];var t=document.createElement('span');t.textContent=it[1];b.appendChild(i);b.appendChild(t);b.onclick=function(){shut();setTimeout(it[2],60)};l.appendChild(b)});d.classList.add('on')}document.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest)return;if(t.closest('#mbtn')){openM();return}if(t.id==='mdr')shut()})})();</script><nav id="xnav"><button data-xp="home" class="on"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span>Home</span></button><button data-xp="cats"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><span>Categories</span></button><button data-xp="acct"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.8 3.7-6 7.5-6s6.9 2.2 7.5 6z"/></svg><span>Account</span><span id="xnl" style="display:none">Login</span></button><button data-xp="orders" data-m="c"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5l6.2-6.2a4 4 0 0 0 5-5l-2.6 2.6-2.2-.6-.6-2.2z"/></svg><span>Complaint</span></button><button data-xp="orders" data-m="o"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg><span>Orders</span></button><a class="ctn" id="ctc" href="tel:9558222519" aria-label="Call 9558222519" style="display:none"></a></nav>
+<style>#sbar{display:flex;align-items:center;gap:8px}#sbar .sw{flex:1;min-width:0}#mbtn{flex:none;width:46px;height:46px;border:0;border-radius:12px;background:#fff;color:#e63c1f;font-size:26px;line-height:1;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.2)}#mdr{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:90;background:rgba(0,0,0,.5)}#mdr.on{display:block}#mdp{position:absolute;left:0;top:0;bottom:0;width:78%;max-width:320px;background:#fff;box-shadow:2px 0 16px rgba(0,0,0,.3);overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}#mdh{background:#ff4a18;color:#fff;font-weight:900;font-size:18px;padding:20px 16px}.mdi{display:flex;align-items:center;gap:14px;width:100%;border:0;border-bottom:1px solid #eee;background:#fff;padding:15px 18px;font-size:16px;font-weight:700;color:#222;text-align:left}.mdi i{font-style:normal;font-size:22px;width:30px;text-align:center}.mdi.upd{color:#16a34a}</style><div id="mdr"><div id="mdp"><div id="mdh">👑 KING MOBILE SHOP</div><div id="mdl"></div></div></div><script>var UPDATE_URL="https://drive.google.com/drive/folders/1XvPxzH5MZMsKMbXW0FvKE6ld-l0FFKIx";(function(){var $=function(i){return document.getElementById(i)};function nav(s){var e=document.querySelector('#xnav '+s);if(e)e.click()}function upd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('Update का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var p=U.indexOf('://'),sc=p>0?U.slice(0,p).toLowerCase():'';if(/Android/i.test(navigator.userAgent||'')&&(sc==='https'||sc==='http')){var it='intent://'+U.slice(p+3)+'#Intent;scheme='+sc+';package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(U)+';end';try{(window.top||window).location.href=it;return}catch(e){}try{location.href=it;return}catch(e){}}var w=null;try{w=window.open(U,'_blank')}catch(e){}if(!w)location.href=U}function snd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('App का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var m='📲 KING MOBILE SHOP का App इंस्टॉल करने के लिए यह लिंक खोलिए:\n'+U;function wa(){try{if(navigator.clipboard)navigator.clipboard.writeText(U)}catch(e){}var u='https://wa.me/?text='+encodeURIComponent(m),w=null;try{w=window.open(u,'_blank')}catch(e){}if(!w)location.href=u}if(navigator.share){navigator.share({title:'KING MOBILE SHOP',text:m}).catch(function(e){if(e&&e.name==='AbortError')return;wa()})}else wa()}function items(){var a=$('xnl');return[['📞','Call 9558222519',function(){var c=$('ctc');if(c)c.click();else location.href='tel:9558222519'}],['📲','App Send',snd,1],['🌐','भाषा / Language',function(){if(window.kmLangOpen)window.kmLangOpen()}]]}function shut(){var d=$('mdr');if(d)d.classList.remove('on')}function openM(){var d=$('mdr'),l=$('mdl');if(!d||!l)return;l.innerHTML='';items().forEach(function(it){var b=document.createElement('button');b.type='button';b.className='mdi'+(it[3]?' upd':'');var i=document.createElement('i');i.textContent=it[0];var t=document.createElement('span');t.textContent=it[1];b.appendChild(i);b.appendChild(t);b.onclick=function(){shut();setTimeout(it[2],60)};l.appendChild(b)});d.classList.add('on')}document.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest)return;if(t.closest('#mbtn')){openM();return}if(t.id==='mdr')shut()})})();</script><nav id="xnav"><button data-xp="home" class="on"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span>Home</span></button><button data-xp="cats"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><span>Categories</span></button><button data-xp="acct"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.8 3.7-6 7.5-6s6.9 2.2 7.5 6z"/></svg><span>Account</span><span id="xnl" style="display:none">Login</span></button><button data-xp="orders" data-m="c"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5l6.2-6.2a4 4 0 0 0 5-5l-2.6 2.6-2.2-.6-.6-2.2z"/></svg><span>Complaint</span></button><button data-xp="orders" data-m="o"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg><span>Orders</span></button><a class="ctn" id="ctc" href="tel:9558222519" aria-label="Call 9558222519" style="display:none"></a></nav>
 <div class="xpg" id="xpc"></div><div class="xpg" id="xpo"></div><div class="xpg" id="xpa"></div>
 <div id="xod"></div><div id="xlg"></div><div id="xok"></div>
 <div id="md"><div class="mb"><div id="mm"></div><input type="password" id="mi"><div class="row"><button class="p" id="mo">OK</button><button id="mc">रद्द करें</button></div></div></div>
@@ -1108,7 +1108,7 @@ if(!pw){ask("पहले नया पासवर्ड सेट कीजि
 ask("रेट बदलने के लिए पासवर्ड डालिए:",function(p){if(p===null)return;if(hash(p)!==pw){ask("गलत पासवर्ड",function(){},true);return}setUnl();items[i].Open=true;save();render()});
 }
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function nrm(x){return String(x==null?"":x).toLowerCase().replace(/\s+/g," ").trim()}
+var NRM_C=new Map();function nrm(x){var k=x==null?"":String(x),r=NRM_C.get(k);if(r!==undefined)return r;r=k.toLowerCase().replace(/\s+/g," ").trim();if(NRM_C.size>30000)NRM_C.clear();NRM_C.set(k,r);return r}
 function wholeWord(a,w){var i=-1,re=/[a-z0-9\u0900-\u097f]/;while((i=a.indexOf(w,i+1))>=0){var b=i===0||!re.test(a.charAt(i-1)),e=i+w.length>=a.length||!re.test(a.charAt(i+w.length));if(b&&e)return true}return false}
 function nameParts(full){
 var s=String(full==null?"":full),cat="",k=s.lastIndexOf(" \u2013 ");
@@ -1149,9 +1149,9 @@ function vOpen(cb){if(vdb){cb(vdb);return}try{var r=indexedDB.open("kms_videos",
 function vPut(id,blob,cb){vOpen(function(d){if(!d){cb(false);return}try{var t=d.transaction("v","readwrite");t.objectStore("v").put(blob,id);t.oncomplete=function(){cb(true)};t.onerror=t.onabort=function(){cb(false)}}catch(e){cb(false)}})}
 function vGet(id,cb){vOpen(function(d){if(!d){cb(null);return}try{var q=d.transaction("v","readonly").objectStore("v").get(id);q.onsuccess=function(){cb(q.result||null)};q.onerror=function(){cb(null)}}catch(e){cb(null)}})}
 function vDel(id){vOpen(function(d){if(!d)return;try{d.transaction("v","readwrite").objectStore("v").delete(id)}catch(e){}})}
-function hydrateVideos(){Array.prototype.forEach.call(document.querySelectorAll("[data-vid]"),function(el){var id=el.getAttribute("data-vid");vGet(id,function(b){if(!b){el.innerHTML='<div class="p0"><div>⚠</div><div>वीडियो नहीं मिला</div></div>';return}var u=URL.createObjectURL(b);vUrls.push(u);el.innerHTML='<video src="'+u+'" controls playsinline preload="metadata"></video>'})})}
+function hydrateVideos(){Array.prototype.forEach.call(document.querySelectorAll("[data-vid]:not([data-vh])"),function(el){el.setAttribute("data-vh","1");var id=el.getAttribute("data-vid");vGet(id,function(b){if(!b){el.innerHTML='<div class="p0"><div>⚠</div><div>वीडियो नहीं मिला</div></div>';return}var u=URL.createObjectURL(b);vUrls.push(u);el.innerHTML='<video src="'+u+'" controls playsinline preload="metadata"></video>'})})}
 var CATS=[["सभी","🏠",[]],["Mobile","📱",["mobile","phone","smartphone"]],["Charger","🔌",["charger","adapter","adaptor"]],["Cable","🔗",["cable","data cable","aux"]],["Glass","🛡️",["glass","tempered","guard"]],["Cover","📘",["cover","case"]],["Earphone","🎧",["earphone","headphone","neckband","nekband","bluetooth","buds","handsfree","airdopes"]],["Speaker","🔊",["speaker","soundbar"]],["Other","📦",[]]];
-var curCat="सभी";var KM_MAX=100;var KM_REST=true;
+var KM_FAST=false,KM_RAF=0,KM_RG=0;var curCat="सभी";var KM_MAX=100;var KM_REST=true;
 function catList(){var m={},ks=[];items.forEach(function(o){var lb=catLabel(o),k=nrm(lb);if(!m[k]){m[k]={l:lb,n:0};ks.push(k)}m[k].n++});if(!ks.length)return CATS;ks.sort(function(a,b){return m[b].n-m[a].n});var out=[["सभी","🏠",[]]];ks.forEach(function(k){var g=catOf({Item:m[k].l}),ic="📦";for(var i=1;i<CATS.length-1;i++)if(CATS[i][0]===g)ic=CATS[i][1];out.push([m[k].l,ic,[]])});return out}
 function catOf(o){var n=nrm(o.Item);for(var i=1;i<CATS.length-1;i++){var k=CATS[i][2];for(var j=0;j<k.length;j++)if(n.indexOf(k[j])>=0)return CATS[i][0]}return "Other"}
 /* त्योहार बैनर: हर त्योहार से 5 दिन पहले दिखना शुरू, त्योहार के आख़िरी दिन रात 12 बजे अपने-आप हट जाता है.
@@ -1225,6 +1225,7 @@ order.forEach(function(x){var o0=items[x[0]];if(!colorOf(o0)){_go.push(x);return
 _go.forEach(function(x){if(x.vars&&x.vars.length>1){var pk=x.vars.filter(function(j){return inStk(items[j])})[0];if(pk!==undefined)x[0]=pk}});
 order=_go;
 if(order.some(function(x){return x.gs})){var _o2=[],_q2=order.slice(),_c2=0;while(_q2.length){var _x=_q2.shift();if(_x.gs&&_c2===1){var _f=-1;for(var _k=0;_k<_q2.length;_k++)if(_q2[_k].sg&&!_q2[_k].gs){_f=_k;break}if(_f>=0)_o2.push(_q2.splice(_f,1)[0]);_c2=0}_o2.push(_x);_c2=_x.gs?1:(_c2+1)%2}order=_o2}
+var CARDS=[];
 order.forEach(function(x){var i=x[0],o=items[i];
 var sk="SKU: "+esc(o.SKU!==undefined&&o.SKU!==null&&o.SKU!==""?o.SKU:0);
 var cvs=cvChips(x),_n=nmNoCat(o,t).replace(/\s*\[[^\]]+\]/g,""),_cm="",_mm=/\s*\(([^()]*)\)\s*$/.exec(_n);
@@ -1236,13 +1237,13 @@ var sq=stkOf(o.Qty),sb=sq==="Yes"?'<div class="sbd yes">✔ Stock है</div>':
 /* ek SKU/item ke kai rang: kitne rang Stock me hain (jaise 2/5), baaki khatam = auto Out of Stock */
 if(x.vars&&x.vars.length>1){var _ni=x.vars.filter(function(j){return inStk(items[j])}).length;sb=_ni>0?'<div class="sbd yes">✔ Stock है ('+_ni+'/'+x.vars.length+' रंग)</div>':'<div class="sbd no">Coming Soon</div>'}
 var pinned=pinPos(o)>=0;
-h+='<div class="cw"'+(x.gs?' style="grid-column:1"':'')+'><div class="cd'+(pl.length&&!vids.length?' hp':'')+'" data-it="'+i+'"><div class="kc">'+esc(catLabel(o))+'</div><div class="'+(vids.length?'pw vd':pl.length?'pw':'pw np')+'">'+ph+'</div><div class="ov"><div class="ln"><div class="nm">'+esc(_n)+'</div><div class="prw">'+pr+'</div><div class="sub r3"><span class="sk">'+sk+'</span>'+(_cm?'<span class="cmp">'+esc(_cm)+'</span>':'')+'</div>'+cvs+'</div><div class="sbr">'+sb+(o.Warranty?'<span class="wb">🛡️ '+esc(o.Warranty)+'</span>':'')+'</div>'+ofl+'</div>'+(vids.length?'<div class="br"><button class="b2" data-vdel="'+i+'" aria-label="वीडियो हटाएँ">🗑</button></div>':'')+'</div></div>';
+CARDS.push('<div class="cw"'+(x.gs?' style="grid-column:1"':'')+'><div class="cd'+(pl.length&&!vids.length?' hp':'')+'" data-it="'+i+'"><div class="kc">'+esc(catLabel(o))+'</div><div class="'+(vids.length?'pw vd':pl.length?'pw':'pw np')+'">'+ph+'</div><div class="ov"><div class="ln"><div class="nm">'+esc(_n)+'</div><div class="prw">'+pr+'</div><div class="sub r3"><span class="sk">'+sk+'</span>'+(_cm?'<span class="cmp">'+esc(_cm)+'</span>':'')+'</div>'+cvs+'</div><div class="sbr">'+sb+(o.Warranty?'<span class="wb">🛡️ '+esc(o.Warranty)+'</span>':'')+'</div>'+ofl+'</div>'+(vids.length?'<div class="br"><button class="b2" data-vdel="'+i+'" aria-label="वीडियो हटाएँ">🗑</button></div>':'')+'</div></div>');
 });
 vUrls.forEach(function(u){try{URL.revokeObjectURL(u)}catch(e){}});vUrls=[];
-document.getElementById("list").innerHTML=h||'<div class="empty">'+(items.length?'कोई आइटम नहीं मिला':'ऑनलाइन डेटा लोड हो रहा है…<br>(इंटरनेट चालू होना चाहिए — ऑफ़लाइन डेटा नहीं दिखता)')+'</div>'
+var _EM='<div class="empty">'+(items.length?'कोई आइटम नहीं मिला':'ऑनलाइन डेटा लोड हो रहा है…<br>(इंटरनेट चालू होना चाहिए — ऑफ़लाइन डेटा नहीं दिखता)')+'</div>';var _L=document.getElementById("list"),_gen=++KM_RG,_ch=KM_FAST;KM_FAST=false;if(!CARDS.length)_L.innerHTML=_EM;else if(!_ch||CARDS.length<=30)_L.innerHTML=CARDS.join("");else{_L.innerHTML=CARDS.slice(0,24).join("");var _i=24;(function more(){if(_gen!==KM_RG||_i>=CARDS.length)return;_L.insertAdjacentHTML("beforeend",CARDS.slice(_i,_i+40).join(""));_i+=40;try{hydrateVideos()}catch(e){}setTimeout(more,0)})()}
 hydrateVideos()
 }
-document.getElementById("q").addEventListener("input",function(){if(this.value.trim()!==""&&curCat!=="सभी"){curCat="सभी";drawCats()}render()});
+document.getElementById("q").addEventListener("input",function(){if(this.value.trim()!==""&&curCat!=="सभी"){curCat="सभी";drawCats()}KM_FAST=true;if(KM_RAF)return;KM_RAF=requestAnimationFrame(function(){KM_RAF=0;render()})});
 document.getElementById("ap").addEventListener("click",function(e){var c=e.target.closest("[data-c]");if(!c)return;curCat=c.getAttribute("data-c");drawCats();render()});
 document.getElementById("cb").addEventListener("click",function(e){var t=e.target.closest("[data-cb]");if(t)openDt(+t.getAttribute("data-cb"))});
 document.getElementById("cats").addEventListener("click",function(e){var c=e.target.closest("[data-c]");if(!c)return;curCat=c.getAttribute("data-c");drawCats();render()});
@@ -1524,6 +1525,8 @@ function openBuy(i){var o=items[i];if(!o)return;if(!getUser()){pendingBuy=i;open
 var sv={};try{sv=JSON.parse(localStorage.getItem("kms_buyer")||"{}")}catch(e){}
 document.getElementById("byn").value=sv.n||"";document.getElementById("bym").value=sv.m||"";document.getElementById("bya").value=sv.a||"";document.getElementById("byc").value=sv.c||"";document.getElementById("byp").value=sv.p||"";document.getElementById("byk").value=sv.k||"";document.getElementById("byd").value=sv.d||"";document.getElementById("bys").value=sv.s||"Uttar Pradesh";document.getElementById("byt").value="";
 document.getElementById("byerr").textContent="";applyUserToBuy();drawBy();document.getElementById("byno").style.display="none";var b=document.getElementById("by");b.classList.add("on");b.scrollTop=0}
+function codFee(a){return Math.round(a*3.6)/100}
+function kmTot(R){return Math.round((R*byQ+(byP==="Cash"?codFee(R*byQ):0))*100)/100}
 function inr(n){return "₹"+(Math.round(n*100)/100).toLocaleString("en-IN")}
 /* UPI: सिर्फ़ UPI ID + ऑर्डर नंबर (पेमेंट के Note में) – QR की ज़रूरत नहीं */
 var UPI_ID="U1F0640191@mairtel",pendBusy=false,pendFail=false;
@@ -1551,9 +1554,9 @@ if(M!==null&&M>R0)h+='<div class="byr g"><span>छूट</span><span>− '+inr((
 if(offAvail()>0)h+='<div class="byr"><span>ऑफर '+(offLocked()?'<s>₹'+fmtN(offAvail())+'</s>':'₹'+fmtN(offAvail()))+' उपलब्ध</span><button class="offt '+(offOn()?'on':'off')+'" data-offt="1">'+(offOn()?'ON':'OFF')+'</button></div>';
 if(R0>R)h+='<div class="byr g"><span>ऑफर ₹'+fmtN((R0-R)*byQ)+' की छूट</span><span>− '+inr((R0-R)*byQ)+'</span></div>';
 if(custGet().due>0)h+='<div class="byr"><span>आपका पुराना उधार (अलग)</span><span>'+inr(custGet().due)+'</span></div>';
-h+='<div class="byr"><span>डिलीवरी</span><span>'+"दुकान पर तय होगा"+'</span></div><div class="byr tot"><span>कुल रकम</span><span>'+inr(R*byQ)+'</span></div>'}
+h+='<div class="byr"><span>डिलीवरी</span><span>'+"दुकान पर तय होगा"+'</span></div>'+(byP==="Cash"?'<div class="byr"><span>कैश ऑन डिलीवरी चार्ज (₹3.60 प्रति ₹100)</span><span>+ '+inr(codFee(R*byQ))+'</span></div>':'')+'<div class="byr tot"><span>कुल रकम</span><span>'+inr(kmTot(R))+'</span></div>'}
 else h+='<div class="byr"><span>रेट</span><span>दुकान पर बताया जाएगा</span></div>';
-document.getElementById("bypd").innerHTML=h;var _ft=document.getElementById("byft");if(_ft)_ft.innerHTML=R!==null?"<b>"+inr(R*byQ)+"</b><span>कुल रकम</span>":"<span>रेट दुकान पर</span>";drawQR(R,byQ)}
+document.getElementById("bypd").innerHTML=h;var _ft=document.getElementById("byft");if(_ft)_ft.innerHTML=R!==null?"<b>"+inr(kmTot(R))+"</b><span>कुल रकम</span>":"<span>रेट दुकान पर</span>";drawQR(R,byQ)}
 function closeBuy(){byI=-1;document.getElementById("by").classList.remove("on")}
 document.getElementById("byx").addEventListener("click",closeBuy);
 document.getElementById("by").addEventListener("click",function(e){
@@ -1569,7 +1572,7 @@ if(!n||m.length!==10||(byD==="home"&&(!a||!c||pc.length!==6))){sendBuy();return}
 var nm=(u&&u.n)?u.n:n;
 var R0=numOf(o.Rate),R=(R0===null?null:R0-offPU(R0,byQ));
 var d=document.getElementById("kcf");if(!d){d=document.createElement("div");d.id="kcf";d.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2147483000;display:none;align-items:center;justify-content:center;padding:20px;font-family:inherit";document.body.appendChild(d)}
-d.innerHTML='<div style="background:#fff;color:#111;border-radius:16px;padding:22px 18px;width:100%;max-width:380px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35)"><div style="font-size:19px;font-weight:900;line-height:1.5;word-break:break-word"><span style="color:#fb641b">'+esc(nm)+'</span>,<br>आप ये ऑर्डर बुक कर रहे हैं</div><div style="margin:12px 0 4px;font-size:15px;font-weight:700;word-break:break-word">'+esc(o.Item)+'</div><div style="font-size:14px;color:#555">मात्रा: '+byQ+(R!==null?' · कुल रकम: <b>'+inr(R*byQ)+'</b>':'')+'</div><div style="margin-top:12px;font-size:12px;font-weight:700;color:#b45309;line-height:1.5">⚠ आप आइटम बुक करके बार-बार कैंसल करेंगे तो आपकी ID ब्लॉक हो जाएगी।</div><button id="kcfd" style="margin-top:18px;width:100%;background:#16a34a;color:#fff;border:0;border-radius:12px;padding:15px;font-size:19px;font-weight:900">✅ Done</button><button id="kcfx" style="margin-top:10px;width:100%;background:#eee;color:#222;border:0;border-radius:12px;padding:11px;font-size:15px;font-weight:700">← वापस</button></div>';
+d.innerHTML='<div style="background:#fff;color:#111;border-radius:16px;padding:22px 18px;width:100%;max-width:380px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35)"><div style="font-size:19px;font-weight:900;line-height:1.5;word-break:break-word"><span style="color:#fb641b">'+esc(nm)+'</span>,<br>आप ये ऑर्डर बुक कर रहे हैं</div><div style="margin:12px 0 4px;font-size:15px;font-weight:700;word-break:break-word">'+esc(o.Item)+'</div><div style="font-size:14px;color:#555">मात्रा: '+byQ+(R!==null?' · कुल रकम: <b>'+inr(kmTot(R))+'</b>'+(byP==="Cash"?'<div style="font-size:12px;color:#666;margin-top:3px">(कैश ऑन डिलीवरी चार्ज '+inr(codFee(R*byQ))+' सहित)</div>':''):'')+'</div><div style="margin-top:12px;font-size:12px;font-weight:700;color:#b45309;line-height:1.5">⚠ आप आइटम बुक करके बार-बार कैंसल करेंगे तो आपकी ID ब्लॉक हो जाएगी।</div><button id="kcfd" style="margin-top:18px;width:100%;background:#16a34a;color:#fff;border:0;border-radius:12px;padding:15px;font-size:19px;font-weight:900">✅ Done</button><button id="kcfx" style="margin-top:10px;width:100%;background:#eee;color:#222;border:0;border-radius:12px;padding:11px;font-size:15px;font-weight:700">← वापस</button></div>';
 d.style.display="flex";
 document.getElementById("kcfx").onclick=function(){d.style.display="none"};
 document.getElementById("kcfd").onclick=function(){d.style.display="none";sendBuy()}}
@@ -1590,7 +1593,7 @@ if(byD==="home"&&pc.length!==6){er.textContent="⚠ पिनकोड 6 अं�
 if(byD==="home"){a=a+(k?", Landmark: "+k:"");c=c+(dist?", "+dist:"")+(stt?", "+stt:"")+(pc?", पिन "+pc:"")}
 er.textContent="";
 try{localStorage.setItem("kms_buyer",JSON.stringify({n:n,m:m,a:document.getElementById("bya").value.trim(),c:document.getElementById("byc").value.trim(),p:pc,k:k,d:dist,s:stt}))}catch(e){}
-var btn=document.getElementById("bysend");btn.disabled=true;btn.textContent="⏳ ऑर्डर नंबर बन रहा है…";
+var btn=document.getElementById("bysend");btn.disabled=true;btn.textContent="⏳ ऑर्डर नंबर बन रहा है…";try{kmOkPending(o)}catch(e){}
 var w=null;
 var R0=numOf(o.Rate),R=(R0===null?null:R0-offPU(R0,byQ)),M=numOf(o.MRate),s=stkOf(o.Qty);
 var D=(R0===null?0:Math.round((R0-R)*byQ*100)/100);
@@ -1603,18 +1606,18 @@ L.push("मात्रा: "+byQ);
 if(M!==null&&R!==null&&M>R)L.push("Market Rs: "+inr(M)+" (प्रति आइटम)");
 if(R0!==null&&R0>R)L.push("ऑफर छूट: "+inr((R0-R)*byQ)+" (कुल)");
 if(custGet().due>0)L.push("पुराना उधार: "+inr(custGet().due));
-if(R!==null){L.push("Rs (रेट): "+inr(R)+" (प्रति आइटम)");L.push("*कुल रकम: "+inr(R*byQ)+"*")}
+if(R!==null){L.push("Rs (रेट): "+inr(R)+" (प्रति आइटम)");if(byP==="Cash")L.push("कैश ऑन डिलीवरी चार्ज: "+inr(codFee(R*byQ)));L.push("*कुल रकम: "+inr(kmTot(R))+"*")}
 if(s)L.push((s==="Yes"?"Stock: है":"Coming Soon"));
 L.push("","*ग्राहक की जानकारी*","नाम: "+n,"मोबाइल: "+m);
 if(byD==="home"){L.push("लेना है: घर पर मँगवाना","पता: "+a+(c?", "+c:"")+(pc?" - "+pc:""))}else L.push("लेना है: दुकान से");
 L.push("पेमेंट: "+(byP==="Udhaar"?"उधार":byP));
 if(nt)L.push("नोट: "+nt);
-var ord={id:"KM"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:o.Item,sku:(o.SKU==null?"":String(o.SKU)),warranty:o.Warranty||"",mrate:(o.MRate==null?"":o.MRate),rate:(R===null?"":R),qty:byQ,total:(R!==null?Math.round(R*byQ*100)/100:""),stock:(s==="Yes"?"है":s==="NO"?"नहीं है":""),name:n,mobile:m,delivery:(byD==="home"?"घर":"दुकान"),offer:D,address:a,city:c,pin:pc,payment:(byP==="Udhaar"?"उधार":byP),note:nt,offLocal:(D>0?1:0)};
+var ord={id:"KM"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:o.Item,sku:(o.SKU==null?"":String(o.SKU)),warranty:o.Warranty||"",mrate:(o.MRate==null?"":o.MRate),rate:(R===null?"":R),qty:byQ,total:(R!==null?kmTot(R):""),cod:(R!==null&&byP==="Cash"?codFee(R*byQ):0),stock:(s==="Yes"?"है":s==="NO"?"नहीं है":""),name:n,mobile:m,delivery:(byD==="home"?"घर":"दुकान"),offer:D,address:a,city:c,pin:pc,payment:(byP==="Udhaar"?"उधार":byP),note:nt,offLocal:(D>0?1:0)};
 pushOrder(ord,(o.Photos&&o.Photos[0])||"");
 if(D>0){offConsume(D);offPost("use",ord)}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}
 btn.disabled=false;btn.textContent="✅ Order Now";closeBuy()})}
 var ORDER_URL="https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
-function mkThumb(u,cb){if(!u){cb("");return}var im=new Image();if(!/^data:/.test(u))im.crossOrigin="anonymous";im.onload=function(){try{var f=140/Math.max(im.width,im.height,1),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*f));c.height=Math.max(1,Math.round(im.height*f));c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",0.6))}catch(e){cb("")}};im.onerror=function(){cb("")};im.src=u}
+function mkThumb(u,cb0){var _d=false,cb=function(v){if(_d)return;_d=true;cb0(v)};setTimeout(function(){cb("")},3000);if(!u){cb("");return}var im=new Image();if(!/^data:/.test(u))im.crossOrigin="anonymous";im.onload=function(){try{var f=140/Math.max(im.width,im.height,1),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*f));c.height=Math.max(1,Math.round(im.height*f));c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",0.6))}catch(e){cb("")}};im.onerror=function(){cb("")};im.src=u}
 function pushOrder(ord,photo){mkThumb(photo,function(t){ord.thumb=t;
 try{var a=JSON.parse(localStorage.getItem("kms_orders")||"[]");a.unshift(ord);localStorage.setItem("kms_orders",JSON.stringify(a.slice(0,200)))}catch(e){}
 if(ORDER_URL){var _addB=JSON.stringify({action:"add",order:ord});var _addP=function(){return fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:_addB})};try{_addP().catch(function(){setTimeout(function(){try{_addP().catch(function(){})}catch(e){}},4000)})}catch(e){}}if(window.afterOrder)window.afterOrder(ord)})}
@@ -1701,7 +1704,7 @@ h+='</div>';
 var M=fnum(o.mrate),R=fnum(o.rate),q=fnum(o.qty)||1,tot=fnum(o.total);if(tot===null&&R!==null)tot=R*q;
 h+='<div class="xsec"><div class="xh2">🛒 आइटम की पूरी जानकारी</div><div style="display:flex;gap:12px"><div class="xi" style="flex:none;width:92px;height:92px;border-radius:10px;background:#eceef1;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:28px">'+(o.thumb?'<img alt="" style="width:100%;height:100%;object-fit:contain" src="'+esc(o.thumb)+'">':'📦')+'</div><div style="min-width:0"><div class="xn" style="-webkit-line-clamp:4;font-size:16px">'+esc(o.item)+'</div>'
 +'<div style="margin-top:4px">'+(M!==null?'<span style="text-decoration:line-through;color:#555;font-weight:700;margin-right:6px">'+inr(M)+'</span>':'')+(R!==null?'<span style="font-size:20px;font-weight:900;color:#000">'+inr(R)+'</span>':'')+'</div></div></div>'
-+'<div style="margin-top:10px">'+(o.sku!==""&&o.sku!=null?'<div class="xkv"><span>SKU</span><span>'+esc(o.sku)+'</span></div>':'')+(o.warranty?'<div class="xkv"><span>Warranty</span><span>🛡 '+esc(o.warranty)+'</span></div>':'')+'<div class="xkv"><span>मात्रा</span><span>'+esc(o.qty||1)+'</span></div>'+(tot!==null?'<div class="xkv"><span>कुल रकम</span><span style="font-size:18px">'+inr(tot)+'</span></div>':'')+'</div></div>';
++'<div style="margin-top:10px">'+(o.sku!==""&&o.sku!=null?'<div class="xkv"><span>SKU</span><span>'+esc(o.sku)+'</span></div>':'')+(o.warranty?'<div class="xkv"><span>Warranty</span><span>🛡 '+esc(o.warranty)+'</span></div>':'')+'<div class="xkv"><span>मात्रा</span><span>'+esc(o.qty||1)+'</span></div>'+(fnum(o.cod)>0?'<div class="xkv"><span>कैश ऑन डिलीवरी चार्ज</span><span>'+inr(fnum(o.cod))+'</span></div>':'')+(tot!==null?'<div class="xkv"><span>कुल रकम</span><span style="font-size:18px">'+inr(tot)+'</span></div>':'')+'</div></div>';
 h+='<div class="xsec"><div class="xh2">👤 आपकी जानकारी</div><div class="xkv"><span>नाम</span><span>'+esc(o.name)+'</span></div><div class="xkv"><span>मोबाइल</span><span>'+esc(m)+'</span></div><div class="xkv"><span>सामान</span><span>'+"🚚 घर पर मँगवाना"+'</span></div>'
 +(o.delivery==="घर"?'<div class="xkv"><span>पता</span><span>'+esc(o.address)+(o.city?', '+esc(o.city):'')+(o.pin?' - '+esc(o.pin):'')+'</span></div>':'')
 +'<div class="xkv"><span>पेमेंट</span><span>'+esc(o.payment||"—")+'</span></div>'+(o.note?'<div class="xkv"><span>नोट</span><span>'+esc(o.note)+'</span></div>':'')+'</div>';
@@ -1761,11 +1764,24 @@ if(u){ni.value=u.n||ni.value;mi.value=u.m;mi.readOnly=true}else mi.readOnly=fals
 
 /* Order bhejte hi: Orders page par jao */
 window.afterOrder=function(ord){closeBuy();closeDt();showPg("orders");
-var d=document.getElementById("xok"),tot=fnum(ord.total);
-d.innerHTML='<div class="xsh2"><div style="font-size:64px;line-height:1">✅</div><h3>ऑर्डर सफल हुआ!</h3>'
-+(ord.no?'<div class="xl">ऑर्डर नंबर</div><div class="xno">'+esc(ord.no)+'</div>':'<div class="xl">ऑर्डर नंबर थोड़ी देर में आपके Orders में दिख जाएगा</div>')
-+'<div class="xit">'+esc(ord.item)+(tot!==null?' · '+inr(tot):'')+'</div><button class="xbtn" id="xoko">📦 मेरे Orders देखें</button></div>';
-d.classList.add("on")};
+kmOkDraw({pending:false,no:ord.no,item:ord.item,qty:ord.qty,total:fnum(ord.total),photo:ord.thumb||"",paid:/PAID Online/.test(ord.note||"")||ord.payment==="UPI",home:ord.delivery==="घर",addr:ord.address})};
+function kmOkPending(o,paid){var R0=numOf(o.Rate),R=(R0===null?null:R0-offPU(R0,byQ));kmOkDraw({pending:true,item:o.Item,qty:byQ,total:(R===null?null:((!paid&&byP!=="UPI")?kmTot(R):Math.round(R*byQ*100)/100)),photo:(o.Photos&&o.Photos[0])||"",paid:!!paid||byP==="UPI",home:byD==="home"})}
+function kmOkHide(){var d=document.getElementById("xok");d.classList.remove("on");d.innerHTML=""}
+var kmOkTm=null;
+function kmOkDraw(f){var d=document.getElementById("xok");clearTimeout(kmOkTm);
+var img=f.photo?'<img class="kokimg" src="'+esc(f.photo)+'" alt="">':'<div class="kokimg ph0">📦</div>';
+d.innerHTML='<div class="xsh2 kok"><div class="kokc"><svg viewBox="0 0 52 52" width="76" height="76"><circle cx="26" cy="26" r="24" fill="#16a34a"/><path class="kokck" d="M14 27l8 8 16-17" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
++'<h3>ऑर्डर सफल हुआ!</h3>'
++(f.paid?'<div class="kokpd">✔ Payment मिल गया</div>':'')
++'<div class="xl">ऑर्डर नंबर</div>'
++(f.no?'<div class="xno" id="kokno">'+esc(f.no)+'</div>':(f.pending?'<div class="kokwt"><i></i>ऑर्डर नंबर बन रहा है…</div>':'<div class="xl">ऑर्डर नंबर थोड़ी देर में आपके Orders में दिख जाएगा</div>'))
++'<div class="kokrow">'+img+'<div class="kokd"><div class="kokn">'+esc(String(f.item).split("=")[0].trim())+'</div><div class="koks">'+(f.qty?'x'+esc(f.qty):'')+(f.total!==null&&f.total!==undefined?' · <b>'+inr(f.total)+'</b>':'')+'</div></div></div>'
++'<div class="kokm">'+(f.paid?'💳 Online Paid ✔':'💵 Cash on Delivery – माल मिलने पर दीजिए')+'</div>'
++(f.pending?'':'<button class="xbtn" id="xoko">📦 मेरे Orders देखें</button><button class="xbtn g" id="xokc">Shopping जारी रखें</button>')+'</div>';
+d.classList.add("on");
+if(f.pending)kmOkTm=setTimeout(function(){var b=document.querySelector("#xok .kok");if(b&&!document.getElementById("xokc")){b.insertAdjacentHTML("beforeend",'<button class="xbtn g" id="xokc">Shopping जारी रखें</button>')}},40000);
+var n=document.getElementById("kokno");if(n)n.onclick=function(){try{navigator.clipboard.writeText(f.no)}catch(e){}}}
+document.getElementById("xok").addEventListener("click",function(e){if(e.target.closest("#xokc")){kmOkHide();showPg("home")}});
 document.getElementById("xok").addEventListener("click",function(e){if(e.target===this||e.target.closest("#xoko")){this.classList.remove("on");this.innerHTML=""}});
 
 /* ?q=item-ka-naam se aaye to search bar me wahi item khol do */
@@ -1974,18 +1990,15 @@ d.innerHTML='<div style="background:#fff;color:#111;border-radius:16px;max-width
 d.addEventListener("click",function(e){if(e.target===d||e.target.tagName==="BUTTON")d.remove()});document.body.appendChild(d)}
 function kmLocalBlocked(m){return kmStat(readAll().filter(function(o){return t10(o.mobile)===m})).blocked}
 function kmMobiles(){var u=getUser(),a=[],e=document.getElementById("bym"),m=e?t10(String(e.value).replace(/\D/g,"")):"";if(u&&u.m)a.push(t10(u.m));if(m.length===10&&a.indexOf(m)<0)a.push(m);return a}
-function kmGateAll(ms,go){var left=ms.length,fin=false,btn=document.getElementById("bysend"),old=btn?btn.textContent:"";
-if(btn){btn.disabled=true;btn.textContent="⏳ जाँच रहे हैं…"}
-function end(){if(fin)return;fin=true;if(btn){btn.disabled=false;btn.textContent=old||"✅ Order Now"}
-var bad=false;ms.forEach(function(m){if(kmLocalBlocked(m))bad=true});if(bad){kmShowBlock();return}go()}
-if(!ORDER_URL||!ms.length){end();return}
-var tm=setTimeout(end,4500);
-function one(){if(--left<=0){clearTimeout(tm);end()}}
+function kmBgSync(ms,cb){var left=ms.length,fin=false;function one(){if(--left<=0&&!fin){fin=true;if(cb)cb()}}
+if(!ORDER_URL||!ms.length){if(cb)cb();return}
+setTimeout(function(){if(!fin){fin=true;if(cb)cb()}},4500);
 ms.forEach(function(m){try{fetch(ORDER_URL+(ORDER_URL.indexOf("?")<0?"?":"&")+"action=my&mobile="+m+"&t="+Date.now()).then(function(r){return r.json()}).then(function(j){try{mergeMine((j&&j.orders)||[])}catch(e){}one()}).catch(one)}catch(e){one()}})}
+function kmGateAll(ms,go){var bad=false;ms.forEach(function(m){if(kmLocalBlocked(m))bad=true});if(bad){kmShowBlock();return}go();try{kmBgSync(ms)}catch(e){}}
 var kmPass=0,_kmCB=confirmBuy,_kmSB=sendBuy,_kmOB=openBuy;
 confirmBuy=function(){if(Date.now()-kmPass<90000){return _kmCB()}kmGateAll(kmMobiles(),function(){kmPass=Date.now();_kmCB()})};
 sendBuy=function(){if(Date.now()-kmPass<90000){kmPass=0;return _kmSB()}kmGateAll(kmMobiles(),function(){kmPass=0;_kmSB()})};
-openBuy=function(i){var u=getUser();if(u&&u.m&&kmLocalBlocked(t10(u.m))){kmShowBlock();try{syncOrders()}catch(e){}return}_kmOB(i)};
+openBuy=function(i){var u=getUser();if(u&&u.m&&kmLocalBlocked(t10(u.m))){kmShowBlock();try{syncOrders()}catch(e){}return}_kmOB(i);try{kmBgSync(kmMobiles(),function(){try{if(byI>=0&&!(window.KM_RZP_GO)&&!document.getElementById("bysend").dataset.paying&&kmMobiles().some(function(m){return kmLocalBlocked(m)})){closeBuy();kmShowBlock()}}catch(e){}})}catch(e){}};
 </script>
 <script id="kback">
 /* Categories / Orders / Login पेज में ← वापस (Home) बटन */
@@ -2455,14 +2468,14 @@ try{var _kmU=getUser();if(_kmU)kmLogReg(_kmU)}catch(e){}
 /* ===== Razorpay Online Payment ===== */
 (function(){
 /* !!! Yahan apni Vercel website ka link likhiye (bina last slash ke), jaise: https://kingmobile.vercel.app */
-var KM_API="https://YOUR-SITE.vercel.app";
+var KM_API="https://YOUR-SITE.vercel.app";if(/YOUR-SITE/.test(KM_API)){KM_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:""}
 var SHOP_PH="9558222519";
 function g(i){return document.getElementById(i)}
 function er(t){var e=g("byerr");if(e)e.textContent=t||""}
 function bt(dis,txt){var b=g("bysend");if(!b)return;b.disabled=dis;if(txt)b.textContent=txt}
 function post(path,obj){return fetch(KM_API+path,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(obj)}).then(function(r){return r.json()})}
 var busy=false,_sb=sendBuy;
-function lost(r,why){busy=false;bt(false,"✅ Order Now");
+function lost(r,why){busy=false;bt(false,"✅ Order Now");try{kmOkHide()}catch(e){}
   try{localStorage.setItem("kms_rzp_unbooked",JSON.stringify({pid:r.razorpay_payment_id,oid:r.razorpay_order_id,t:Date.now()}))}catch(e){}
   alert("⚠ आपका पेमेंट मिल गया है (Payment ID: "+r.razorpay_payment_id+") लेकिन ऑर्डर बुक नहीं हो पाया"+(why?" ("+why+")":"")+".\nकृपया यह ID लेकर दुकान को कॉल करें: "+SHOP_PH+"\nघबराइए नहीं, आपका पैसा सुरक्षित है।")}
 function verify(r,tries){
@@ -2472,16 +2485,16 @@ function verify(r,tries){
       window.KM_RZP_GO=true;
       try{kmPass=Date.now()}catch(e){}
       try{_sb()}finally{window.KM_RZP_GO=false;busy=false}
-    }else if(tries<3){setTimeout(function(){verify(r,tries+1)},1500)}
+    }else if(tries<3){setTimeout(function(){verify(r,tries+1)},600)}
     else lost(r,"verify नहीं हुआ")
-  }).catch(function(){ if(tries<3)setTimeout(function(){verify(r,tries+1)},1500);else lost(r,"नेटवर्क")})
+  }).catch(function(){ if(tries<3)setTimeout(function(){verify(r,tries+1)},600);else lost(r,"नेटवर्क")})
 }
 function openRzp(j,n,m,o){
   var rz=new Razorpay({key:j.key,amount:j.amount,currency:"INR",order_id:j.orderId,
     name:"KING MOBILE SHOP",description:String(o.Item||"").slice(0,100),
     prefill:{name:n,contact:m},theme:{color:"#fb641b"},
     modal:{ondismiss:function(){if(busy&&!window.KM_RZP_GO&&!g("bysend").dataset.paying){busy=false;bt(false,"✅ Order Now");er("पेमेंट पूरा नहीं हुआ, ऑर्डर बुक नहीं हुआ।")}}},
-    handler:function(r){g("bysend").dataset.paying="1";bt(true,"⏳ पेमेंट जाँच रहे हैं…");verify(r,1);setTimeout(function(){delete g("bysend").dataset.paying},20000)}});
+    handler:function(r){g("bysend").dataset.paying="1";bt(true,"⏳ ऑर्डर बन रहा है…");try{kmOkPending(o,true)}catch(e){}verify(r,1);setTimeout(function(){delete g("bysend").dataset.paying},20000)}});
   rz.on("payment.failed",function(x){er("⚠ पेमेंट फेल हुआ"+((x&&x.error&&x.error.description)?": "+x.error.description:"")+" — दोबारा कोशिश करें।")});
   rz.open()
 }
@@ -2505,6 +2518,188 @@ sendBuy=function(){
   }).catch(function(e){busy=false;bt(false,"✅ Order Now");er("⚠ पेमेंट शुरू नहीं हो पाया, इंटरनेट देखकर दोबारा कोशिश करें।")})
 };
 })();
+</script>
+<style id="kfinal">
+button,.cd,.bn,[data-buy],#xnav button{touch-action:manipulation}
+#xok{z-index:200!important}
+#xok .kok{max-width:380px;animation:kokin .22s ease-out}
+@keyframes kokin{from{transform:translateY(24px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+#xok .kokck{stroke-dasharray:40;stroke-dashoffset:40;animation:kokdr .45s .15s ease-out forwards}
+@keyframes kokdr{to{stroke-dashoffset:0}}
+#xok .kokpd{display:inline-block;background:#e8f7ee;color:#0a5d24;font-weight:800;font-size:13px;border-radius:999px;padding:4px 12px;margin-bottom:2px}
+#xok .kokwt{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;color:#e63c1f;margin:6px 0 10px}
+#xok .kokwt i{width:16px;height:16px;border-radius:50%;border:3px solid #fbd0c8;border-top-color:#e63c1f;animation:kspin .8s linear infinite}
+#xok .kokrow{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid #e3e6ea;border-radius:12px;padding:8px;margin:6px 0}
+#xok .kokimg{width:56px;height:56px;object-fit:contain;border-radius:8px;background:#f3f4f6;flex:none;display:flex;align-items:center;justify-content:center;font-size:26px}
+#xok .kokn{font-weight:800;font-size:14px;line-height:1.3;word-break:break-word}#xok .koks{font-size:14px;color:#333;margin-top:2px}
+#xok .kokm{font-size:13px;font-weight:800;color:#333;margin:8px 0 12px}
+#xok .xbtn{display:block;width:100%;margin-top:8px}
+.kpr{background:#f1f2f4;border-radius:8px;padding:10px 12px;font-weight:800;font-size:15px;color:#212121}
+.byc2{flex-direction:column}
+.byc2 button{align-items:flex-start!important;border:1px solid #e0e0e0!important;background:#fff!important;border-radius:10px!important;padding:14px!important}
+.byc2 button.on{border:2px solid #2874f0!important;background:#f5f9ff!important}
+.byc2 button>span{flex:1;min-width:0;font-size:16px;font-weight:700}
+.byc2 small.gn{color:#188038;font-weight:700}
+.byc2 .pex{display:none;margin-top:12px;font-style:normal}.byc2 button.on .pex{display:block}
+.byc2 .pyb{display:block;text-align:center;background:linear-gradient(90deg,#ffe500,#ffc200);color:#111;font-weight:900;font-size:17px;border-radius:10px;padding:13px 8px}
+#klg{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;padding:12px}
+#klg .klgs{background:#fff;color:#111;width:100%;max-width:420px;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+#klg .klgt{font-weight:800;text-align:center;font-size:16px}
+#klg button{display:flex;justify-content:space-between;align-items:center;padding:16px;font-size:18px;font-weight:800;border-radius:12px;border:2px solid #d5d8dd;background:#fff;color:#111}
+#klg button.on{border-color:#e63c1f;background:#fff1ee;color:#b42410}
+</style>
+<script id="kpayjs">document.getElementById("by").addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".pyb")){e.stopPropagation();e.preventDefault();var b=document.getElementById("bysend");if(b&&!b.disabled)b.click()}},true);</script>
+<script id="klang">
+(function(){
+var EX={
+"वापस":"Back","जिला":"District","राज्य":"State","सभी":"All","छूट":"Discount","ऑफर":"Offer","उपलब्ध":"available",
+"डिलीवरी":"Delivery","कुल रकम":"Total amount","रेट":"Rate","नाम":"Name","मोबाइल":"Mobile","पता":"Address","पेमेंट":"Payment",
+"नोट":"Note","मात्रा":"Quantity","सामान":"Item","आइटम":"Item","ऑर्डर":"Order","ग्राहक":"Customer","घर":"Home","दुकान":"Shop",
+"है":"Yes","नहीं है":"No","नया":"New","कन्फर्म":"Confirmed","डिलीवर्ड":"Delivered","रद्द":"Cancelled","उधार":"Credit",
+"जी":"","फोटो":"Photo","बंद":"Close","बंद करें":"Close","कॉपी":"Copy","नेटवर्क":"Network","ठीक है":"OK","रद्द करें":"Cancel",
+"प्रॉब्लम":"Problem","पिनकोड * (6 अंक)":"Pincode * (6 digits)"
+};
+var PH={
+"Order Now दबाने पर UPI / Card / NetBanking खुलेगा। पेमेंट सफल होने के बाद ही ऑर्डर बुक होगा।":"Tapping Order Now opens UPI / Card / NetBanking. The order is booked only after the payment succeeds.",
+"डेटा आ रहा है…":"Loading data…","फिर कोशिश करें":"Try again","बिना फोटो":"No photo","आइटम का नाम":"Item name",
+"Market Rs (कटेगा)":"Market Rs (struck)","Rs (असली रेट)":"Rs (actual rate)","वारंटी / गारंटी (जैसे 6 महीने)":"Warranty / Guarantee (e.g. 6 months)",
+"सेव करें":"Save","Excel से लोड करें":"Load from Excel","ऑर्डर की जानकारी":"Order details","मात्रा (Quantity)":"Quantity",
+"पेमेंट कैसे करेंगे?":"How will you pay?","माल मिलने पर नकद दीजिए":"Pay cash when you receive the item",
+"Razorpay से सुरक्षित पेमेंट":"Secure payment by Razorpay","आपकी जानकारी":"Your details","आपका पूरा नाम *":"Your full name *",
+"मोबाइल नंबर * (10 अंक)":"Mobile number * (10 digits)","घर पर डिलीवरी":"Home delivery","पूरा पता भरिए":"Enter full address",
+"मकान नंबर / गली / मोहल्ला *":"House no. / Street / Locality *","लैंडमार्क (जैसे मंदिर, स्कूल के पास)":"Landmark (e.g. near temple, school)",
+"गाँव / शहर *":"Village / City *","पिनकोड *":"Pincode *","कुछ और बताना हो तो लिखिए (वैकल्पिक)":"Anything else to tell us? (optional)",
+"⚠ ध्यान दें: अगर आप आइटम बुक करके बार-बार कैंसल करेंगे, तो आपकी ID ब्लॉक हो जाएगी।":"⚠ Note: if you repeatedly book items and cancel, your ID will be blocked.",
+"Update का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए:":"The update link is not added yet. Please contact the shop:",
+"App का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए:":"The app link is not added yet. Please contact the shop:",
+"KING MOBILE SHOP का App इंस्टॉल करने के लिए यह लिंक खोलिए:":"Open this link to install the KING MOBILE SHOP app:",
+"रद्द करें":"Cancel","फोटो / वीडियो कैसे लगाएँ?":"How to add photo / video?","कैमरा से खींचें":"Take from camera","गैलरी से चुनें":"Choose from gallery",
+"वीडियो जोड़ें":"Add video","सबसे आगे लगाएँ":"Put in front","+ फोटो जोड़ें":"+ Add photo","यह फोटो हटाएँ":"Remove this photo","बंद करें":"Close",
+"ऑफर अभी बंद है":"Offer is currently OFF","आप अपना पहले उधार जमा करें, फिर आप ऑफर उपयोग कर पाएंगे।":"Please pay your credit due first, then you can use the offer.",
+"आपका उधार: ₹":"Your credit due: ₹","आपका ऑफर अभी ₹0 है":"Your offer is ₹0 right now","हर बिक्री पर आपको कुछ रुपयों का ऑफर मिलता है।":"You get a small offer amount on every sale.",
+"इसे चालू करने के लिए Orders में जाइए। वहाँ ऊपर दाईं तरफ़":"To turn it on, go to Orders. At the top right there is an","ऑफर OFF":"Offer OFF","का बटन है, उससे ON कीजिए।":"button — turn it ON.",
+"ऑफर चालू है":"Offer is ON","आपका ₹":"Your ₹","का ऑफर अगले ऑर्डर के कुल पेमेंट से कट जाएगा।":"offer will be deducted from the total payment of your next order.",
+"⚠ इंटरनेट नहीं है — ऑनलाइन डेटा नहीं दिख सकता (ऑफ़लाइन डेटा नहीं दिखाया जाता)":"⚠ No internet — online data cannot be shown (offline data is not shown)",
+"इंटरनेट नहीं जुड़ा है। King Mobile में माल और ऑर्डर देखने के लिए सर्वर (इंटरनेट) का जुड़ा होना बहुत ज़रूरी है।":"Internet is not connected. To see items and orders in King Mobile you must be connected to the server (internet).",
+"आइटम:":"Item:","Rs (रेट): ₹":"Rs (rate): ₹","Stock: है":"Stock: Available","मुझे ये चाहिए, कृपया बताइए।":"I want this, please tell me.",
+"पासवर्ड डालिए:":"Enter password:","पासवर्ड गलत है":"Wrong password","गलत पासवर्ड":"Wrong password","आइटम सर्च":"Item search",
+"वीडियो नहीं मिला":"Video not found","KING MOBILE की तरफ से आपको":"From KING MOBILE to you","KING MOBILE परिवार":"KING MOBILE family",
+"🙏 KING MOBILE में आपका स्वागत है":"🙏 Welcome to KING MOBILE","आपका स्वागत करता है":"welcomes you","KING MOBILE आपकी हर एक बिक्री पर आपको कुछ रुपयों का ऑफर देता है।":"KING MOBILE gives you a small offer amount on every sale.",
+"🎁 आपका ऑफर":"🎁 Your offer","उधार जमा करने पर चालू होगा":"Will turn on after you pay your credit due","कुल:":"Total:","आइटम · फोटो":"items · photos",
+"वीडियो खुल रहा है…":"Opening video…","✔ Stock है (":"✔ In stock (","✔ Stock है":"✔ In stock","रंग)":"colours)","वीडियो हटाएँ":"Remove video",
+"कोई आइटम नहीं मिला":"No item found","ऑनलाइन डेटा लोड हो रहा है…":"Loading online data…","(इंटरनेट चालू होना चाहिए — ऑफ़लाइन डेटा नहीं दिखता)":"(internet must be ON — offline data is not shown)",
+"बदलने के लिए पासवर्ड डालिए:":"Enter password to change:","हटाने के लिए पासवर्ड डालिए:":"Enter password to remove:","जोड़ने के लिए पासवर्ड डालिए:":"Enter password to add:",
+"आगे लगाने के लिए पासवर्ड डालिए:":"Enter password to bring to front:","बस, हो गया":"Done","वीडियो बहुत बड़ा है (200 MB से कम चुनिए)":"Video is too big (choose under 200 MB)",
+"वीडियो सेव हो रहा है…":"Saving video…","✔ वीडियो जुड़ गया":"✔ Video added","फ़ोटो नहीं खुल पाई":"Could not open photo","फोटो जुड़ गई (कुल":"Photo added (total",
+"). और फोटो लगानी है?":"). Add more photos?","यह फोटो पहले से सबसे आगे है":"This photo is already in front","✘ खत्म":"✘ Out","रंग चुनिए:":"Choose colour:",
+"इसी कैटेगरी (":"More in this category (",") के और आइटम":")","🧾 ऑर्डर नंबर":"🧾 Order number","यह नंबर संभालकर रखिए – इसी से आपका ऑर्डर मिलेगा":"Keep this number safe – your order is found with it",
+"ऑर्डर भेजते ही नंबर बन जाएगा":"The number is created as soon as you place the order","⏳ आपका ऑर्डर नंबर बन रहा है…":"⏳ Creating your order number…",
+"कीमत का ब्योरा":"Price details","कीमत (":"Price (","आइटम)":"item)","ऑफर ₹":"Offer ₹","की छूट":"discount","उपलब्ध":"available","आपका पुराना उधार (अलग)":"Your old credit due (separate)",
+"दुकान पर तय होगा":"Decided at the shop","दुकान पर बताया जाएगा":"Will be told at the shop","रेट दुकान पर":"Rate at shop","आप ये ऑर्डर बुक कर रहे हैं":"you are booking this order",
+"मात्रा:":"Quantity:","· कुल रकम:":"· Total:","⚠ आप आइटम बुक करके बार-बार कैंसल करेंगे तो आपकी ID ब्लॉक हो जाएगी।":"⚠ If you repeatedly book items and cancel, your ID will be blocked.",
+"← वापस":"← Back","⚠ कृपया अपना नाम लिखिए":"⚠ Please enter your name","⚠ मोबाइल नंबर 10 अंक का होना चाहिए":"⚠ Mobile number must be 10 digits",
+"⚠ मकान नंबर / गली / मोहल्ला लिखिए":"⚠ Enter house no. / street / locality","⚠ गाँव / शहर लिखिए":"⚠ Enter village / city","⚠ पिनकोड 6 अंक का होना चाहिए":"⚠ Pincode must be 6 digits",
+"⏳ ऑर्डर नंबर बन रहा है…":"⏳ Creating order number…","अपने ऑर्डर देखने के लिए पहले Login कीजिए":"Login first to see your orders","अभी तक कोई ऑर्डर नहीं":"No orders yet",
+"कोई आइटम चुनकर":"Choose an item and tap","दबाइए":"","ऑर्डर नंबर":"Order number","📍 ऑर्डर की स्थिति":"📍 Order status","❌ ऑर्डर रद्द हो गया":"❌ Order cancelled",
+"आपने यह ऑर्डर खुद रद्द किया था":"You cancelled this order yourself","दुकान की तरफ़ से रद्द किया गया":"Cancelled by the shop","🛵 आपका सामान लेकर आ रहे हैं":"🛵 On the way with your item",
+"✅ डिलीवरी हो गई – धन्यवाद!":"✅ Delivered – thank you!","❌ डिलीवरी रद्द हो गई":"❌ Delivery cancelled","कृपया दुकान से बात कीजिए":"Please talk to the shop",
+"🛒 आइटम की पूरी जानकारी":"🛒 Full item details","👤 आपकी जानकारी":"👤 Your details","🚚 घर पर मँगवाना":"🚚 Home delivery","📞 कॉल करें":"📞 Call",
+"क्या आप यह ऑर्डर (":"Do you want to cancel this order (",") रद्द करना चाहते हैं?":")?","✔ आप Login हैं":"✔ You are logged in","आप Login नहीं हैं":"You are not logged in",
+"ऑर्डर करने और देखने के लिए Login कीजिए":"Login to place and view orders","आप पहले से Login हैं (":"You are already logged in (","क्या आप Logout करना चाहते हैं?":"Do you want to Logout?",
+"इस नंबर से दूसरे फ़ोन पर Login हुआ है, इसलिए यहाँ से Logout हो गया है। दोबारा Login कीजिए।":"This number has logged in on another phone, so you were logged out here. Please login again.",
+"WhatsApp कोड":"WhatsApp code","दोबारा कोशिश":"Try again","आपके नंबर":"Your number","पर WhatsApp से 6 अंक का कोड भेजा गया है":"A 6-digit code has been sent on WhatsApp",
+"6 अंक का कोड लिखिए":"Enter the 6-digit code","6 अंक का कोड":"6-digit code","कोड जाँचिए":"Verify code","दोबारा भेजें (":"Resend (","दोबारा भेजें":"Resend","गलत कोड":"Wrong code",
+"सर्वर से जुड़ नहीं पाए":"Could not connect to the server","कोड भेज रहे हैं…":"Sending code…","कोड नहीं भेज पाए":"Could not send the code",
+"Login का समय सुबह 08 बजे से रात 08 बजे तक है। कृपया इसी समय Login कीजिए। धन्यवाद। अधिक जानकारी के लिए संपर्क कीजिए:":"Login time is from 8 AM to 8 PM. Please login during this time. Thank you. For more information contact:",
+"अपना नाम और मोबाइल नंबर डालिए। एक बार Login करने के बाद इस फ़ोन पर हमेशा Login रहेगा।":"Enter your name and mobile number. Once logged in, you stay logged in on this phone.",
+"आपका पूरा नाम":"Your full name","Login करें":"Login","ऑर्डर सफल हुआ!":"Order placed successfully!","ऑर्डर नंबर थोड़ी देर में आपके Orders में दिख जाएगा":"Your order number will show in your Orders shortly",
+"📦 मेरे Orders देखें":"📦 View my Orders","Complaint के लिए पहले Login कीजिए":"Login first for a Complaint","➕ नई Complaint दर्ज करें":"➕ Register new Complaint",
+"⚠ Number क्यों नहीं आया:":"⚠ Why the number did not come:","🔄 फिर कोशिश करें":"🔄 Try again","अभी तक कोई Complaint नहीं":"No Complaint yet","नंबर आ रहा है…":"Getting number…",
+"Complaint दर्ज – सामान लेना बाकी":"Complaint registered – item pickup pending","— पुराने ऑर्डर से चुनिए (ज़रूरी नहीं) —":"— Choose from old orders (optional) —",
+"🛠 नई Complaint":"🛠 New Complaint","📦 पुराने ऑर्डर से चुनिए (आइटम और पता अपने-आप भर जाएगा)":"📦 Choose from an old order (item and address fill automatically)",
+"1. ग्राहक का नाम":"1. Customer name","2. मोबाइल नंबर":"2. Mobile number","3. आइटम का नाम":"3. Item name","कौन सा आइटम?":"Which item?","4. पता (ऑर्डर वाला ही)":"4. Address (same as order)",
+"5. प्रोडक्ट में प्रॉब्लम":"5. Problem in the product","क्या खराबी है?":"What is the fault?","6. फोटो (ज़रूरी नहीं)":"6. Photo (optional)","📷 कैमरा":"📷 Camera","🖼 गैलरी":"🖼 Gallery",
+"Complaint भेजें":"Send Complaint","⚠ नाम, 10 अंक का मोबाइल, आइटम, पता, गाँव/शहर और प्रॉब्लम भरिए":"⚠ Fill name, 10-digit mobile, item, address, village/city and problem",
+"⚠ 6 अंक का पिनकोड लिखिए (इसी से डिलीवरी वाला तय होता है)":"⚠ Enter the 6-digit pincode (the delivery boy is decided by it)","✅ Complaint दर्ज हो गई":"✅ Complaint registered",
+"कोशिश हो रही है…":"Trying…","Complaint नंबर":"Complaint number","📍 Complaint की स्थिति":"📍 Complaint status","❌ Complaint रद्द हो गई":"❌ Complaint cancelled",
+"🛵 डिलीवरी वाला आपसे सामान लेने आएगा – सामान मिलते ही यहाँ":"🛵 The delivery boy will come to collect the item – as soon as he gets it, it will","दिखेगा":"show here",
+"🛠 आपकी Complaint मिल गई है – जल्द ही Confirm होगी":"🛠 Your Complaint is received – it will be confirmed soon","✅ Delivery हो गई – धन्यवाद!":"✅ Delivered – thank you!","❌ Delivery रद्द हो गई":"❌ Delivery cancelled",
+"🛠 Complaint की पूरी जानकारी":"🛠 Full Complaint details","आपकी ID ब्लॉक हो गई है":"Your ID has been blocked",
+"आपने आइटम बुक करके बार-बार ऑर्डर कैंसल किए, इसलिए अब आप नया ऑर्डर बुक नहीं कर सकते।":"You booked items and cancelled orders repeatedly, so you can no longer book a new order.",
+"कृपया दुकान से संपर्क करें:":"Please contact the shop:","⏳ जाँच रहे हैं…":"⏳ Checking…","बोलकर खोजें":"Search by voice",
+"इस ऐप/ब्राउज़र में बोलकर खोजना नहीं चलता। Chrome में खोलकर देखिए।":"Voice search does not work in this app/browser. Open in Chrome.","माइक की अनुमति दीजिए":"Please allow the microphone",
+"⚠ आपका पेमेंट मिल गया है (Payment ID:":"⚠ Your payment is received (Payment ID:",") लेकिन ऑर्डर बुक नहीं हो पाया":") but the order could not be booked",
+"कृपया यह ID लेकर दुकान को कॉल करें:":"Please call the shop with this ID:","घबराइए नहीं, आपका पैसा सुरक्षित है।":"Don't worry, your money is safe.",
+"पेमेंट पूरा नहीं हुआ, ऑर्डर बुक नहीं हुआ।":"Payment was not completed, order not booked.","⏳ पेमेंट जाँच रहे हैं…":"⏳ Confirming payment…","⚠ पेमेंट फेल हुआ":"⚠ Payment failed","— दोबारा कोशिश करें।":"— please try again.",
+"⚠ इस आइटम का रेट दुकान पर तय होगा — कृपया Cash on Delivery चुनें।":"⚠ This item's rate will be decided at the shop — please choose Cash on Delivery.","⚠ रकम सही नहीं है":"⚠ Amount is not valid",
+"⏳ पेमेंट खुल रहा है…":"⏳ Opening payment…","⚠ पेमेंट शुरू नहीं हो पाया, इंटरनेट देखकर दोबारा कोशिश करें।":"⚠ Could not start the payment, check internet and try again.",
+"उधार ₹":"Credit due ₹","ऑफर ":"Offer ","डिलीवरी वाला":"delivery boy","✔ Payment मिल गया":"✔ Payment received","💳 Online Paid ✔":"💳 Paid Online ✔","💵 Cash on Delivery – माल मिलने पर दीजिए":"💵 Cash on Delivery – pay when you receive",
+"ऑर्डर नंबर बन रहा है…":"Creating order number…","Shopping जारी रखें":"Continue shopping","पेमेंट कैसे करें":"Payment options","Recommended – आपके लिए":"Recommended for You",
+"नकद दीजिए":"Pay cash","ऑर्डर करें":"Place Order","अभी पेमेंट करें":"Pay now","हर तरह का UPI ऐप":"Pay by any UPI app","कार्ड / नेटबैंकिंग भी":"Cards / NetBanking also",
+"शुभ नववर्ष":"Happy New Year","नववर्ष की हार्दिक शुभकामनाएँ":"Warm New Year wishes","लोहड़ी / मकर संक्रांति":"Lohri / Makar Sankranti","लोहड़ी और मकर संक्रांति की हार्दिक शुभकामनाएँ":"Warm wishes on Lohri and Makar Sankranti",
+"गणतंत्र दिवस की हार्दिक शुभकामनाएँ":"Warm wishes on Republic Day","गणतंत्र दिवस":"Republic Day","महाशिवरात्रि की हार्दिक शुभकामनाएँ":"Warm wishes on Maha Shivratri","महाशिवरात्रि":"Maha Shivratri",
+"होली की हार्दिक शुभकामनाएँ":"Warm wishes on Holi","शुभ होली":"Happy Holi","ईद मुबारक":"Eid Mubarak","ईद-उल-फ़ित्र की हार्दिक शुभकामनाएँ":"Warm wishes on Eid-ul-Fitr",
+"रामनवमी की हार्दिक शुभकामनाएँ":"Warm wishes on Ram Navami","रामनवमी":"Ram Navami","बैसाखी की हार्दिक शुभकामनाएँ":"Warm wishes on Baisakhi","बैसाखी":"Baisakhi",
+"ईद-उल-अज़हा":"Eid-ul-Adha","बकरीद की हार्दिक शुभकामनाएँ":"Warm wishes on Bakrid","रक्षाबंधन की हार्दिक शुभकामनाएँ":"Warm wishes on Raksha Bandhan","रक्षाबंधन":"Raksha Bandhan",
+"स्वतंत्रता दिवस की हार्दिक शुभकामनाएँ":"Warm wishes on Independence Day","स्वतंत्रता दिवस":"Independence Day","जन्माष्टमी की हार्दिक शुभकामनाएँ":"Warm wishes on Janmashtami","जन्माष्टमी":"Janmashtami",
+"गणेश चतुर्थी की हार्दिक शुभकामनाएँ":"Warm wishes on Ganesh Chaturthi","गणेश चतुर्थी":"Ganesh Chaturthi","नवरात्रि और दशहरा की हार्दिक शुभकामनाएँ":"Warm wishes on Navratri and Dussehra","नवरात्रि और दशहरा":"Navratri and Dussehra",
+"शुभ दीपावली":"Happy Diwali","दिवाली की हार्दिक शुभकामनाएँ":"Warm wishes on Diwali","गुरु नानक जयंती की हार्दिक शुभकामनाएँ":"Warm wishes on Guru Nanak Jayanti","गुरु नानक जयंती":"Guru Nanak Jayanti",
+"क्रिसमस की हार्दिक शुभकामनाएँ":"Warm wishes on Christmas",
+"कैश ऑन डिलीवरी चार्ज (₹3.60 प्रति ₹100)":"Cash on Delivery charge (₹3.60 per ₹100)","कैश ऑन डिलीवरी चार्ज":"Cash on Delivery charge","(कैश ऑन डिलीवरी चार्ज":"(Cash on Delivery charge","सहित)":"included)","ऑर्डर बन रहा है…":"Creating order…","पेमेंट":"Payment","ऑर्डर":"Order","कुल रकम":"Total amount","मात्रा":"Quantity","फोटो":"Photo","आइटम":"item"
+};
+var DEV=/[\u0900-\u097F]/,lang="hi",LK="kms_lang",ORIG=new WeakMap(),mo=null,q=[],raf=0;
+try{lang=localStorage.getItem(LK)==="en"?"en":"hi"}catch(e){}
+
+var EXH={"Home":"होम","Categories":"कैटेगरी","Category":"कैटेगरी","Account":"अकाउंट","Complaint":"शिकायत","Orders":"ऑर्डर","Login":"लॉगिन","🔐 Login":"🔐 लॉगिन","🚪 Logout":"🚪 लॉगआउट","Logout":"लॉगआउट","My Orders":"मेरे ऑर्डर","My Complaints":"मेरी शिकायतें","Search item":"आइटम खोजें","All Items":"सभी आइटम","Product Details":"प्रोडक्ट की जानकारी","Warranty":"वारंटी","Stock":"स्टॉक","Contact Us":"संपर्क करें","Refund & Return":"रिफंड और वापसी","Shipping":"शिपिंग","Privacy":"गोपनीयता","Terms":"नियम और शर्तें","App Send":"ऐप भेजें","Other":"अन्य","Item":"आइटम","Buy Now":"अभी खरीदें","Place Order":"ऑर्डर करें","OK":"ठीक है","Menu":"मेन्यू","King Mobile":"किंग मोबाइल","Yes":"हाँ","NO":"नहीं"};
+var PHH={"Cash on Delivery":"कैश ऑन डिलीवरी","UPI / Card / NetBanking":"UPI / कार्ड / नेटबैंकिंग","Recommended – आपके लिए":"आपके लिए सुझाया गया","Order Now":"अभी ऑर्डर करें","Buy now at":"अभी खरीदें","Online Paid":"ऑनलाइन पेमेंट हो गया","Call":"कॉल करें","Login":"लॉगिन","Logout":"लॉगआउट","Complaints":"शिकायतें","Complaint":"शिकायत","Orders":"ऑर्डर","Order":"ऑर्डर","Quantity":"मात्रा","Payment":"पेमेंट","Total amount":"कुल रकम","(मात्रा (मात्रा))":"(मात्रा)","Description":"विवरण","Warranty":"वारंटी","Stock":"स्टॉक"};
+var PHHk=Object.keys(PHH).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")});
+var PHHre=new RegExp("(?:^|[^A-Za-z])("+PHHk.join("|")+")(?![A-Za-z])","g");
+var LAT=/[A-Za-z]/;
+function trHi(s){
+ if(!LAT.test(s))return s;
+ var t=s.trim();
+ if(EXH.hasOwnProperty(t))return s.replace(t,function(){return EXH[t]});
+ return s.replace(PHHre,function(m,k){return m.slice(0,m.length-k.length)+PHH[k]})}
+var keys=Object.keys(PH).sort(function(a,b){return b.length-a.length});
+function trEn(s){
+ if(!DEV.test(s))return s;
+ var t=s.trim();
+ if(EX.hasOwnProperty(t))return s.replace(t,function(){return EX[t]});
+ for(var i=0;i<keys.length;i++){var k=keys[i];if(s.indexOf(k)>=0)s=s.split(k).join(PH[k])}
+ return s}
+function tr(s){return lang==="en"?trEn(s):trHi(s)}
+window.kmTr=tr;
+function doText(n){var v=n.nodeValue;if(!v||!(lang==="en"?DEV:LAT).test(v))return;var p=n.parentNode;if(p&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName))return;if(lang==="hi"&&p&&p.closest&&p.closest("#list,#klg"))return;var r=tr(v);if(r!==v){ORIG.set(n,v);n.nodeValue=r}}
+var AT=["placeholder","title","aria-label","alt"];
+function doEl(e){for(var i=0;i<AT.length;i++){var a=AT[i],v=e.getAttribute&&e.getAttribute(a);if(v&&(lang==="en"?DEV:LAT).test(v)){var r=tr(v);if(r!==v){e.__kmo=e.__kmo||{};e.__kmo[a]=v;e.setAttribute(a,r)}}}}
+function walk(root){
+ if(!root)return;
+ if(root.nodeType===3){doText(root);return}
+ if(root.nodeType!==1)return;
+ doEl(root);
+ var w=document.createTreeWalker(root,4),n;while((n=w.nextNode()))doText(n);
+ var es=root.querySelectorAll("[placeholder],[title],[aria-label],[alt]");for(var i=0;i<es.length;i++)doEl(es[i])}
+function flush(){raf=0;var a=q;q=[];a.forEach(function(m){if(m.type==="childList"){for(var i=0;i<m.addedNodes.length;i++)walk(m.addedNodes[i])}else if(m.type==="characterData")doText(m.target);else if(m.type==="attributes")doEl(m.target)})}
+function start(){walk(document.body);if(mo)return;try{mo=new MutationObserver(function(ms){for(var i=0;i<ms.length;i++)q.push(ms[i]);if(!raf)raf=requestAnimationFrame(flush)});mo.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT})}catch(e){}}
+function stop(){if(mo){mo.disconnect();mo=null}q=[];
+ var w=document.createTreeWalker(document.body,4),n,L=[];while((n=w.nextNode()))if(ORIG.has(n))L.push(n);
+ L.forEach(function(n){n.nodeValue=ORIG.get(n);ORIG.delete(n)});
+ var es=document.querySelectorAll("*");for(var i=0;i<es.length;i++){var o=es[i].__kmo;if(o){for(var a in o)es[i].setAttribute(a,o[a]);es[i].__kmo=null}}}
+var _al=window.alert,_cf=window.confirm;
+window.alert=function(m){return _al.call(window,lang==="en"?tr(String(m)):m)};
+window.confirm=function(m){return _cf.call(window,lang==="en"?tr(String(m)):m)};
+function setLang(l){lang=l==="en"?"en":"hi";try{localStorage.setItem(LK,lang)}catch(e){}document.documentElement.lang=lang;stop();start()}
+window.kmLang=function(){return lang};
+window.kmLangOpen=function(){
+ var d=document.getElementById("klg");if(d)d.remove();
+ d=document.createElement("div");d.id="klg";
+ d.innerHTML='<div class="klgs"><div class="klgt">भाषा चुनिए / Choose language</div><button type="button" data-l="en" class="'+(lang==="en"?"on":"")+'">English<span>'+(lang==="en"?"✔":"")+'</span></button><button type="button" data-l="hi" class="'+(lang==="hi"?"on":"")+'">हिन्दी<span>'+(lang==="hi"?"✔":"")+'</span></button></div>';
+ d.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-l]");if(b){setLang(b.getAttribute("data-l"));d.remove();return}if(e.target===d)d.remove()});
+ document.body.appendChild(d)};
+document.documentElement.lang=lang;
+start();
+})();
+
 </script>
 </body>
 </html>
