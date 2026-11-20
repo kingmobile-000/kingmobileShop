@@ -518,7 +518,7 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 <input type="text" id="byn" placeholder="आपका पूरा नाम *" autocomplete="name">
 <input type="text" id="bym" inputmode="numeric" maxlength="14" placeholder="मोबाइल नंबर * (10 अंक)" autocomplete="tel"></div>
 <div class="bysec"><div class="byh">🚚 घर पर डिलीवरी</div>
-<div id="byaddr"><div id="km-radius-banner" role="note"></div><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
+<div id="byaddr"><div id="km-radius-banner" role="note">📍 डिलीवरी सेवा: किंग मोबाइल शॉप, हुसैनगंज नहर के पास से 10 किलोमीटर की परिधि में उपलब्ध है। कृपया इसी सीमा के भीतर का पता भरें।</div><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
 <div class="bysec"><input type="text" id="byt" placeholder="कुछ और बताना हो तो लिखिए (वैकल्पिक)"></div>
 <div class="bysec" id="byno" style="display:none"></div>
 <div class="bysec" id="bypd"></div>
@@ -2803,5 +2803,61 @@ start();
 })();
 </script>
 
+<style id="kimgfix">
+/* ===== 1) Photo ka frame sabhi item me ek jaisa (chhoti ho ya badi photo, card ek size ka) ===== */
+html body #list .cd .pw:not(.vd){width:100%!important;aspect-ratio:1/1!important;height:auto!important;min-height:0!important;max-height:none!important;flex:none!important;display:block!important;position:relative!important;overflow:hidden!important;padding:0!important;background:#f1f2f4!important;border-radius:8px!important}
+html body #list .cd .pw.np:not(.vd){display:flex!important;align-items:center;justify-content:center}
+/* photo stretch na ho: poori dikhe (fit) */
+html body #list .cd .pw:not(.np):not(.vd) .ph{position:absolute!important;left:0!important;top:0!important;width:100%!important;height:100%!important;max-height:none!important;object-fit:contain!important;object-position:center!important;display:block!important;background:transparent!important}
+/* photo frame ke lagbhag barabar ho to halka crop karke frame bhar de (JS .kcv lagata hai) */
+html body #list .cd .pw.kcv:not(.np):not(.vd) .ph{object-fit:cover!important}
+/* Item detail page: badi photo bhi ek tay height me, poori dikhe, stretch nahi */
+html body #dtg .dsl:not(.dno){height:clamp(220px,76vw,320px)!important;min-height:0!important;display:flex!important;align-items:center;justify-content:center;overflow:hidden!important;background:#f3f4f6!important}
+html body #dtg .dsl:not(.dno) .dmi{position:static!important;display:block!important;width:100%!important;height:100%!important;max-height:none!important;object-fit:contain!important}
+
+/* ===== 2) Payment / Buy Now page: font thoda chhota, taaki payment mode + customer ki jankari ek saath dikhe ===== */
+#by .bysec{padding:10px 12px!important;gap:8px!important;margin-top:6px!important}
+#by #bysum{padding:10px 12px!important}
+#by .byh:not([style]){font-size:12.5px!important}
+#by .bysi{width:68px!important;height:68px!important}
+#by .bysn{font-size:14px!important}
+#by .bysk{font-size:11.5px!important}
+#by .byq{gap:14px!important}
+#by .byq button{width:34px!important;height:34px!important;font-size:20px!important}
+#by .byq b{font-size:17px!important}
+#by .kpr{font-size:13px!important;padding:8px 10px!important}
+#by .byc2{gap:6px!important}
+#by .byc2 button{padding:11px 12px!important;gap:10px!important}
+#by .byc2 button>span{font-size:14.5px!important}
+#by .byc2 small{font-size:11.5px!important;margin-top:1px!important}
+#by .byc2 .pex{margin-top:8px!important}
+#by .byc2 .pyb{font-size:15.5px!important;padding:11px 8px!important}
+#by .bysec input[type=text]{padding:10px 12px!important}   /* input ka font 16px hi rakha hai, taaki phone par tap karne par screen zoom na ho */
+#by #km-radius-banner{font-size:12px!important;padding:9px 11px!important;margin-bottom:8px!important}
+#by .byr{font-size:14px!important;padding:2px 0!important}
+#by .byr.tot{font-size:16.5px!important;padding-top:8px!important}
+#by #bywarn{font-size:12px!important;padding:6px 12px!important}
+#by #byqr .qrh{font-size:15.5px!important}
+#by #byqr .qro{font-size:14px!important}
+#by #byqr .qro b{font-size:21px!important}
+#by #byqr .qru{font-size:13.5px!important}
+#by #byqr .qra{font-size:14.5px!important;padding:10px!important}
+#by #byft b{font-size:18px!important}
+#by #bysend{font-size:16px!important;padding:12px 8px!important}
+</style>
+<script id="kimgfixjs">
+/* photo frame ke ratio ke hisab se: lagbhag square photo = halka crop, baaki sab = poori photo fit */
+(function(){
+function mark(img){try{
+ if(!img||!img.classList||!img.classList.contains("ph"))return;
+ var w=img.naturalWidth,h=img.naturalHeight;if(!w||!h)return;
+ var pw=img.closest(".pw");if(!pw)return;
+ var r=w/h;pw.classList.toggle("kcv",r>=0.88&&r<=1.14)}catch(e){}}
+document.addEventListener("load",function(e){mark(e.target)},true);
+function sweep(){try{var a=document.querySelectorAll("#list .pw img.ph");for(var i=0;i<a.length;i++){if(a[i].complete)mark(a[i])}}catch(e){}}
+function go(){var L=document.getElementById("list");sweep();if(L){try{new MutationObserver(sweep).observe(L,{childList:true})}catch(e){}}}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();
+})();
+</script>
 </body>
 </html>
