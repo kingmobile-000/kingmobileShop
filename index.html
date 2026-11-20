@@ -478,6 +478,23 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 .xpg .xbar{gap:6px!important}
 .xpg .xbar>.xbk{flex:none;width:40px;height:40px;margin-left:-8px;border:0;background:none;color:#fff;font-size:28px;line-height:1;padding:0}
 </style>
+
+<style id="km-bottom-navigation-layout">
+/* Clean layout: remove the upper navigation area */
+body>header, body>#sbar, body>#ap, body>#catw {display:none!important}
+/* Keep product content clear of the bottom controls */
+#list,#hm,#st {padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))!important}
+/* Existing navigation options stay together at the bottom-right */
+#xnav{position:fixed!important;left:66px!important;right:10px!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;width:auto!important;z-index:1000!important;border:1px solid #e2e5e9!important;border-radius:16px!important;overflow:hidden!important;box-shadow:0 4px 18px rgba(0,0,0,.22)!important}
+#xnav button{min-width:0!important;padding:8px 2px!important}
+/* Back controls move to the bottom-left while their respective screens are open */
+#dt.on #dtb{position:static!important}
+#dt.on #dtx,#by.on #byx,.xpg.on .xbar>button:first-child{position:fixed!important;left:10px!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;top:auto!important;z-index:1002!important;width:46px!important;height:46px!important;border-radius:14px!important;background:#fff!important;color:#d9361b!important;border:1px solid #e2e5e9!important;box-shadow:0 4px 18px rgba(0,0,0,.22)!important;font-size:25px!important;display:flex!important;align-items:center!important;justify-content:center!important}
+/* Keep page titles readable without the former top back button */
+#dt.on #dtb{padding-left:12px!important}
+#by.on #byb{padding-left:12px!important}
+@media(max-width:420px){#xnav{left:64px!important;right:8px!important}#xnav button span{font-size:10px!important}}
+</style>
 </head>
 <body>
 <div id="kld"><div class="klr" id="klr"></div><div id="klw"></div><div class="kls"></div><div class="klt" id="klt">डेटा आ रहा है…</div><div class="klm" id="klm"></div><button id="klb" type="button">फिर कोशिश करें</button></div>
@@ -518,7 +535,7 @@ header{margin-bottom:0!important;padding-bottom:4px!important}
 <input type="text" id="byn" placeholder="आपका पूरा नाम *" autocomplete="name">
 <input type="text" id="bym" inputmode="numeric" maxlength="14" placeholder="मोबाइल नंबर * (10 अंक)" autocomplete="tel"></div>
 <div class="bysec"><div class="byh">🚚 घर पर डिलीवरी</div>
-<div id="byaddr"><div id="km-radius-banner" role="note">📍 डिलीवरी सेवा: किंग मोबाइल शॉप, हुसैनगंज नहर के पास से 10 किलोमीटर की परिधि में उपलब्ध है। कृपया इसी सीमा के भीतर का पता भरें।</div><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
+<div id="byaddr"><div id="km-radius-banner" role="note">📍 डिलीवरी सेवा: किंग मोबाइल शॉप, हुसैनगंज से 10 किलोमीटर की दूरी में उपलब्ध है। कृपया इसी सीमा के भीतर का पता भरें।</div><div class="byh" style="font-size:14px">📍 पूरा पता भरिए</div><input type="text" id="bya" placeholder="मकान नंबर / गली / मोहल्ला *" autocomplete="street-address"><input type="text" id="byk" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)"><div class="row"><input type="text" id="byc" placeholder="गाँव / शहर *"><input type="text" id="byd" placeholder="जिला"></div><div class="row"><input type="text" id="bys" placeholder="राज्य"><input type="text" id="byp" inputmode="numeric" maxlength="6" placeholder="पिनकोड *"></div></div></div>
 <div class="bysec"><input type="text" id="byt" placeholder="कुछ और बताना हो तो लिखिए (वैकल्पिक)"></div>
 <div class="bysec" id="byno" style="display:none"></div>
 <div class="bysec" id="bypd"></div>
@@ -2750,19 +2767,23 @@ start();
 <script id="km-radius-and-payment-default">
 (function(){
   var en=function(){try{return window.kmLang&&window.kmLang()==="en"}catch(e){return false}};
+  // Show the service-area popup only once during this page visit.
+  var radiusPopupShown=false;
   function showRadius(){
+    if(radiusPopupShown)return;
+    radiusPopupShown=true;
     var old=document.getElementById('km-radius-notice');if(old)old.remove();
     var english=en();
     var title=english?'Delivery service area':'डिलीवरी सेवा क्षेत्र';
     var p1=english?'King Mobile Shop currently provides home delivery within a 10 km radius of King Mobile Shop, near the canal in Hussain Ganj.':'किंग मोबाइल शॉप फिलहाल हुसैनगंज में नहर के पास स्थित दुकान से 10 किलोमीटर की परिधि के गाँवों और शहरों में ही होम डिलीवरी सेवा उपलब्ध करा रहा है।';
-    var p2=english?'Orders with a delivery address beyond this service area cannot be accepted online. Please call us before placing an order so we can discuss the available service.':'10 किलोमीटर से अधिक दूरी का पता होने पर ऑनलाइन ऑर्डर स्वीकार नहीं किया जा सकेगा। ऑर्डर करने से पहले कृपया हमें कॉल करके उपलब्ध सेवा की जानकारी ले लें।';
+    var p2=english?'Orders with a delivery address beyond this service area cannot be accepted online. Please call us before placing an order so we can discuss the available service.':'';
     var p3=english?'We are keeping this limit so that warranty support, service visits and other commitments can be completed on time. Your trust and reliable service are our priority.':'यह सीमा इसलिए रखी गई है ताकि वारंटी, सर्विस विज़िट और अन्य सहायता समय पर पहुँचाई जा सके। हम आपसे किया गया हर वादा निभाने और बेहतर सेवा देने को प्राथमिकता देते हैं।';
     var d=document.createElement('div');d.id='km-radius-notice';
-    d.innerHTML='<div class="kmrn-card" role="dialog" aria-modal="true"><h3>'+title+'</h3><p>'+p1+'</p><p>'+p2+'</p><p>'+p3+'</p><a class="kmrn-call" href="tel:9558222519">'+(english?'Call King Mobile Shop: 9558222519':'किंग मोबाइल शॉप से बात करें: 9558222519')+'</a><button type="button" class="kmrn-close">'+(english?'I Understand':'समझ गया / गई')+'</button></div>';
+    d.innerHTML='<div class="kmrn-card" role="dialog" aria-modal="true"><h3>'+title+'</h3><p>'+p1+'</p><p>'+p2+'</p><p>'+p3+'</p><a class="kmrn-call" href="tel:9558222519">'+(english?'Call King Mobile Shop: 9558222519 📞':'किंग मोबाइल शॉप से संपर्क करें: 9558222519 📞')+'</a><button type="button" class="kmrn-close">'+(english?'I Understand':'समझ गया / गई')+'</button></div>';
     d.addEventListener('click',function(e){if(e.target===d||e.target.closest('.kmrn-close'))d.remove()});document.body.appendChild(d);
   }
   // Address field tap/click opens the service-area explanation. Green notice remains above address fields.
-  document.addEventListener('click',function(e){var t=e.target;if(t&&t.closest&&t.closest('#bya,#byk,#byc,#byd,#bys,#byp'))showRadius()},true);
+  document.addEventListener('click',function(e){var t=e.target;if(!radiusPopupShown&&t&&t.closest&&t.closest('#bya,#byk,#byc,#byd,#bys,#byp'))showRadius()},true);
   // Keep Online payment first and selected whenever a fresh order form is opened.
   var open=window.openBuy;
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('[data-buy],.buy,[onclick*="openBuy"]')){setTimeout(function(){try{if(typeof byP!=='undefined'&&typeof drawBy==='function'){byP='UPI';drawBy()}}catch(x){}},0)}},true);
