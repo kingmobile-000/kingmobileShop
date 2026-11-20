@@ -2468,12 +2468,12 @@ try{var _kmU=getUser();if(_kmU)kmLogReg(_kmU)}catch(e){}
 /* ===== Razorpay Online Payment ===== */
 (function(){
 /* !!! Yahan apni Vercel website ka link likhiye (bina last slash ke), jaise: https://kingmobile.vercel.app */
-var KM_API="https://YOUR-SITE.vercel.app";if(/YOUR-SITE/.test(KM_API)){KM_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:""}
+var KM_API="https://kingmobilehusainganj.vercel.app";if(/YOUR-SITE/.test(KM_API)){KM_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:""}
 var SHOP_PH="9558222519";
 function g(i){return document.getElementById(i)}
 function er(t){var e=g("byerr");if(e)e.textContent=t||""}
 function bt(dis,txt){var b=g("bysend");if(!b)return;b.disabled=dis;if(txt)b.textContent=txt}
-function post(path,obj){return fetch(KM_API+path,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(obj)}).then(function(r){return r.json()})}
+function post(path,obj){return fetch(KM_API+path,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(obj)}).then(function(r){var st=r.status;return r.text().then(function(tx){var j=null;try{j=JSON.parse(tx)}catch(e){}if(j===null){var x=new Error("HTTP "+st+" – "+String(tx).replace(/\s+/g," ").slice(0,120));x.kind="http";throw x}if(!r.ok&&!j.error)j.error="HTTP "+st;j._st=st;return j})})}
 var busy=false,_sb=sendBuy;
 function lost(r,why){busy=false;bt(false,"✅ Order Now");try{kmOkHide()}catch(e){}
   try{localStorage.setItem("kms_rzp_unbooked",JSON.stringify({pid:r.razorpay_payment_id,oid:r.razorpay_order_id,t:Date.now()}))}catch(e){}
@@ -2515,8 +2515,43 @@ sendBuy=function(){
   post("/api/create-order",{amount:total,item:o.Item,sku:o.SKU==null?"":o.SKU,qty:byQ,name:n,mobile:m}).then(function(j){
     if(!j||!j.orderId)throw new Error(j&&j.error||"order");
     bt(false,"✅ Order Now");openRzp(j,n,m,o)
-  }).catch(function(e){busy=false;bt(false,"✅ Order Now");er("⚠ पेमेंट शुरू नहीं हो पाया, इंटरनेट देखकर दोबारा कोशिश करें।")})
+  }).catch(function(e){busy=false;bt(false,"✅ Order Now");
+    var m=String(e&&e.message||e),why;
+    if(/Razorpay is not defined/.test(m))why="Razorpay की स्क्रिप्ट लोड नहीं हुई (इंटरनेट देखिए)";
+    else if(e&&e.name==="TypeError")why="सर्वर तक नहीं पहुँच पाए ("+(KM_API||"link खाली")+") – 5 बार ऊपर के नाम पर टैप करके Payment Check चलाइए";
+    else why="सर्वर का जवाब: "+m;
+    er("⚠ पेमेंट शुरू नहीं हो पाया – "+why)})
 };
+
+
+function kmPayCheck(){
+ var d=document.getElementById("kdg");if(d)d.remove();
+ d=document.createElement("div");d.id="kdg";
+ d.innerHTML='<div class="kdgs"><div class="kdgt">Payment Check</div><pre id="kdgp">Checking...</pre><button type="button" id="kdgc">Copy report</button><button type="button" id="kdgx">Close</button></div>';
+ document.body.appendChild(d);
+ d.addEventListener("click",function(e){var t=e.target;if(t.id==="kdgx"||t===d)d.remove();if(t.id==="kdgc"){try{navigator.clipboard.writeText(out.join("\n"))}catch(x){}t.textContent="Copied"}});
+ var out=[];function P(t){out.push(t);var e=document.getElementById("kdgp");if(e)e.textContent=out.join("\n")}
+ function T(path,opt){return fetch(KM_API+path,opt).then(function(r){return r.text().then(function(tx){return{st:r.status,tx:tx}})})}
+ P("Page: "+String(location.href).slice(0,70));
+ P("KM_API: "+(KM_API||"(EMPTY)"));
+ P("Razorpay script: "+(typeof Razorpay==="function"?"OK":"NOT LOADED (internet / ad-block)"));
+ function noReach(path){return fetch(KM_API+path,{mode:"no-cors"}).then(function(){P("   -> Server mil raha hai par browser ne block kiya = CORS problem. API files me Access-Control-Allow-Origin chahiye.")}).catch(function(){P("   -> Server tak pahunch hi nahi paye: link galat / internet band / site down.")})}
+ T("/api/create-order").then(function(r){P("1) GET /api/create-order -> HTTP "+r.st+" "+r.tx.slice(0,60)+(/POST only/i.test(r.tx)?"  [OK: API mil gaya]":""))},function(e){P("1) GET /api/create-order -> FAIL ("+e.message+")");return noReach("/api/create-order")})
+ .then(function(){return T("/api/create-order",{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({amount:1,item:"TEST",sku:"T",qty:1,name:"Test",mobile:"9999999999"})})})
+ .then(function(r){var j=null;try{j=JSON.parse(r.tx)}catch(e){}
+   if(j&&j.orderId){P("2) POST create-order -> OK  orderId "+j.orderId+", key "+String(j.key||"").slice(0,9)+"..., amount "+j.amount+(/test/.test(j.key||"")?"  (TEST mode)":""))}
+   else{P("2) POST create-order -> HTTP "+r.st+" ERROR: "+r.tx.slice(0,200));
+     if(/auth|key|secret|401|Authentication/i.test(r.tx))P("   -> Razorpay keys galat ya missing. Vercel > Settings > Environment Variables me RAZORPAY_KEY_ID aur RAZORPAY_KEY_SECRET check karke Redeploy kijiye.");
+     else if(r.st===404)P("   -> API file nahi mili: /api/create-order.js repo ke api folder me honi chahiye.");
+     else if(r.st>=500)P("   -> Server ke andar error. Vercel > Logs me dekhiye.")}},
+   function(e){P("2) POST create-order -> FAIL ("+e.message+")");return noReach("/api/create-order")})
+ .then(function(){return T("/api/verify-payment")}).then(function(r){P("3) GET /api/verify-payment -> HTTP "+r.st+" "+r.tx.slice(0,60)+(/POST only/i.test(r.tx)?"  [OK]":""))},function(e){P("3) GET /api/verify-payment -> FAIL ("+e.message+")")})
+ .then(function(){P("---- Check complete. Is report ko bhej dijiye.")})
+}
+window.kmPayCheck=kmPayCheck;
+if(location.hash==="#paycheck")setTimeout(kmPayCheck,800);
+window.addEventListener("hashchange",function(){if(location.hash==="#paycheck")kmPayCheck()});
+(function(){var c=0,t=0,h=document.getElementById("tg");if(!h)return;h.addEventListener("click",function(){var n=Date.now();if(n-t>3000)c=0;t=n;if(++c>=5){c=0;kmPayCheck()}})})();
 })();
 </script>
 <style id="kfinal">
@@ -2542,6 +2577,7 @@ button,.cd,.bn,[data-buy],#xnav button{touch-action:manipulation}
 .byc2 small.gn{color:#188038;font-weight:700}
 .byc2 .pex{display:none;margin-top:12px;font-style:normal}.byc2 button.on .pex{display:block}
 .byc2 .pyb{display:block;text-align:center;background:linear-gradient(90deg,#ffe500,#ffc200);color:#111;font-weight:900;font-size:17px;border-radius:10px;padding:13px 8px}
+#kdg{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:12px}#kdg .kdgs{background:#fff;color:#111;width:100%;max-width:440px;max-height:90vh;overflow:auto;border-radius:14px;padding:14px}#kdg .kdgt{font-weight:800;font-size:17px;margin-bottom:8px}#kdg pre{white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.5;background:#f4f5f7;border-radius:8px;padding:10px;margin:0 0 10px;font-family:monospace}#kdg button{padding:10px 14px;border-radius:8px;border:1px solid #ccc;background:#fff;font-weight:700;margin-right:8px}
 #klg{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;padding:12px}
 #klg .klgs{background:#fff;color:#111;width:100%;max-width:420px;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
 #klg .klgt{font-weight:800;text-align:center;font-size:16px}
@@ -2669,7 +2705,7 @@ function trEn(s){
  return s}
 function tr(s){return lang==="en"?trEn(s):trHi(s)}
 window.kmTr=tr;
-function doText(n){var v=n.nodeValue;if(!v||!(lang==="en"?DEV:LAT).test(v))return;var p=n.parentNode;if(p&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName))return;if(lang==="hi"&&p&&p.closest&&p.closest("#list,#klg"))return;var r=tr(v);if(r!==v){ORIG.set(n,v);n.nodeValue=r}}
+function doText(n){var v=n.nodeValue;if(!v||!(lang==="en"?DEV:LAT).test(v))return;var p=n.parentNode;if(p&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName))return;if(lang==="hi"&&p&&p.closest&&p.closest("#list,#klg,#kdg"))return;var r=tr(v);if(r!==v){ORIG.set(n,v);n.nodeValue=r}}
 var AT=["placeholder","title","aria-label","alt"];
 function doEl(e){for(var i=0;i<AT.length;i++){var a=AT[i],v=e.getAttribute&&e.getAttribute(a);if(v&&(lang==="en"?DEV:LAT).test(v)){var r=tr(v);if(r!==v){e.__kmo=e.__kmo||{};e.__kmo[a]=v;e.setAttribute(a,r)}}}}
 function walk(root){
