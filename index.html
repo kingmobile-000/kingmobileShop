@@ -2781,15 +2781,15 @@ start();
 (function(){
   var en=function(){try{return window.kmLang&&window.kmLang()==="en"}catch(e){return false}};
   // Show the service-area popup only once during this page visit.
-  var radiusPopupShown=false;try{if(localStorage.getItem("km_radius_seen")==="1")radiusPopupShown=true}catch(e){}
+  var radiusPopupShown=false;   // har baar website/app khulne par naya: us visit me sirf ek baar popup
   function showRadius(){
     if(radiusPopupShown)return;
-    radiusPopupShown=true;try{localStorage.setItem("km_radius_seen","1")}catch(e){}
+    radiusPopupShown=true;
     var old=document.getElementById('km-radius-notice');if(old)old.remove();
     var english=en();
     var title=english?'Delivery service area':'डिलीवरी सेवा क्षेत्र';
     var p1=english?'King Mobile Shop currently provides home delivery within a 10 km radius of King Mobile Shop, near the canal in Hussain Ganj.':'किंग मोबाइल शॉप फिलहाल हुसैनगंज से 10 किलोमीटर की दूरी के गाँवों और शहरों में ही होम डिलीवरी सेवा उपलब्ध करा रहे हैं|';
-    var p2=english?'Orders with a delivery address beyond this service area cannot be accepted online. Please call us before placing an order so we can discuss the available service.':';
+    var p2=english?'Orders with a delivery address beyond this service area cannot be accepted online. Please call us before placing an order so we can discuss the available service.':'';
     var p3=english?'We are keeping this limit so that warranty support, service visits and other commitments can be completed on time. Your trust and reliable service are our priority.':'यह सीमा इसलिए रखी गई है ताकि वारंटी, सर्विस विज़िट और अन्य सहायता समय पर पहुँचाई जा सके। हम आपसे किया गया हर वादा निभाने और बेहतर सेवा देने को प्राथमिकता देते हैं।';
     var d=document.createElement('div');d.id='km-radius-notice';
     d.innerHTML='<div class="kmrn-card" role="dialog" aria-modal="true"><h3>'+title+'</h3><p>'+p1+'</p><p>'+p2+'</p><p>'+p3+'</p><a class="kmrn-call" href="tel:9558222519">'+(english?'Call King Mobile Shop: 9558222519 📞':'किंग मोबाइल शॉप से बात करें: 9558222519 📞')+'</a><button type="button" class="kmrn-close">'+(english?'I Understand':'समझ गया / गई')+'</button></div>';
@@ -2797,6 +2797,12 @@ start();
   }
   // Address field tap/click opens the service-area explanation. Green notice remains above address fields.
   document.addEventListener('click',function(e){var t=e.target;if(!radiusPopupShown&&t&&t.closest&&t.closest('#bya,#byk,#byc,#byd,#bys,#byp'))showRadius()},true);
+  // App/website background se 1 minute se zyada baad wapas khule to ye naya "open" maana jaye, popup phir ek baar aaye
+  var hiddenAt=0;
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){hiddenAt=Date.now()}
+    else if(hiddenAt&&Date.now()-hiddenAt>60000){radiusPopupShown=false;hiddenAt=0}
+  });
   // Keep Online payment first and selected whenever a fresh order form is opened.
   var open=window.openBuy;
   document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.target.closest('[data-buy],.buy,[onclick*="openBuy"]')){setTimeout(function(){try{if(typeof byP!=='undefined'&&typeof drawBy==='function'){byP='UPI';drawBy()}}catch(x){}},0)}},true);
