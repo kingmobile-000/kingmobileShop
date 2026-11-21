@@ -1,6 +1,8 @@
 // Vercel Serverless Function: payment ka signature verify karta hai
 const crypto = require("crypto");
 
+const { getKeys } = require("./_keys");
+
 const cors = (res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -18,9 +20,8 @@ module.exports = async (req, res) => {
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
 
-  const KEY_ID = process.env.RAZORPAY_KEY_ID;
-  const KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
-  if (!KEY_ID || !KEY_SECRET) return res.status(500).json({ ok: false, error: "Razorpay keys set nahi hain" });
+  const { KEY_ID, KEY_SECRET } = getKeys();
+  if (!KEY_ID || !KEY_SECRET) return res.status(500).json({ ok: false, error: "Razorpay keys set nahi hain (server par RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET nahi mili: /api/health kholkar dekhiye)" });
 
   const b = readBody(req);
   const oid = String(b.razorpay_order_id || "");
