@@ -2498,7 +2498,7 @@ try{var _kmU=getUser();if(_kmU)kmLogReg(_kmU)}catch(e){}
 /* ===== Razorpay Online Payment ===== */
 (function(){
 /* !!! Yahan apni Vercel website ka link likhiye (bina last slash ke), jaise: https://kingmobile.vercel.app */
-var KM_API="https://kingmobilehusainganj.vercel.app";if(/YOUR-SITE/.test(KM_API)){KM_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:""}
+var KM_API="https://kingmobilehusainganj1.vercel.app";if(/YOUR-SITE/.test(KM_API)){KM_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:""}
 var SHOP_PH="9558222519";
 function g(i){return document.getElementById(i)}
 function er(t){var e=g("byerr");if(e)e.textContent=t||""}
@@ -2542,13 +2542,14 @@ sendBuy=function(){
   var R=R0-offPU(R0,byQ),total=Math.round(R*byQ*100)/100;
   if(!(total>=1)){er("⚠ रकम सही नहीं है");return}
   er("");busy=true;bt(true,"⏳ पेमेंट खुल रहा है…");
-  post("/api/create-order",{amount:total,item:o.Item,sku:o.SKU==null?"":o.SKU,qty:byQ,name:n,mobile:m}).then(function(j){
+  (function try1(left){return post("/api/create-order",{amount:total,item:o.Item,sku:o.SKU==null?"":o.SKU,qty:byQ,name:n,mobile:m}).then(function(j){if(j&&!j.orderId&&/keys set nahi|Server error|HTTP 5/i.test(String(j.error||""))&&left>0)return new Promise(function(r){setTimeout(r,1200)}).then(function(){return try1(left-1)});return j},function(e){if(left>0)return new Promise(function(r){setTimeout(r,1200)}).then(function(){return try1(left-1)});throw e})})(2).then(function(j){
     if(!j||!j.orderId)throw new Error(j&&j.error||"order");
     bt(false,"✅ Order Now");openRzp(j,n,m,o)
   }).catch(function(e){busy=false;bt(false,"✅ Order Now");
     var m=String(e&&e.message||e),why;
     if(/Razorpay is not defined/.test(m))why="Razorpay की स्क्रिप्ट लोड नहीं हुई (इंटरनेट देखिए)";
     else if(e&&e.name==="TypeError")why="सर्वर तक नहीं पहुँच पाए ("+(KM_API||"link खाली")+") – 5 बार ऊपर के नाम पर टैप करके Payment Check चलाइए";
+    else if(/keys set nahi/i.test(m))why="ऑनलाइन पेमेंट अभी दुकान की तरफ़ से बंद है — कृपया Cash on Delivery चुनें या दुकान को कॉल करें: "+SHOP_PH;
     else why="सर्वर का जवाब: "+m;
     er("⚠ पेमेंट शुरू नहीं हो पाया – "+why)})
 };
@@ -2566,7 +2567,8 @@ function kmPayCheck(){
  P("KM_API: "+(KM_API||"(EMPTY)"));
  P("Razorpay script: "+(typeof Razorpay==="function"?"OK":"NOT LOADED (internet / ad-block)"));
  function noReach(path){return fetch(KM_API+path,{mode:"no-cors"}).then(function(){P("   -> Server mil raha hai par browser ne block kiya = CORS problem. API files me Access-Control-Allow-Origin chahiye.")}).catch(function(){P("   -> Server tak pahunch hi nahi paye: link galat / internet band / site down.")})}
- T("/api/create-order").then(function(r){P("1) GET /api/create-order -> HTTP "+r.st+" "+r.tx.slice(0,60)+(/POST only/i.test(r.tx)?"  [OK: API mil gaya]":""))},function(e){P("1) GET /api/create-order -> FAIL ("+e.message+")");return noReach("/api/create-order")})
+ T("/api/health").then(function(r){P("0) /api/health -> HTTP "+r.st+" "+r.tx.slice(0,220))},function(e){P("0) /api/health -> FAIL ("+e.message+")")})
+ .then(function(){return T("/api/create-order")}).then(function(r){P("1) GET /api/create-order -> HTTP "+r.st+" "+r.tx.slice(0,60)+(/POST only/i.test(r.tx)?"  [OK: API mil gaya]":""))},function(e){P("1) GET /api/create-order -> FAIL ("+e.message+")");return noReach("/api/create-order")})
  .then(function(){return T("/api/create-order",{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({amount:1,item:"TEST",sku:"T",qty:1,name:"Test",mobile:"9999999999"})})})
  .then(function(r){var j=null;try{j=JSON.parse(r.tx)}catch(e){}
    if(j&&j.orderId){P("2) POST create-order -> OK  orderId "+j.orderId+", key "+String(j.key||"").slice(0,9)+"..., amount "+j.amount+(/test/.test(j.key||"")?"  (TEST mode)":""))}
