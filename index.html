@@ -36,6 +36,8 @@ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"><meta name="theme-color" content="#e63c1f">
+<link rel="preconnect" href="https://script.google.com"><link rel="preconnect" href="https://script.googleusercontent.com" crossorigin><link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+<script>/* TURANT ITEM: page parse hone se pehle hi items ki request chalu (itTick pehli baar isi ka jawab leta hai) */try{if(navigator.onLine!==false)window.__kmP=fetch("https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec?action=items&v=&t="+Date.now(),{cache:"no-store"})}catch(e){}</script>
 <title>KING MOBILE</title>
 <script id="emb" type="application/json">{"t":0,"items":[]}</script>
 <style>
@@ -883,6 +885,8 @@ function offLbl(){return ""}   /* ऑफर की छूट सिर्फ़ 
 var GAS="https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
 var ITEM_POLL_MS=1000;   /* कितने मिलीसेकंड में माल देखना है (1000 = 1 सेकंड) */
 var itemV=null,itemBusy=false,itemFails=0,itemNext=0;
+function kcSave(){try{var a=items.map(function(o){var c={};for(var k in o){if(k!=="Open")c[k]=o[k]}if(c.Photos){c.Photos=c.Photos.filter(function(u){return!/^data:/.test(u)});if(!c.Photos.length)delete c.Photos}return c});localStorage.setItem(KEY,JSON.stringify(a));localStorage.setItem(TKEY,String(Date.now()))}catch(e){}}
+function kth(u){u=String(u==null?"":u);return /^https:\/\/lh3\.googleusercontent\.com\/d\/[^=?#]+$/.test(u)?u+"=w500":u}   /* list me chhoti photo (jaldi khulti hai); bada dekhne par poori photo */
 function itKey(o){return String(o.Item==null?"":o.Item).trim().toLowerCase()+"|"+String(o.SKU==null?"":o.SKU).trim().toLowerCase()}
 function itOverlay(){var a=["dt","ps","pv","sk","by"];for(var i=0;i<a.length;i++){var e=document.getElementById(a[i]);if(e&&e.classList.contains("on"))return true}return false}
 function itApply(list){
@@ -906,7 +910,7 @@ if(phApplyTo(fresh))changed=true;
 if(mrApply(fresh))changed=true;
 if(fresh.length!==items.length)changed=true;
 else for(var i=0;i<fresh.length;i++){if(fresh[i]!==items[i]){changed=true;break}}
-if(changed){items.length=0;fresh.forEach(function(o){items.push(o)});try{save()}catch(e){}try{drawCats()}catch(e){}try{render()}catch(e){}}
+if(changed){items.length=0;fresh.forEach(function(o){items.push(o)});try{save()}catch(e){}try{kcSave()}catch(e){}try{drawCats()}catch(e){}try{render()}catch(e){}}
 return changed}
 function itOffline(){kldFail();
 if(items.length){items.length=0;itemV=null;try{drawCats()}catch(e){}try{render()}catch(e){}}
@@ -915,7 +919,7 @@ function itTick(){
 if(document.hidden||itemBusy||!GAS||Date.now()<itemNext)return;
 if(navigator.onLine===false){itOffline();return}
 itemBusy=true;
-try{fetch(GAS+"?action=items&v="+encodeURIComponent(itemV==null?"":itemV)+"&t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+try{(function(){var p=window.__kmP;window.__kmP=null;return(p&&itemV==null)?p:fetch(GAS+"?action=items&v="+encodeURIComponent(itemV==null?"":itemV)+"&t="+Date.now(),{cache:"no-store"})})().then(function(r){return r.json()}).then(function(d){
 itemBusy=false;
 if(d&&d.ok&&d.same){itemFails=0;if(!items.length){itemV=null;itemNext=Date.now()+3000;status("⚠ सर्वर ने 'डेटा वही है' कहा पर पेज खाली है — पूरा डेटा दोबारा माँग रहे हैं…");return}kldOk();return}
 if(!d||!d.ok||!d.items){itemFails++;status("⚠ सर्वर (Google Script) से गलत जवाब आया"+(d&&d.error?": "+d.error:"")+" — Script को New Deployment (Anyone) से दोबारा Deploy कीजिए");if(itemFails>=3)itOffline();return}
@@ -935,7 +939,8 @@ kldWait();bnrCheck();welcomeDraw();
 (function(){var d0=new Date().toDateString();function ms(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,0,0,5)-n}
 setTimeout(function(){location.reload()},ms());
 document.addEventListener("visibilitychange",function(){if(!document.hidden&&new Date().toDateString()!==d0)location.reload()})})();
-setTimeout(function(){itTick();setInterval(itTick,ITEM_POLL_MS)},300);
+function kcStart(){if(items.length){try{drawCats()}catch(e){}try{render()}catch(e){}try{kldOk()}catch(e){}}itTick();setInterval(itTick,ITEM_POLL_MS)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(kcStart,0)});else setTimeout(kcStart,0);
 window.addEventListener("offline",itOffline);
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-offt]");if(!b)return;if(offLocked()){offMsg();return}setOffOn(!offOn());
 try{if(byI>=0)drawBy()}catch(x){}try{render()}catch(x){}try{if(curPg==="orders")drawOrders()}catch(x){}},true);
@@ -965,7 +970,9 @@ if(cur.due===du&&cur.credit===cr)return;
 try{localStorage.setItem(CUSTK,JSON.stringify({m:u.m,due:du,credit:cr}))}catch(e){}
 try{drawOfb()}catch(e){}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}}).catch(function(){})}}catch(e){}}
 var onlyNo=false,IDB=null,items=[],KEY="king_offline_items_v1",TKEY="king_offline_items_t_v1",lt=0,EMB=null;
-EMB=null;items=[];lt=0;try{localStorage.removeItem(KEY);localStorage.removeItem(TKEY)}catch(e){}
+EMB=null;items=[];lt=0;
+/* TURANT ITEM: pichhli baar ke item+photo-link turant dikhte hain (sirf internet chalu ho tab, 3 din tak); server ka naya data aate hi apne-aap badal jata hai */
+try{var _kc=JSON.parse(localStorage.getItem(KEY)||"null"),_kt=Number(localStorage.getItem(TKEY)||0);if(Array.isArray(_kc)&&_kc.length&&navigator.onLine!==false&&Date.now()-_kt<259200000){items=_kc.filter(function(o){return o&&o.Item!=null})}else{localStorage.removeItem(KEY);localStorage.removeItem(TKEY)}}catch(e){items=[]}
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 function isStk(q){return q==="Yes"||q==="NO"||q==="Hai"||q==="Nahi hai"}
 function stkOf(q){return(q==="Yes"||q==="Hai")?"Yes":(q==="NO"||q==="Nahi hai")?"NO":""}
@@ -1194,7 +1201,7 @@ function drawAp(){var h="";catList().forEach(function(c,i){h+='<div class="apt'+
 function drawOfb(){var el=document.getElementById("ofb");if(!el)return;var u=null;try{u=getUser()}catch(e){}if(!u){el.style.display="none";return}var a=offAvail(),lk=offLocked()&&a>0;el.style.display="";el.innerHTML='<div class="ofbt">KING MOBILE आपकी हर एक बिक्री पर आपको कुछ रुपयों का ऑफर देता है।</div><div class="ofbx"><span>🎁 आपका ऑफर</span><b>'+(lk?'<s>₹'+fmtN(a)+'</s>':'₹'+offFmt(a))+'</b>'+(lk?'<small>उधार जमा करने पर चालू होगा</small>':'')+'</div>'}
 function drawCombo(){try{drawOfb()}catch(e){}var el=document.getElementById("cb"),h="",a=[];items.forEach(function(o,i){var p=offPct(o);if(p>0&&(typeof isStk!=="function"||isStk(o.Qty)))a.push([i,p])});a.sort(function(x,y){return y[1]-x[1]});a=a.slice(0,4);
 if(a.length<2){el.innerHTML="";return}
-a.forEach(function(r){var o=items[r[0]],im=(o.Photos&&o.Photos.length)?'<img src="'+esc(o.Photos[0])+'" alt="">':'<span>📦</span>';h+='<div class="cbt" data-cb="'+r[0]+'"><div class="cbi">'+im+'</div><div class="cbn">'+esc(kSplit(o).n)+'</div><div class="cbo">Min. '+r[1]+'% Off</div></div>'});
+a.forEach(function(r){var o=items[r[0]],im=(o.Photos&&o.Photos.length)?'<img src="'+esc(kth(o.Photos[0]))+'" alt="">':'<span>📦</span>';h+='<div class="cbt" data-cb="'+r[0]+'"><div class="cbi">'+im+'</div><div class="cbn">'+esc(kSplit(o).n)+'</div><div class="cbo">Min. '+r[1]+'% Off</div></div>'});
 el.innerHTML='<div class="cbh">Combo Dhamaka <i>➜</i></div><div class="cbg">'+h+'</div>'}
 function drawCats(){var h="";catList().forEach(function(c){h+='<div class="ch'+(c[0]===curCat?' on':'')+'" data-c="'+esc(c[0])+'"><div class="ci">'+c[1]+'</div><div class="cl">'+esc(c[0])+'</div></div>'});document.getElementById("cats").innerHTML=h;try{var _a=document.querySelector("#cats .ch.on"),_c=document.getElementById("cats");if(_a&&_c)_c.scrollLeft=(curCat==="सभी")?0:_c.scrollLeft+_a.getBoundingClientRect().left-_c.getBoundingClientRect().left-(_c.clientWidth-_a.clientWidth)/2}catch(e){}try{drawAp();drawCombo();bnrCheck()}catch(e){}try{document.getElementById("hm").style.display=(curCat==="सभी")?"":"none"}catch(e){}}
 /* Har item ke card par category dikhao: Excel ki category (naam ke baad " – Category"), na ho to naam se pehchani hui */
@@ -1232,7 +1239,7 @@ var cvs=cvChips(x),_n=nmNoCat(o,t).replace(/\s*\[[^\]]+\]/g,""),_cm="",_mm=/\s*\
 if(_mm&&/^[A-Za-z][A-Za-z &.\-]*$/.test(_mm[1].trim())){_cm=_mm[1].trim();_n=_n.slice(0,_mm.index).trim()||_n}
 var hasM=(o.MRate!==""&&o.MRate!=null&&o.MRate!==undefined),pr=hasR(o)?'<div class="pr"><span class="mr">₹'+esc(mkStr(o))+'</span><span class="gr">₹'+fmtN(effRate(o.Rate))+'</span>'+(offPct(o)?'<span class="pf">'+offPct(o)+'% off</span>':'')+'</div>':'',ofl=(hasR(o)&&offLbl())?'<div class="ofl">'+offLbl()+'</div>':'';
 var pl=o.Photos||[];
-var vids=o.Videos||[];var ph=vids.length?vids.map(function(v){return '<div class="vw" data-vid="'+esc(v)+'"><div class="p0"><div>⏳</div><div>वीडियो खुल रहा है…</div></div></div>'}).join(''):pl.length?'<img class="phb" aria-hidden="true" alt="" src="'+esc(pl[0])+'"><img class="ph" data-p="'+i+'" src="'+esc(pl[0])+'" alt="फोटो">'+(pl.length>1?'<span class="pcnt" data-p="'+i+'">'+pl.length+' फोटो</span>':''):'<div class="p0"></div>';
+var vids=o.Videos||[];var ph=vids.length?vids.map(function(v){return '<div class="vw" data-vid="'+esc(v)+'"><div class="p0"><div>⏳</div><div>वीडियो खुल रहा है…</div></div></div>'}).join(''):pl.length?'<img class="phb" aria-hidden="true" alt="" src="'+esc(kth(pl[0]))+'"><img class="ph" data-p="'+i+'" src="'+esc(kth(pl[0]))+'" alt="फोटो">'+(pl.length>1?'<span class="pcnt" data-p="'+i+'">'+pl.length+' फोटो</span>':''):'<div class="p0"></div>';
 var sq=stkOf(o.Qty),sb=sq==="Yes"?'<div class="sbd yes">✔ Stock है</div>':sq==="NO"?'<div class="sbd no">Coming Soon</div>':'';
 /* ek SKU/item ke kai rang: kitne rang Stock me hain (jaise 2/5), baaki khatam = auto Out of Stock */
 if(x.vars&&x.vars.length>1){var _ni=x.vars.filter(function(j){return inStk(items[j])}).length;sb=_ni>0?'<div class="sbd yes">✔ Stock है ('+_ni+'/'+x.vars.length+' रंग)</div>':'<div class="sbd no">Coming Soon</div>'}
