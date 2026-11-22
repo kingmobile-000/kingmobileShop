@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>King Mobile Shop - Admin Notifications</title>
+</head>
+<body style="font-family:Arial;max-width:550px;margin:40px auto;padding:20px">
+  <h2>King Mobile Shop</h2>
+  <h3>Push Notification Panel</h3>
+
+  <form id="send-form">
+    <p>Admin Secret</p>
+    <input id="secret" type="password" required
+      style="width:100%;padding:12px;box-sizing:border-box">
+
+    <p>Notification Title</p>
+    <input id="title" maxlength="100" required
+      style="width:100%;padding:12px;box-sizing:border-box">
+
+    <p>Notification Message</p>
+    <textarea id="body" maxlength="500" required
+      style="width:100%;padding:12px;box-sizing:border-box"></textarea>
+
+    <p>Website Link (optional)</p>
+    <input id="link" type="url"
+      placeholder="https://kingmobileshophusainganj2.vercel.app/"
+      style="width:100%;padding:12px;box-sizing:border-box">
+
+    <br><br>
+    <button type="submit" style="padding:12px 22px">
+      Send Notification
+    </button>
+  </form>
+
+  <p id="result" aria-live="polite"></p>
+
+  <script>
+    document.getElementById("send-form").addEventListener("submit",
+      async (event) => {
+        event.preventDefault();
+
+        const result = document.getElementById("result");
+        result.textContent = "Sending...";
+
+        try {
+          const response = await fetch("/api/send-notification", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-admin-secret": document.getElementById("secret").value
+            },
+            body: JSON.stringify({
+              title: document.getElementById("title").value,
+              body: document.getElementById("body").value,
+              link: document.getElementById("link").value
+            })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Send failed");
+          }
+
+          result.textContent =
+            `कुल: ${data.total}, सफल: ${data.sent}, असफल: ${data.failed}`;
+
+        } catch (error) {
+          result.textContent = error.message;
+        }
+      }
+    );
+  </script>
+</body>
+</html>
