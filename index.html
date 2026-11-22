@@ -3223,5 +3223,99 @@ function go(){pull();setInterval(pull,10000);setInterval(tick,1000);document.add
 if(document.readyState==="complete")setTimeout(go,300);else window.addEventListener("load",function(){setTimeout(go,300)});
 })();
 </script>
+   
+<div id="push-box" style="margin:20px 0;text-align:center">
+  <button id="enable-push"
+    style="padding:12px 20px;background:#1677ff;color:white;border:0;border-radius:8px;cursor:pointer">
+    🔔 Notifications चालू करें
+  </button>
+  <p id="push-status" aria-live="polite"></p>
+</div>
+
+<script type="module">
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+
+  import {
+    getMessaging,
+    getToken,
+    onMessage,
+    isSupported
+  } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-messaging.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD3VSLXwIAQSstYcWvZIktL5GAUxWEotEo",
+  authDomain: "king-mobile-shop.firebaseapp.com",
+  projectId: "king-mobile-shop",
+  storageBucket: "king-mobile-shop.firebasestorage.app",
+  messagingSenderId: "874763857595",
+  appId: "1:874763857595:web:031d71310fce683287439e",
+  measurementId: "G-81EZ0XR1Q7"
+};
+
+  const vapidKey = "BF5Iqc3BLIXsknOBJpKQj0xq35QJ8m1fMxyojvaNoRrjJy6rjBwOK5wzQRg5umlosruh9EHPvfSZPSDiejeJNzg";
+
+  const button = document.getElementById("enable-push");
+  const status = document.getElementById("push-status");
+
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    status.textContent = "कृपया प्रतीक्षा करें...";
+
+    try {
+      if (!("Notification" in window) ||
+          !("serviceWorker" in navigator) ||
+          !(await isSupported())) {
+        throw new Error("इस browser में Web Push supported नहीं है।");
+      }
+
+      const permission = await Notification.requestPermission();
+
+      if (permission !== "granted") {
+        throw new Error("आपने Notification permission नहीं दी।");
+      }
+
+      const sw = await navigator.serviceWorker.register(
+        "/firebase-messaging-sw.js"
+      );
+
+      const app = initializeApp(firebaseConfig);
+      const messaging = getMessaging(app);
+
+      const token = await getToken(messaging, {
+        vapidKey,
+        serviceWorkerRegistration: sw
+      });
+
+      if (!token) {
+        throw new Error("FCM token नहीं मिला।");
+      }
+
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+      });
+
+      if (!response.ok) {
+        throw new Error("Subscription save नहीं हो पाया।");
+      }
+
+      status.textContent = "Notifications सफलतापूर्वक चालू हो गईं!";
+      button.textContent = "✓ Notifications चालू हैं";
+
+      onMessage(messaging, (payload) => {
+        status.textContent =
+          payload.notification?.title || "नया notification प्राप्त हुआ।";
+      });
+
+    } catch (error) {
+      console.error(error);
+      status.textContent = error.message || "कुछ गलत हुआ।";
+      button.disabled = false;
+    }
+  });
+</script>
+
 </body>
 </html>
