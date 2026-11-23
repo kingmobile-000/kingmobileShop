@@ -1868,8 +1868,8 @@ var u=getUser();
 if(b.getAttribute("data-xa")==="in"){if(u){ask("आप पहले से Login हैं ("+(u.n||"")+" – "+u.m+")",function(){},true);return}openLogin();return}
 if(!u){ask("आप Login नहीं हैं",function(){},true);return}
 if(confirm("क्या आप Logout करना चाहते हैं?")){setUser(null);pendingBuy=null;drawAcct();drawOrders()}});
-/* Razorpay jaanch ke liye test login: KM_TESTM="" kar dene se band ho jata hai */ var KM_TESTM="9999900000",KM_TESTC="123456"; var OTP_URL="https://demystify-trillion-cornstalk.ngrok-free.dev"; /* WhatsApp OTP server ka link. Khali = OTP band */
-var SKMSG='इस नंबर से दूसरे फ़ोन पर Login हुआ है, इसलिए यहाँ से Logout हो गया है। दोबारा Login कीजिए।';function skgo(){try{if(!OTP_URL)return;var cu=(typeof getUser==='function'),u=cu?getUser():null,mm=cu?(u&&u.m):me,tk=cu?((u&&u.t)||''):(localStorage.getItem('kms_boy_tok')||'');if(!mm)return;if(KM_TESTM&&mm===KM_TESTM)return;fetch(OTP_URL+'/check-session',{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({role:cu?'cust':'del',mobile:mm,token:tk})}).then(function(r){return r.json()}).then(function(j){if(!(j&&j.ok&&j.valid===false))return;if(cu){setUser(null);pendingBuy=null;try{drawAcct();drawOrders()}catch(e){}}else{me='';boy=null;try{localStorage.removeItem(MK);localStorage.removeItem('kms_boy_tok')}catch(e){}all=[];render()}alert(SKMSG)}).catch(function(){})}catch(e){}}setTimeout(skgo,2500);setInterval(skgo,60000);document.addEventListener('visibilitychange',function(){if(!document.hidden)skgo()});function kotp(o){var box=o.box,m=o.mobile,wait=0,tm=null;
+var OTP_URL="https://demystify-trillion-cornstalk.ngrok-free.dev"; /* WhatsApp OTP server ka link. Khali = OTP band */
+var SKMSG='इस नंबर से दूसरे फ़ोन पर Login हुआ है, इसलिए यहाँ से Logout हो गया है। दोबारा Login कीजिए।';function skgo(){try{if(!OTP_URL)return;var cu=(typeof getUser==='function'),u=cu?getUser():null,mm=cu?(u&&u.m):me,tk=cu?((u&&u.t)||''):(localStorage.getItem('kms_boy_tok')||'');if(!mm)return;fetch(OTP_URL+'/check-session',{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({role:cu?'cust':'del',mobile:mm,token:tk})}).then(function(r){return r.json()}).then(function(j){if(!(j&&j.ok&&j.valid===false))return;if(cu){setUser(null);pendingBuy=null;try{drawAcct();drawOrders()}catch(e){}}else{me='';boy=null;try{localStorage.removeItem(MK);localStorage.removeItem('kms_boy_tok')}catch(e){}all=[];render()}alert(SKMSG)}).catch(function(){})}catch(e){}}setTimeout(skgo,2500);setInterval(skgo,60000);document.addEventListener('visibilitychange',function(){if(!document.hidden)skgo()});function kotp(o){var box=o.box,m=o.mobile,wait=0,tm=null;
 function stop(){if(tm){clearInterval(tm);tm=null}}
 function api(p,b){return fetch(OTP_URL+p,{method:"POST",headers:{"Content-Type":"application/json","ngrok-skip-browser-warning":"1"},body:JSON.stringify(b)}).then(function(r){return r.json()})}
 function cancel(){stop();if(o.onCancel)o.onCancel()}
@@ -1881,10 +1881,9 @@ function ask(msg){stop();box.innerHTML=head('आपके नंबर <b>+91 '+
 var r=document.getElementById("kotr");function tick(){r.disabled=wait>0;r.textContent=wait>0?"दोबारा भेजें ("+wait+")":"दोबारा भेजें";if(wait>0)wait--}
 tick();tm=setInterval(tick,1000);r.onclick=send;
 document.getElementById("kotv").onclick=function(){var c=document.getElementById("kotc").value.replace(/\D/g,"");if(c.length!==6){ask("6 अंक का कोड लिखिए");return}
-if(KM_TESTM&&m===KM_TESTM){if(c===KM_TESTC){stop();o.onOk("");}else ask("गलत कोड");return}
 api("/verify-otp",{mobile:m,code:c,role:(typeof getUser==='function'?'cust':'del')}).then(function(j){if(j&&j.ok){stop();o.onOk(j.token)}else ask((j&&j.error)||"गलत कोड")}).catch(function(){ask("सर्वर से जुड़ नहीं पाए")})};
 setTimeout(function(){var i=document.getElementById("kotc");if(i)i.focus()},50)}
-function send(){stop();if(KM_TESTM&&m===KM_TESTM){wait=30;ask();return}box.innerHTML=head('कोड भेज रहे हैं…')+foot();bindC();
+function send(){stop();box.innerHTML=head('कोड भेज रहे हैं…')+foot();bindC();
 api("/send-otp",{mobile:m}).then(function(j){if(j&&j.ok){wait=30;ask()}else err((j&&j.error)||"कोड नहीं भेज पाए")}).catch(function(){err("Login का समय सुबह 08 बजे से रात 08 बजे तक है। कृपया इसी समय Login कीजिए। धन्यवाद। अधिक जानकारी के लिए संपर्क कीजिए: 9558222519")})}
 send()}
 function openLogin(msg){var d=document.getElementById("xlg");
