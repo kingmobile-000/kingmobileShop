@@ -2563,7 +2563,7 @@ html #catw{position:sticky!important;top:var(--sbh,64px)!important;z-index:39!im
 var sb=document.getElementById("sbar"),q=document.getElementById("q");
 /* sticky bar: chipka ho to camera ke niche jagah */
 function upd(){if(!sb)return;var r=sb.getBoundingClientRect();document.body.classList.toggle("kstk",r.top<=1);document.documentElement.style.setProperty("--sbh",Math.round(r.height)+"px")}
-window.addEventListener("scroll",upd,{passive:true});window.addEventListener("resize",upd);setInterval(upd,500);upd();
+window.addEventListener("scroll",upd,{passive:true});window.addEventListener("resize",upd);setInterval(upd,1500);upd();
 /* mic: bolkar search */
 var sw=sb&&sb.querySelector(".sw");
 if(sw&&q){var b=document.createElement("button");b.type="button";b.id="kmic";b.setAttribute("aria-label","बोलकर खोजें");b.innerHTML='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="currentColor"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/><path d="M12 18v3.2"/></svg>';sw.appendChild(b);
@@ -2585,7 +2585,7 @@ if(typeof kbStep==="function"){var _ks=kbStep;kbStep=function(){var r=_ks.apply(
  return false}}
 })();
 </script>
-<style id="knh">/* Home ke alawa (item khula / book / orders / account) me upar ka search + category bar na dikhe */body.nh #sbar,body.nh #catw{display:none!important}</style><script id="knhjs">(function(){function chk(){try{var o=document.querySelector("#dt.on,#by.on,#xod.on,.xpg.on");document.body.classList.toggle("nh",!!o)}catch(e){}}function go(){chk();try{new MutationObserver(chk).observe(document.body,{attributes:true,attributeFilter:["class"],subtree:true})}catch(e){}setInterval(chk,400)}if(document.body)go();else document.addEventListener("DOMContentLoaded",go)})();</script><style id="kbnav">/* Flipkart jaisa neeche ka floating menu: Home, Categories, Account, Complaint, Orders */
+<style id="knh">/* Home ke alawa (item khula / book / orders / account) me upar ka search + category bar na dikhe */body.nh #sbar,body.nh #catw{display:none!important}</style><script id="knhjs">(function(){function chk(){try{var o=document.querySelector("#dt.on,#by.on,#xod.on,.xpg.on");document.body.classList.toggle("nh",!!o)}catch(e){}}function go(){chk();try{new MutationObserver(chk).observe(document.body,{attributes:true,attributeFilter:["class"],subtree:true})}catch(e){}setInterval(chk,2000)}if(document.body)go();else document.addEventListener("DOMContentLoaded",go)})();</script><style id="kbnav">/* Flipkart jaisa neeche ka floating menu: Home, Categories, Account, Complaint, Orders */
 html body #xnav{display:flex!important;left:10px!important;right:10px!important;bottom:calc(8px + env(safe-area-inset-bottom,0px))!important;background:#fff!important;border:1px solid #e3e6ea!important;border-radius:34px!important;padding:6px!important;gap:2px;box-shadow:0 4px 18px rgba(0,0,0,.22)!important;z-index:10}
 html body #xnav button{flex:1;min-width:0;border:0!important;background:none!important;border-radius:26px!important;padding:7px 0 5px!important;gap:2px!important;color:#444!important;font-size:11px!important;font-weight:600!important;display:flex;flex-direction:column;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
 html body #xnav button span{line-height:1.1;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
@@ -3539,6 +3539,8 @@ html body #tg::before,html body #tg::after{
 /* ===== 1) LOGIN: बॉक्स हमेशा ऊपर दिखे, कीबोर्ड के नीचे न छुपे ===== */
 html body #xlg{align-items:flex-end!important;padding-top:calc(env(safe-area-inset-top,0px) + 12px)!important}
 html body #xlg .xsh{max-height:calc(100% - 4px)!important;margin-top:0!important}
+/* मोबाइल नंबर वाला खाना (type=tel) भी नाम वाले खाने जैसा दिखे */
+html body #xlg input[type=tel]{width:100%;padding:12px;font-size:16px;border:1px solid var(--bd);border-radius:10px;background:#fff!important;color:#111!important;-webkit-text-fill-color:#111!important;caret-color:#111!important;opacity:1!important;font-family:inherit;box-sizing:border-box}
 
 /* ===== 2) नीचे का मेन्यू (होम/कैटेगरी/अकाउंट/शिकायत/ऑर्डर) सिर्फ़ HOME पर ===== */
 html.knh body #xnav{display:none!important}
@@ -3551,6 +3553,8 @@ html,body,button,a,input,select,textarea,.cd,.xc,.xg,.xpg,[data-buy],[data-od],[
 html{scroll-behavior:auto!important}
 .xpg,#xod,#dt,#by,#xlg,#xcf,#ps,#sk,#md,#xok{transition:none!important;animation:none!important}
 #xnav button{transition:none!important}
+#xnav{will-change:transform;transform:translateZ(0)}
+#xnav button:active,.cd:active,.xc:active,.xg:active{opacity:.82}
 
 /* ===== 4) गारंटी घड़ी ===== */
 #kwar .kwh{display:flex;align-items:center;gap:10px}
@@ -3659,6 +3663,8 @@ if(lg){
   lg.style.paddingBottom=(d+12)+"px"}
  lg.addEventListener("focusin",function(){setTimeout(lift,30);setTimeout(lift,350)});
  lg.addEventListener("focusout",function(){setTimeout(lift,200)});
+ lg.addEventListener("click",function(e){var t=e.target;if(t&&t.closest&&t.closest("input")){setTimeout(lift,30);setTimeout(lift,350);setTimeout(lift,700)}});
+ lg.addEventListener("touchend",function(e){var t=e.target;if(t&&t.closest&&t.closest("input")){setTimeout(lift,30);setTimeout(lift,350)}},{passive:true});
  window.addEventListener("resize",lift);try{window.visualViewport.addEventListener("resize",lift)}catch(e){}
  new MutationObserver(function(){
   var n=$("xln"),m=$("xlm");
