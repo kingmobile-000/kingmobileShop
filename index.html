@@ -3537,7 +3537,7 @@ html body #tg::before,html body #tg::after{
 </script>
 <style id="kupd1">
 /* ===== 1) LOGIN: बॉक्स हमेशा ऊपर दिखे, कीबोर्ड के नीचे न छुपे ===== */
-html body #xlg{align-items:flex-start!important;padding-top:calc(env(safe-area-inset-top,0px) + 12px)!important}
+html body #xlg{align-items:flex-end!important;padding-top:calc(env(safe-area-inset-top,0px) + 12px)!important}
 html body #xlg .xsh{max-height:calc(100% - 4px)!important;margin-top:0!important}
 
 /* ===== 2) नीचे का मेन्यू (होम/कैटेगरी/अकाउंट/शिकायत/ऑर्डर) सिर्फ़ HOME पर ===== */
@@ -3643,5 +3643,75 @@ html body.kstk #sbar{padding-top:calc(env(safe-area-inset-top,0px) + 8px)!import
 /* KING MOBILE के दोनों तरफ़ के logo थोड़ा बाहर (लेफ्ट-राइट) खिसकाए; नाम वैसा ही */
 html body #tg{gap:clamp(10px,3.6vw,16px)!important}
 </style>
+<script id="kupd3js">
+(function(){
+function $(i){return document.getElementById(i)}
+/* ================= A) LOGIN: कीबोर्ड के ठीक ऊपर उठे, नाम = अक्षर, मोबाइल = नंबर ================= */
+var lg=$("xlg");
+if(lg){
+ var base=window.innerHeight;
+ function kbH(){var d=0;try{var vv=window.visualViewport;if(vv)d=Math.max(0,Math.round(window.innerHeight-vv.height-vv.offsetTop))}catch(e){}return d}
+ function lift(){
+  var a=document.activeElement,inb=!!(a&&a.closest&&a.closest("#xlg")&&/^(INPUT|TEXTAREA)$/.test(a.tagName));
+  if(!inb){lg.style.paddingBottom="";base=Math.max(base,window.innerHeight);return}
+  if(base-window.innerHeight>100){lg.style.paddingBottom="12px";return}   /* फ़ोन ने खुद पेज छोटा कर दिया -> बॉक्स पहले ही कीबोर्ड के ऊपर */
+  var d=kbH();if(d<100)d=Math.round(window.innerHeight*0.34);               /* कीबोर्ड की ऊँचाई पता न चले तो अंदाज़े से */
+  lg.style.paddingBottom=(d+12)+"px"}
+ lg.addEventListener("focusin",function(){setTimeout(lift,30);setTimeout(lift,350)});
+ lg.addEventListener("focusout",function(){setTimeout(lift,200)});
+ window.addEventListener("resize",lift);try{window.visualViewport.addEventListener("resize",lift)}catch(e){}
+ new MutationObserver(function(){
+  var n=$("xln"),m=$("xlm");
+  if(n&&!n._k){n._k=1;n.setAttribute("type","text");n.setAttribute("inputmode","text");n.setAttribute("autocapitalize","words");n.setAttribute("autocorrect","off");n.setAttribute("enterkeyhint","next")}
+  if(m&&!m._k){m._k=1;m.setAttribute("type","tel");m.setAttribute("inputmode","numeric");m.setAttribute("pattern","[0-9]*");m.setAttribute("enterkeyhint","done")}
+  if(!$("xln"))lg.style.paddingBottom=""}).observe(lg,{childList:true});
+ lg.addEventListener("input",function(e){var t=e.target;if(!t)return;
+  if(t.id==="xln"){var v=t.value.replace(/[^\p{L}\p{M}\s.'\-]/gu,"");if(v!==t.value)t.value=v}
+  else if(t.id==="xlm"){var w=t.value.replace(/\D/g,"");if(w!==t.value)t.value=w}})}
+
+/* ================= B) COMPLAINT: सिर्फ़ गारंटी वाले आइटम ================= */
+function wdays(w){var s=String(w==null?"":w).toLowerCase().trim();if(!s||/^no\b|नहीं|^0+\b/.test(s))return 0;
+ var m=s.match(/(\d+(?:\.\d+)?)/);if(!m)return 0;var n=parseFloat(m[1]);
+ if(/year|yr|साल|वर्ष|saal/.test(s))return Math.round(n*365);
+ if(/week|हफ्ते|हफ़्ते|सप्ताह/.test(s))return Math.round(n*7);
+ if(/day|दिन|din/.test(s))return Math.round(n);
+ return Math.round(n*30)}
+function startOf(o){try{var h=hget(o),t=h.Done||o.upd||o.time;if(!t)return null;var d=new Date(t).getTime();return isNaN(d)?null:d}catch(e){return null}}
+/* गारंटी बची हो तो बचे हुए दिन लौटाता है, नहीं तो -1 */
+function left(o){try{if(!o||o.sku==="RECHARGE"||normSt(o.status)!=="Done")return -1;var D=wdays(o.warranty);if(!D)return -1;var st=startOf(o);if(!st)return -1;var rem=st+D*864e5-Date.now();return rem>0?Math.ceil(rem/864e5):-1}catch(e){return -1}}
+function E(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+if(typeof cForm==="function"){
+ var _cF=cForm;
+ cForm=function(){
+  _cF.apply(this,arguments);
+  try{
+   var d=$("xcf"),sel=$("cfo"),btn=$("cfs");if(!d||!sel)return;
+   var el=[];myOrders().forEach(function(o){var l=left(o);if(l>0)el.push({o:o,l:l})});
+   cOl=el.map(function(x){return x.o});cSel=null;
+   var op='<option value="">➕ नई Complaint (अपना आइटम खुद लिखिए)</option>';
+   el.forEach(function(x,i){var o=x.o;op+='<option value="'+i+'">'+E("ऑर्डर "+(o.no||"")+" • SKU "+(o.sku===""||o.sku==null?"-":o.sku)+" • "+String(o.item||"").slice(0,32)+" • 🛡 "+x.l+" दिन बची")+'</option>'});
+   sel.innerHTML=op;
+   var lb=sel.previousElementSibling;if(lb&&lb.tagName==="LABEL")lb.textContent="📦 Complaint किस आइटम की है? (सिर्फ़ वही आइटम जिनकी गारंटी बची है)";
+   var hint=document.createElement("div");hint.style.cssText="font-size:13px;font-weight:700;color:#555;margin:6px 0 0";
+   hint.textContent=el.length?"ऊपर 'नई Complaint' चुनकर किसी भी आइटम की Complaint खुद लिख सकते हैं। नीचे सिर्फ़ गारंटी वाले आइटम हैं।":"अभी किसी ऑर्डर की गारंटी बाकी नहीं है। 'नई Complaint' में अपना आइटम खुद लिखिए।";
+   sel.insertAdjacentElement("afterend",hint);
+   /* भेजते समय: आइटम के नाम में ऑर्डर नंबर और SKU हमेशा जुड़ें, ताकि दुकान की तरफ़ दिखें */
+   var h0=btn.onclick;
+   btn.onclick=function(){
+    var f=$("cf3"),base=f?f.value.trim():"",sel0=cSel,self=this,args=arguments,r;
+    if(f){
+     if(sel0&&base===String(sel0.item||"").trim()){
+      var txt=base+" • ऑर्डर: "+(sel0.no||"-")+" • SKU: "+((sel0.sku===""||sel0.sku==null)?"-":sel0.sku);
+      f.value=txt;cSel=Object.assign({},sel0,{item:txt})}
+     else if(base){cSel=null;f.value=base+" • नई Complaint (बिना ऑर्डर)"}}
+    r=h0.apply(self,args);
+    /* अगर फ़ॉर्म में कुछ अधूरा था (फ़ॉर्म खुला रहा), तो आइटम का नाम पहले जैसा कर दो */
+    try{var fm=$("xcf");if(fm&&fm.classList.contains("on")&&f){f.value=base;cSel=sel0}}catch(e){}
+    return r}
+  }catch(e){}}
+}
+})();
+</script>
 </body>
 </html>
