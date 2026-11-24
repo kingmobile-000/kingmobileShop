@@ -36,7 +36,7 @@ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}
 
 <meta name="google-site-verification" content="tXtYEs-L3EPtFHRJzAtBHY3tmnlfN1ByUdDSB3jGdAM">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"><meta name="theme-color" content="#e63c1f">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"><meta name="theme-color" content="#d9432a">
 <link rel="preconnect" href="https://script.google.com"><link rel="preconnect" href="https://script.googleusercontent.com" crossorigin><link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
 <script>/* TURANT ITEM: page parse hone se pehle hi items ki request chalu (itTick pehli baar isi ka jawab leta hai) */try{if(navigator.onLine!==false)window.__kmP=fetch("https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec?action=items&v=&t="+Date.now(),{cache:"no-store"})}catch(e){}</script>
 <title>KING MOBILE</title>
@@ -3516,5 +3516,24 @@ html body #tg::before,html body #tg::after{content:""!important;position:static!
 html body header{padding-bottom:4px!important}
 html body #kaddr{padding:2px 12px!important;line-height:1.1!important;font-size:12px!important}
 </style>
+<style id="kapkpatch">
+/* 1) फुल-स्क्रीन: अगर APK ऐप स्टेटस बार के नीचे तक खुले तो banner घड़ी/बैटरी के नीचे न छुपे (नॉर्मल मोड में कोई फर्क नहीं) */
+html body header{padding-top:calc(6px + env(safe-area-inset-top,0px))!important}
+
+/* 2) सर्च बार: कीबोर्ड की तरफ़ बस थोड़ा नीचे (14px). ज़्यादा/कम चाहिए तो नीचे का 14px बदलिए */
+:root{--sbnudge:14px}
+html body.kstk #sbar{padding-top:calc(max(env(safe-area-inset-top,0px),32px) + 6px + var(--sbnudge))!important}
+
+/* 3) KING MOBILE के दोनों तरफ़ नया KING crown logo (नारंगी-लाल चौकोर, काला crown, KING) */
+html body #tg::before,html body #tg::after{
+ content:""!important;display:block!important;flex:none!important;margin:0!important;
+ width:clamp(34px,9.6vw,44px)!important;height:clamp(34px,9.6vw,44px)!important;
+ background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ff8a1f'/%3E%3Cstop%20offset='1'%20stop-color='%23e8280c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20x='2'%20y='2'%20width='96'%20height='96'%20rx='14'%20fill='url%28%23g%29'/%3E%3Cpath%20d='M16%2046%20L10%2022%20L27%2034%20L33%2018%20L44%2032%20L50%2010%20L56%2032%20L67%2018%20L73%2034%20L90%2022%20L84%2046%20Z'%20fill='%231b1b1b'/%3E%3Cg%20fill='%231b1b1b'%3E%3Ccircle%20cx='10'%20cy='20'%20r='3.6'/%3E%3Ccircle%20cx='33'%20cy='16'%20r='3.6'/%3E%3Ccircle%20cx='50'%20cy='8'%20r='3.8'/%3E%3Ccircle%20cx='67'%20cy='16'%20r='3.6'/%3E%3Ccircle%20cx='90'%20cy='20'%20r='3.6'/%3E%3C/g%3E%3Cg%20fill='%23ff7a1a'%3E%3Cpath%20d='M50%2033%20L55%2039%20L50%2045%20L45%2039%20Z'/%3E%3Cpath%20d='M33%2037%20L36.5%2041%20L33%2045%20L29.5%2041%20Z'/%3E%3Cpath%20d='M67%2037%20L70.5%2041%20L67%2045%20L63.5%2041%20Z'/%3E%3C/g%3E%3Ctext%20x='50'%20y='74'%20text-anchor='middle'%20font-family='Georgia%2CTimes%20New%20Roman%2Cserif'%20font-weight='900'%20font-size='28'%20textLength='84'%20lengthAdjust='spacingAndGlyphs'%20fill='%231b1b1b'%3EKING%3C/text%3E%3Cpath%20d='M14%2080%20Q50%2088%2086%2080'%20stroke='%231b1b1b'%20stroke-width='2.6'%20fill='none'%20stroke-linecap='round'/%3E%3Cpath%20d='M39%2086%20L50%2096%20L61%2086%20Q50%2090%2039%2086%20Z'%20fill='%231b1b1b'/%3E%3C/svg%3E") center/contain no-repeat!important;
+ filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+</style>
+<script id="kapkpatchjs">
+/* स्टेटस बार का रंग: header के ऊपरी रंग जैसा (APK builder जो theme-color पढ़ता है उसके लिए) */
+(function(){var m=document.querySelector('meta[name="theme-color"]');if(!m){m=document.createElement("meta");m.name="theme-color";document.head.appendChild(m)}m.setAttribute("content","#d9432a")})();
+</script>
 </body>
 </html>
