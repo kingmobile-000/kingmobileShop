@@ -3587,7 +3587,7 @@ function chk(){try{r.classList.toggle("knh",!!document.querySelector(SEL))}catch
 chk();
 
 /* ---- 1) Login: फ़ोकस पर पुरानी "बीच में स्क्रॉल" वाली हरकत बंद (बॉक्स पहले से ऊपर है) ---- */
-window.addEventListener("focusin",function(e){var t=e.target;if(t&&t.closest&&t.closest("#xlg")){e.stopImmediatePropagation();var s=t.closest(".xsh");if(s)s.scrollTop=0}},true);
+
 
 /* ---- 4) गारंटी: महीने/साल/दिन -> दिन (6 महीना = 180 दिन) ---- */
 function wdays(w){var s=String(w==null?"":w).toLowerCase().trim();if(!s||/^no\b|नहीं|^0+\b/.test(s))return 0;
@@ -3655,7 +3655,7 @@ var lg=$("xlg");
 if(lg){
  var base=window.innerHeight;
  function kbH(){var d=0;try{var vv=window.visualViewport;if(vv)d=Math.max(0,Math.round(window.innerHeight-vv.height-vv.offsetTop))}catch(e){}return d}
- function lift(){
+ function lift(){return;
   var a=document.activeElement,inb=!!(a&&a.closest&&a.closest("#xlg")&&/^(INPUT|TEXTAREA)$/.test(a.tagName));
   if(!inb){lg.style.paddingBottom="";base=Math.max(base,window.innerHeight);return}
   if(base-window.innerHeight>100){lg.style.paddingBottom="12px";return}   /* फ़ोन ने खुद पेज छोटा कर दिया -> बॉक्स पहले ही कीबोर्ड के ऊपर */
@@ -3717,6 +3717,36 @@ if(typeof cForm==="function"){
     return r}
   }catch(e){}}
 }
+})();
+</script>
+<script id="kupd4js">
+/* ===== हर जगह: कीबोर्ड खुले तो जिस लाइन पर टैप किया वो कीबोर्ड के ठीक ऊपर दिखे; लंबा फ़ॉर्म हो तो सिर्फ़ उतना ही स्क्रॉल ===== */
+(function(){
+var base=window.innerHeight,spc=null,cur=null,tmr=[];
+function isTxt(t){if(!t||!t.tagName)return false;if(t.tagName==="TEXTAREA")return !t.readOnly&&!t.disabled;
+ if(t.tagName!=="INPUT")return false;return !/^(checkbox|radio|button|submit|file|range|color|image|reset|hidden)$/i.test(t.type||"text")&&!t.readOnly&&!t.disabled}
+function resized(){return base-window.innerHeight>100}
+function kb(){if(resized())return 0;var d=0;try{var vv=window.visualViewport;if(vv)d=Math.max(0,Math.round(window.innerHeight-vv.height-vv.offsetTop))}catch(e){}
+ return d>100?d:Math.round(window.innerHeight*0.35)}
+function scrollParent(f){var e=f.parentElement;while(e&&e!==document.body&&e!==document.documentElement){var o=getComputedStyle(e).overflowY;if(o==="auto"||o==="scroll")return e;e=e.parentElement}return null}
+function top0(){return 64+(parseInt(getComputedStyle(document.documentElement).getPropertyValue("--sat"))||0)}
+function rmSpc(){if(spc&&spc.parentNode)spc.parentNode.removeChild(spc);spc=null}
+function adjust(f){
+ if(!f||!document.body.contains(f)||document.activeElement!==f)return;
+ var K=kb(),lim=window.innerHeight-K-12,sc=scrollParent(f),r=f.getBoundingClientRect(),delta=r.bottom-lim;
+ if(delta>0&&K>0){
+  var host=sc||document.body;
+  if(!spc||spc.parentNode!==host){rmSpc();spc=document.createElement("div");spc.className="kspc";spc.style.cssText="flex:none;height:"+K+"px;width:100%;pointer-events:none";host.appendChild(spc)}
+  else spc.style.height=K+"px";
+  r=f.getBoundingClientRect();delta=r.bottom-lim}
+ if(delta>1){if(sc)sc.scrollTop+=delta;else window.scrollBy(0,delta)}
+ else{r=f.getBoundingClientRect();var tl=top0();if(r.top<tl-1&&sc){/* ऊपर छुप गया हो तो थोड़ा नीचे */ sc.scrollTop-=(tl-r.top)}}}
+function sched(f){cur=f;tmr.forEach(clearTimeout);tmr=[30,250,500,800].map(function(ms){return setTimeout(function(){adjust(f)},ms)})}
+window.addEventListener("focusin",function(e){var t=e.target;if(isTxt(t)){e.stopImmediatePropagation();sched(t)}},true);
+document.addEventListener("click",function(e){var t=e.target;if(t&&t.closest){var i=t.closest("input,textarea");if(i&&isTxt(i)&&document.activeElement===i)sched(i)}},true);
+window.addEventListener("focusout",function(){setTimeout(function(){if(!isTxt(document.activeElement)){tmr.forEach(clearTimeout);tmr=[];cur=null;rmSpc()}},250)},true);
+window.addEventListener("resize",function(){if(!isTxt(document.activeElement))base=Math.max(base,window.innerHeight);else if(cur)sched(cur)});
+try{window.visualViewport.addEventListener("resize",function(){if(cur)sched(cur)})}catch(e){}
 })();
 </script>
 </body>
