@@ -1888,7 +1888,7 @@ function send(){stop();box.innerHTML=head('कोड भेज रहे है�
 api("/send-otp",{mobile:m}).then(function(j){if(j&&j.ok){wait=30;ask()}else err((j&&j.error)||"कोड नहीं भेज पाए")}).catch(function(){err("Login का समय सुबह 08 बजे से रात 08 बजे तक है। कृपया इसी समय Login कीजिए। धन्यवाद। अधिक जानकारी के लिए संपर्क कीजिए: 9558222519")})}
 send()}
 function openLogin(msg){var d=document.getElementById("xlg");
-d.innerHTML='<div class="xsh"><h3>🔐 Login</h3><p>'+esc(msg||"अपना नाम और मोबाइल नंबर डालिए। एक बार Login करने के बाद इस फ़ोन पर हमेशा Login रहेगा।")+'</p><input type="text" id="xln" placeholder="आपका पूरा नाम *" autocomplete="name"><input type="text" id="xlm" inputmode="numeric" maxlength="14" placeholder="मोबाइल नंबर * (10 अंक)" autocomplete="tel"><div id="xle"></div><button class="xbtn" id="xlok">Login करें</button><button class="xbtn g" id="xlcl">रद्द करें</button></div>';
+d.innerHTML='<div class="xsh"><h3>🔐 Login</h3><p>'+esc(msg||"अपना नाम और मोबाइल नंबर डालिए। एक बार Login करने के बाद इस फ़ोन पर हमेशा Login रहेगा।")+'</p><input type="text" id="xln" placeholder="आपका पूरा नाम *" autocomplete="name"><input type="text" id="xlm" inputmode="numeric" maxlength="14" placeholder="मोबाइल नंबर * (10 अंक)" autocomplete="tel"><input type="text" id="xla" inputmode="numeric" maxlength="14" placeholder="आधार नंबर (वैकल्पिक)"><div style="font-size:12px;color:#555;margin:2px 0 8px;line-height:1.4">कृपया आधार नंबर जोड़ दें, ताकि आप कुछ समय बाद लोन के लिए अप्लाई कर सकें। न भरें तो भी मोबाइल और OTP से Login हो जाएगा।</div><div id="xle"></div><button class="xbtn" id="xlok">Login करें</button><button class="xbtn g" id="xlcl">रद्द करें</button></div>';
 d.classList.add("on");var us=null;try{us=JSON.parse(localStorage.getItem("kms_buyer")||"null")}catch(e){}
 if(us){document.getElementById("xln").value=us.n||"";document.getElementById("xlm").value=us.m||""}}
 function closeLogin(){document.getElementById("xlg").classList.remove("on");document.getElementById("xlg").innerHTML=""}
@@ -1897,7 +1897,7 @@ if(e.target===this||e.target.closest("#xlcl")){pendingBuy=null;closeLogin();retu
 if(e.target.closest("#xlok")){var n=document.getElementById("xln").value.trim(),m=t10(document.getElementById("xlm").value),er=document.getElementById("xle");
 if(n.length<2){er.textContent="⚠ कृपया अपना नाम लिखिए";return}
 if(m.length!==10){er.textContent="⚠ मोबाइल नंबर 10 अंक का होना चाहिए";return}
-var fin=function(tk){setUser({n:n,m:m,t:tk||''});closeLogin();drawAcct();if(curPg==="orders")drawOrders();syncOrders(); if(pendingBuy!==null){var i=pendingBuy;pendingBuy=null;openBuy(i)}};if(!OTP_URL){fin();return}kotp({box:document.getElementById("xlg"),mobile:m,pre:'<div class="xsh">',post:"</div>",bc:"xbtn",gc:"xbtn g",cid:"xlcl",onOk:fin})}});
+var ad=((document.getElementById("xla")||{}).value||"").replace(/\D/g,"");if(ad&&!lnAdOk(ad)){er.textContent="⚠ आधार नंबर सही नहीं है (12 अंक) – या खाली छोड़ दीजिए";return}var fin=function(tk){setUser({n:n,m:m,t:tk||''});if(ad){try{lnPost({action:"loankyc",mobile:m,name:n,aadhaar:ad}).then(function(r){if(r&&!r.ok&&r.error)alert(r.error)}).catch(function(){})}catch(x){}}closeLogin();drawAcct();if(curPg==="orders")drawOrders();syncOrders(); if(pendingBuy!==null){var i=pendingBuy;pendingBuy=null;openBuy(i)}};if(!OTP_URL){fin();return}kotp({box:document.getElementById("xlg"),mobile:m,pre:'<div class="xsh">',post:"</div>",bc:"xbtn",gc:"xbtn g",cid:"xlcl",onOk:fin})}});
 function applyUserToBuy(){var u=getUser(),mi=document.getElementById("bym"),ni=document.getElementById("byn");
 if(u){ni.value=u.n||ni.value;mi.value=u.m;mi.readOnly=true}else mi.readOnly=false}
 
@@ -3836,10 +3836,13 @@ function lnShow(s){
       h+='<h4>'+lnEsc(LN_CTX.item||"आइटम")+' लोन पर लें</h4>'
        +'<div class="sm" style="text-align:left">लोन अमाउंट</div><input id="lnAmt" type="number" value="'+amt+'" readonly>'
        +'<div class="sm" style="text-align:left">ब्याज (हर महीने, बाकी रकम पर) – फिक्स</div><input value="'+s.rate+'%" disabled>'
-       +'<div class="sm" style="text-align:left">कितने महीने (1–'+s.maxMonths+')</div><input id="lnMo" type="number" value="6" min="1" max="'+s.maxMonths+'" oninput="lnPrev()"><div id="lnPrev"></div>';
-      if(!s.hasProfile)h+='<h4>पहली बार लोन: KYC (एक बार)</h4><input id="lnAd" inputmode="numeric" maxlength="12" placeholder="आधार नंबर (12 अंक)"><input id="lnPan" maxlength="10" placeholder="पैन नंबर (ABCDE1234F)" style="text-transform:uppercase"><div class="sm" style="text-align:left">आधार फोटो (ज़रूरी नहीं)</div><input id="lnAp" type="file" accept="image/*"><div class="sm" style="text-align:left">पैन फोटो (ज़रूरी नहीं)</div><input id="lnPp" type="file" accept="image/*">';
-      h+='<button class="b" onclick="lnApply('+(s.hasProfile?1:0)+')">लोन लागू करो</button>';
+       +'<div class="sm" style="text-align:left">कितने महीने (1–'+s.maxMonths+')</div><input id="lnMo" type="number" value="'+Math.min(6,s.maxMonths)+'" min="1" max="'+s.maxMonths+'" oninput="lnPrev()">'+(s.maxMonths<12?'<div class="sm" style="color:#b45309;text-align:left">आपकी उम्र (60 साल तक) की वजह से अधिकतम '+s.maxMonths+' महीने की ही किस्त बनेगी</div>':'')+'<div id="lnPrev"></div>';
+      h+='<h4>लोन फॉर्म (सारी जानकारी ज़रूरी)</h4>'+lnForm(s);
+      h+='<button class="b" onclick="lnApply()">लोन लागू करो</button>';
     }
+  }
+  if(!(s.eligible&&LN_CTX&&LN_CTX.amount)&&!(s.age&&s.age.blocked)){
+    h+='<details'+((s.hasProfile&&s.hasAadhaar)?'':' open')+' style="margin:12px 0"><summary style="font-weight:800;font-size:15px;padding:8px 0">👤 मेरी जानकारी (KYC फॉर्म)</summary>'+(s.needAadhaar?'<div class="sm" style="color:#b45309;text-align:left">आधार नंबर जोड़ने पर आपकी लोन लिमिट (पिछले 1 साल की खरीद के मुनाफ़े का 5%) दिखेगी।</div>':'')+lnForm(s)+'<button class="b" onclick="lnSaveKyc()">जानकारी सेव करो</button></details>';
   }
   if(q.loans){
     h+='<h4>मेरा हिसाब</h4><div class="st"><div>कुल लिया<b>'+lnRs(q.loaned)+'</b></div><div>कुल वापसी (ब्याज सहित)<b>'+lnRs(q.payable)+'</b></div><div>अब तक जमा<b style="color:#15803d">'+lnRs(q.paid)+'</b></div><div>अभी देना बाकी<b style="color:#dc2626">'+lnRs(q.left)+'</b></div><div>समय पर किस्त<b>'+q.onTime+'</b></div><div>लेट किस्त / दिन<b>'+q.lateKists+' / '+q.lateDays+'</b></div></div>';
@@ -3880,16 +3883,73 @@ function lnPrev(){
   });
 }
 function lnFile(id){return new Promise(function(res){var f=document.getElementById(id);if(!f||!f.files[0])return res("");var r=new FileReader();r.onload=function(){res(r.result)};r.readAsDataURL(f.files[0])})}
-function lnApply(has){
-  if(window._lnBusy)return;window._lnBusy=true;
-  var u=LN_USER(),o={action:"loanapply",mobile:LN_MOBILE(),name:(u&&u.n)||"",amount:+document.getElementById("lnAmt").value,months:+document.getElementById("lnMo").value,item:(LN_CTX||{}).item||"",sku:(LN_CTX||{}).sku||""};
-  Promise.all([has?"":lnFile("lnAp"),has?"":lnFile("lnPp")]).then(function(f){
-    if(!has){o.aadhaar=document.getElementById("lnAd").value;o.pan=document.getElementById("lnPan").value;o.aphoto=f[0];o.pphoto=f[1]}
-    return lnPost(o);
-  }).catch(function(){return{ok:false,error:"नेट की दिक्कत - दोबारा कोशिश करें"}}).then(function(r){
-    window._lnBusy=false;
+/* ===== KYC FORM (naya): mobile lock, naam edit, DOB (60+ rok), pata (purana ho to badalne ka option), aadhaar + 2 photo, pan + photo ===== */
+var LN_VD=[[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,0,6,7,8,9,5],[2,3,4,0,1,7,8,9,5,6],[3,4,0,1,2,8,9,5,6,7],[4,0,1,2,3,9,5,6,7,8],[5,9,8,7,6,0,4,3,2,1],[6,5,9,8,7,1,0,4,3,2],[7,6,5,9,8,2,1,0,4,3],[8,7,6,5,9,3,2,1,0,4],[9,8,7,6,5,4,3,2,1,0]],
+LN_VP=[[0,1,2,3,4,5,6,7,8,9],[1,5,7,6,2,8,3,0,9,4],[5,8,0,3,7,9,6,1,4,2],[8,9,1,6,0,4,3,5,2,7],[9,4,5,3,1,2,6,8,7,0],[4,2,8,6,5,7,3,9,0,1],[2,7,9,3,8,0,6,4,1,5],[7,0,4,6,9,1,3,2,5,8]];
+function lnAdOk(a){a=String(a||"");if(!/^[2-9]\d{11}$/.test(a))return false;var c=0,r=a.split("").reverse();for(var i=0;i<r.length;i++)c=LN_VD[c][LN_VP[i%8][+r[i]]];return c===0}
+function lnAgeMsg(dob){
+  if(!dob)return"जन्म तारीख भरना ज़रूरी है";
+  var d=new Date(dob+"T00:00:00");if(isNaN(d))return"जन्म तारीख सही नहीं है";
+  var t=new Date();t.setHours(0,0,0,0);if(d>t)return"जन्म तारीख सही नहीं है";
+  var b=new Date(d.getFullYear()+60,d.getMonth(),d.getDate());
+  if(b<=t)return"आप लोन का फॉर्म नहीं भर सकते, आपकी उम्र 60+ है। यहाँ लोन 60 साल तक के लोगों को ही मिलता है।";
+  return""}
+var LN_IN='width:100%;box-sizing:border-box;padding:10px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;margin:2px 0 6px';
+function lnForm(s){
+  var p=s.profile||{},u=LN_USER(),nm=p.name||(u&&u.n)||"",L='<div class="sm" style="text-align:left">';
+  var h=L+'मोबाइल नंबर (बदल नहीं सकते)</div><input value="'+lnEsc(LN_MOBILE())+'" disabled>'
+   +L+'नाम *</div><input id="lnNm" value="'+lnEsc(nm)+'" maxlength="60">'
+   +L+'जन्म तारीख * (लोन 60 साल तक के लोगों को मिलता है)</div><input id="lnDob" type="date" value="'+lnEsc(p.dob||"")+'" min="1900-01-01" max="'+lnEsc(s.today||"")+'">'
+   +L+'पूरा पता *</div>';
+  if(p.address)h+='<div id="lnAdrV" class="dt">📍 '+lnEsc(p.address)+'<div class="sm" style="text-align:left;margin-top:4px">पता सही है तो ऐसे ही रहने दें।</div><button type="button" class="b g" style="padding:8px;margin-top:4px" onclick="lnAdrChg()">✏ पता बदलें</button></div><textarea id="lnAdr" rows="3" maxlength="200" style="display:none;'+LN_IN+'">'+lnEsc(p.address)+'</textarea>';
+  else h+='<textarea id="lnAdr" rows="3" maxlength="200" placeholder="गाँव/मोहल्ला, पोस्ट, ज़िला, पिन कोड" style="'+LN_IN+'"></textarea>';
+  h+=L+'आधार नंबर *</div>'+(p.aadhaar?'<input value="'+lnEsc(p.aadhaar)+'" disabled><div class="sm" style="text-align:left">आधार जुड़ चुका है (बदलने के लिए दुकान से संपर्क करें)</div>':'<input id="lnAd" inputmode="numeric" maxlength="12" placeholder="आधार नंबर (12 अंक)">')
+   +L+'आधार कार्ड फोटो – आगे का हिस्सा * '+(p.hasAphoto?'<b style="color:#16a34a">✔ जमा है</b> (बदलने के लिए नई चुनें)':'')+'</div><input id="lnAp" type="file" accept="image/*">'
+   +L+'आधार कार्ड फोटो – पीछे का हिस्सा * '+(p.hasAphoto2?'<b style="color:#16a34a">✔ जमा है</b> (बदलने के लिए नई चुनें)':'')+'</div><input id="lnAp2" type="file" accept="image/*">'
+   +L+'पैन कार्ड नंबर *</div>'+(p.pan?'<input value="'+lnEsc(p.pan)+'" disabled>':'<input id="lnPan" maxlength="10" placeholder="ABCDE1234F" style="text-transform:uppercase">')
+   +L+'पैन कार्ड फोटो * '+(p.hasPphoto?'<b style="color:#16a34a">✔ जमा है</b> (बदलने के लिए नई चुनें)':'')+'</div><input id="lnPp" type="file" accept="image/*">';
+  return h}
+function lnAdrChg(){var v=document.getElementById("lnAdrV"),t=document.getElementById("lnAdr");if(v)v.style.display="none";if(t){t.style.display="block";t.focus()}}
+function lnCollect(){
+  var g=function(i){var e=document.getElementById(i);return e?String(e.value||"").trim():""};
+  var o={name:g("lnNm"),dob:g("lnDob"),address:g("lnAdr"),aadhaar:g("lnAd").replace(/\D/g,""),pan:g("lnPan").toUpperCase()};
+  return Promise.all([lnFile("lnAp"),lnFile("lnAp2"),lnFile("lnPp")]).then(function(f){o.aphoto=f[0];o.aphoto2=f[1];o.pphoto=f[2];return o})}
+function lnCheck(k,p){
+  if(k.name.length<2)return"नाम लिखिए";
+  var e=lnAgeMsg(k.dob);if(e)return e;
+  if(k.address.length<10)return"पूरा पता लिखिए";
+  if(!p.aadhaar&&!lnAdOk(k.aadhaar))return"आधार नंबर सही नहीं है (12 अंक)";
+  if(!p.pan&&!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(k.pan))return"पैन नंबर सही नहीं है (जैसे ABCDE1234F)";
+  if(!k.aphoto&&!p.hasAphoto)return"आधार कार्ड की आगे की फोटो ज़रूरी है";
+  if(!k.aphoto2&&!p.hasAphoto2)return"आधार कार्ड की पीछे की फोटो ज़रूरी है";
+  if(!k.pphoto&&!p.hasPphoto)return"पैन कार्ड की फोटो ज़रूरी है";
+  return""}
+function lnNameLocal(n){try{var u=LN_USER();if(u&&n&&typeof setUser==="function")setUser({n:n,m:u.m,t:u.t||""})}catch(e){}}
+function lnSaveKyc(){
+  if(window._lnBusy)return;
+  lnCollect().then(function(k){
+    if(k.name.length<2){alert("नाम लिखिए");return}
+    if(k.dob){var e=lnAgeMsg(k.dob);if(e){alert(e);return}}
+    if(k.aadhaar&&!lnAdOk(k.aadhaar)){alert("आधार नंबर सही नहीं है (12 अंक)");return}
+    if(k.pan&&!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(k.pan)){alert("पैन नंबर सही नहीं है (जैसे ABCDE1234F)");return}
+    window._lnBusy=true;k.action="loankyc";k.mobile=LN_MOBILE();
+    lnPost(k).then(function(r){window._lnBusy=false;if(!r.ok){alert(r.error||"सेव नहीं हुआ");return}lnNameLocal(k.name);alert("✅ जानकारी सेव हो गई");kingLoanOpen(LN_CTX)}).catch(function(){window._lnBusy=false;alert("नेट की दिक्कत - दोबारा कोशिश करें")});
+  })}
+function lnApply(){
+  if(window._lnBusy)return;
+  var p=(LN_S&&LN_S.profile)||{};
+  lnCollect().then(function(k){
+    var er=lnCheck(k,p);if(er){alert(er);return null}
+    var mo=+document.getElementById("lnMo").value;
+    if(!(mo>=1&&mo<=LN_S.maxMonths)){alert("महीने 1 से "+LN_S.maxMonths+" के बीच होने चाहिए");return null}
+    window._lnBusy=true;
+    var o={action:"loanapply",mobile:LN_MOBILE(),amount:+document.getElementById("lnAmt").value,months:mo,item:(LN_CTX||{}).item||"",sku:(LN_CTX||{}).sku||""};
+    for(var x in k)o[x]=k[x];
+    return lnPost(o).then(function(r){return{r:r,o:o}}).catch(function(){return{r:{ok:false,error:"नेट की दिक्कत - दोबारा कोशिश करें"},o:o}});
+  }).then(function(z){
+    if(!z)return;window._lnBusy=false;var r=z.r,o=z.o;
     if(!r.ok){alert(r.error||"लोन नहीं मिला");return}
-    r.months=o.months;alert("लोन मंज़ूर ✅ पहली किस्त "+lnDt(r.firstDue)+" को, किस्त "+lnRs(r.emi));
+    lnNameLocal(o.name);r.months=o.months;alert("लोन मंज़ूर ✅ पहली किस्त "+lnDt(r.firstDue)+" को, किस्त "+lnRs(r.emi));
     lnClose();if(LN_CTX&&LN_CTX.onDone)LN_CTX.onDone(r);else kingLoanOpen();
   });
 }
