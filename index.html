@@ -607,9 +607,10 @@ body.nh #rcw{display:none!important}
 <div class="bysec" id="byno" style="display:none"></div>
 <div class="bysec" id="bypd"></div>
 <div id="bywarn" style="background:#fff3e0;color:#b45309;font-weight:800;font-size:13px;line-height:1.5;padding:8px 14px">⚠ ध्यान दें: अगर आप आइटम बुक करके बार-बार कैंसल करेंगे, तो आपकी ID ब्लॉक हो जाएगी।</div>
+<div class="bysec"><button id="bylone" type="button" style="width:100%;padding:13px;border:2px solid #0b4fa8;border-radius:12px;background:#eef4ff;color:#0b4fa8;font-size:15px;font-weight:900">💳 अपने सिविल के आधार पर लोन पर आइटम लें</button></div>
 <div id="byerr"></div>
 <div id="byfoot"><div id="byft"></div><button id="bysend">✅ Order Now</button></div></div>
-<style>#sbar{display:flex;align-items:center;gap:8px}#sbar .sw{flex:1;min-width:0}#mbtn{flex:none;width:46px;height:46px;border:0;border-radius:12px;background:#fff;color:#e63c1f;font-size:26px;line-height:1;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.2)}#mdr{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:90;background:rgba(0,0,0,.5)}#mdr.on{display:block}#mdp{position:absolute;left:0;top:0;bottom:0;width:78%;max-width:320px;background:#fff;box-shadow:2px 0 16px rgba(0,0,0,.3);overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}#mdh{background:#ff4a18;color:#fff;font-weight:900;font-size:18px;padding:20px 16px}.mdi{display:flex;align-items:center;gap:14px;width:100%;border:0;border-bottom:1px solid #eee;background:#fff;padding:15px 18px;font-size:16px;font-weight:700;color:#222;text-align:left}.mdi i{font-style:normal;font-size:22px;width:30px;text-align:center}.mdi.upd{color:#16a34a}</style><div id="mdr"><div id="mdp"><div id="mdh">👑 KING MOBILE SHOP</div><div id="mdl"></div></div></div><script>var UPDATE_URL="https://drive.google.com/drive/folders/1XvPxzH5MZMsKMbXW0FvKE6ld-l0FFKIx";(function(){var $=function(i){return document.getElementById(i)};function nav(s){var e=document.querySelector('#xnav '+s);if(e)e.click()}function upd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('Update का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var p=U.indexOf('://'),sc=p>0?U.slice(0,p).toLowerCase():'';if(/Android/i.test(navigator.userAgent||'')&&(sc==='https'||sc==='http')){var it='intent://'+U.slice(p+3)+'#Intent;scheme='+sc+';package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(U)+';end';try{(window.top||window).location.href=it;return}catch(e){}try{location.href=it;return}catch(e){}}var w=null;try{w=window.open(U,'_blank')}catch(e){}if(!w)location.href=U}function snd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('App का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var m='📲 KING MOBILE SHOP का App इंस्टॉल करने के लिए यह लिंक खोलिए:\n'+U;function wa(){try{if(navigator.clipboard)navigator.clipboard.writeText(U)}catch(e){}var u='https://wa.me/?text='+encodeURIComponent(m),w=null;try{w=window.open(u,'_blank')}catch(e){}if(!w)location.href=u}if(navigator.share){navigator.share({title:'KING MOBILE SHOP',text:m}).catch(function(e){if(e&&e.name==='AbortError')return;wa()})}else wa()}function items(){var a=$('xnl');return[['📞','Call 9558222519',function(){var c=$('ctc');if(c)c.click();else location.href='tel:9558222519'}],['📲','App Send',snd,1],['⬇️','App Update / Download',upd,1],['🌐','भाषा',function(){if(window.kmLangOpen)window.kmLangOpen()}]]}function shut(){var d=$('mdr');if(d)d.classList.remove('on')}function openM(){var d=$('mdr'),l=$('mdl');if(!d||!l)return;l.innerHTML='';items().forEach(function(it){var b=document.createElement('button');b.type='button';b.className='mdi'+(it[3]?' upd':'');var i=document.createElement('i');i.textContent=it[0];var t=document.createElement('span');t.textContent=it[1];b.appendChild(i);b.appendChild(t);b.onclick=function(){shut();setTimeout(it[2],60)};l.appendChild(b)});d.classList.add('on')}document.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest)return;if(t.closest('#mbtn')){openM();return}if(t.id==='mdr')shut()})})();</script><div id="knvbg"></div><nav id="xnav"><button data-xp="home" class="on"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span>Home</span></button><button data-xp="cats"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><span>Categories</span></button><button data-xp="acct"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.8 3.7-6 7.5-6s6.9 2.2 7.5 6z"/></svg><span>Account</span><span id="xnl" style="display:none">Login</span></button><button data-xp="orders" data-m="c"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5l6.2-6.2a4 4 0 0 0 5-5l-2.6 2.6-2.2-.6-.6-2.2z"/></svg><span>Complaint</span></button><button data-xp="orders" data-m="o"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg><span>Orders</span></button><a class="ctn" id="ctc" href="tel:9558222519" aria-label="Call 9558222519" style="display:none"></a></nav>
+<style>#sbar{display:flex;align-items:center;gap:8px}#sbar .sw{flex:1;min-width:0}#mbtn{flex:none;width:46px;height:46px;border:0;border-radius:12px;background:#fff;color:#e63c1f;font-size:26px;line-height:1;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.2)}#mdr{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:90;background:rgba(0,0,0,.5)}#mdr.on{display:block}#mdp{position:absolute;left:0;top:0;bottom:0;width:78%;max-width:320px;background:#fff;box-shadow:2px 0 16px rgba(0,0,0,.3);overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}#mdh{background:#ff4a18;color:#fff;font-weight:900;font-size:18px;padding:20px 16px}.mdi{display:flex;align-items:center;gap:14px;width:100%;border:0;border-bottom:1px solid #eee;background:#fff;padding:15px 18px;font-size:16px;font-weight:700;color:#222;text-align:left}.mdi i{font-style:normal;font-size:22px;width:30px;text-align:center}.mdi.upd{color:#16a34a}</style><div id="mdr"><div id="mdp"><div id="mdh">👑 KING MOBILE SHOP</div><div id="mdl"></div></div></div><script>var UPDATE_URL="https://drive.google.com/drive/folders/1XvPxzH5MZMsKMbXW0FvKE6ld-l0FFKIx";(function(){var $=function(i){return document.getElementById(i)};function nav(s){var e=document.querySelector('#xnav '+s);if(e)e.click()}function upd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('Update का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var p=U.indexOf('://'),sc=p>0?U.slice(0,p).toLowerCase():'';if(/Android/i.test(navigator.userAgent||'')&&(sc==='https'||sc==='http')){var it='intent://'+U.slice(p+3)+'#Intent;scheme='+sc+';package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(U)+';end';try{(window.top||window).location.href=it;return}catch(e){}try{location.href=it;return}catch(e){}}var w=null;try{w=window.open(U,'_blank')}catch(e){}if(!w)location.href=U}function snd(){var U=UPDATE_URL;try{var s=localStorage.getItem('kms_update_url');if(s)U=s}catch(e){}if(!U){alert('App का लिंक अभी नहीं डाला गया है। दुकान से संपर्क कीजिए: 9558222519');return}var m='📲 KING MOBILE SHOP का App इंस्टॉल करने के लिए यह लिंक खोलिए:\n'+U;function wa(){try{if(navigator.clipboard)navigator.clipboard.writeText(U)}catch(e){}var u='https://wa.me/?text='+encodeURIComponent(m),w=null;try{w=window.open(u,'_blank')}catch(e){}if(!w)location.href=u}if(navigator.share){navigator.share({title:'KING MOBILE SHOP',text:m}).catch(function(e){if(e&&e.name==='AbortError')return;wa()})}else wa()}function items(){var a=$('xnl');return[['📞','Call 9558222519',function(){var c=$('ctc');if(c)c.click();else location.href='tel:9558222519'}],['📲','App Send',snd,1],['⬇️','App Update / Download',upd,1],['💳','लोन / सिविल स्कोर',function(){if(window.kingLoanOpen)window.kingLoanOpen()}],['🌐','भाषा',function(){if(window.kmLangOpen)window.kmLangOpen()}]]}function shut(){var d=$('mdr');if(d)d.classList.remove('on')}function openM(){var d=$('mdr'),l=$('mdl');if(!d||!l)return;l.innerHTML='';items().forEach(function(it){var b=document.createElement('button');b.type='button';b.className='mdi'+(it[3]?' upd':'');var i=document.createElement('i');i.textContent=it[0];var t=document.createElement('span');t.textContent=it[1];b.appendChild(i);b.appendChild(t);b.onclick=function(){shut();setTimeout(it[2],60)};l.appendChild(b)});d.classList.add('on')}document.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest)return;if(t.closest('#mbtn')){openM();return}if(t.id==='mdr')shut()})})();</script><div id="knvbg"></div><nav id="xnav"><button data-xp="home" class="on"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg><span>Home</span></button><button data-xp="cats"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><span>Categories</span></button><button data-xp="acct"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.8 3.7-6 7.5-6s6.9 2.2 7.5 6z"/></svg><span>Account</span><span id="xnl" style="display:none">Login</span></button><button data-xp="orders" data-m="c"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5l6.2-6.2a4 4 0 0 0 5-5l-2.6 2.6-2.2-.6-.6-2.2z"/></svg><span>Complaint</span></button><button data-xp="orders" data-m="o"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg><span>Orders</span></button><a class="ctn" id="ctc" href="tel:9558222519" aria-label="Call 9558222519" style="display:none"></a></nav>
 <div class="xpg" id="xpc"></div><div class="xpg" id="xpo"></div><div class="xpg" id="xpa"></div>
 <div id="xod"></div><div id="xlg"></div><div id="xok"></div>
 <div id="md"><div class="mb"><div id="mm"></div><input type="password" id="mi"><div class="row"><button class="p" id="mo">OK</button><button id="mc">रद्द करें</button></div></div></div>
@@ -1736,7 +1737,7 @@ var w=null;
 var R0=numOf(o.Rate),R=(R0===null?null:R0-offPU(R0,byQ)),M=numOf(o.MRate),s=stkOf(o.Qty);
 var D=(R0===null?0:Math.round((R0-R)*byQ*100)/100);
 var ut=(document.getElementById("byu")||{value:""}).value.trim();
-(function(cb){if(pendNo)cb(pendNo);else getOrderNo(cb)})(function(no){pendNo="";var rz=window.KM_RZP||null;window.KM_RZP=null;if(byP==="UPI"){nt=(nt?nt+" | ":"")+"PAID Online (Razorpay) | Pay ID: "+(rz?rz.pid:"")+" | RZP Order: "+(rz?rz.oid:"")+" | Ref: "+(no||"")}
+(function(cb){if(pendNo)cb(pendNo);else getOrderNo(cb)})(function(no){pendNo="";var rz=window.KM_RZP||null;window.KM_RZP=null;if(byP==="Loan"&&window.KM_LOAN){nt=(nt?nt+" | ":"")+"LOAN "+KM_LOAN.id+" | "+KM_LOAN.months+" महीने | किस्त ₹"+KM_LOAN.emi+" | कुल वापसी ₹"+KM_LOAN.total}if(byP==="UPI"){nt=(nt?nt+" | ":"")+"PAID Online (Razorpay) | Pay ID: "+(rz?rz.pid:"")+" | RZP Order: "+(rz?rz.oid:"")+" | Ref: "+(no||"")}
 var L=["*KING MOBILE SHOP – नया ऑर्डर*"];if(no)L.push("*ऑर्डर नंबर: "+no+"*");L.push("","*आइटम:* "+o.Item);
 if(o.SKU!==undefined&&o.SKU!==null&&o.SKU!=="")L.push("SKU: "+o.SKU);
 if(o.Warranty)L.push("Warranty: "+o.Warranty);
@@ -1751,7 +1752,7 @@ if(byD==="home"){L.push("लेना है: घर पर मँगवान�
 L.push("पेमेंट: "+(byP==="Udhaar"?"उधार":byP));
 if(nt)L.push("नोट: "+nt);
 var ord={id:"KM"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:o.Item,sku:(o.SKU==null?"":String(o.SKU)),warranty:o.Warranty||"",mrate:(o.MRate==null?"":o.MRate),rate:(R===null?"":R),qty:byQ,total:(R!==null?kmTot(R):""),cod:(R!==null&&byP==="Cash"?codFee(R*byQ):0),stock:(s==="Yes"?"है":s==="NO"?"नहीं है":""),name:n,mobile:m,delivery:(byD==="home"?"घर":"दुकान"),offer:D,address:a,city:c,pin:pc,payment:(byP==="Udhaar"?"उधार":byP),note:nt,offLocal:(D>0?1:0)};
-pushOrder(ord,(o.Photos&&o.Photos[0])||"");try{if(o._fb&&window.fbBook)fbBook(o,byQ)}catch(e){}
+if(byP==="Loan"&&window.KM_LOAN){ord.loan=KM_LOAN.id;window.KM_LOAN=null}pushOrder(ord,(o.Photos&&o.Photos[0])||"");try{if(o._fb&&window.fbBook)fbBook(o,byQ)}catch(e){}
 if(D>0){offConsume(D);offPost("use",ord)}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}
 btn.disabled=false;btn.textContent="✅ Order Now";closeBuy()})}
 var ORDER_URL="https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
@@ -3748,6 +3749,205 @@ window.addEventListener("focusout",function(){setTimeout(function(){if(!isTxt(do
 window.addEventListener("resize",function(){if(!isTxt(document.activeElement))base=Math.max(base,window.innerHeight);else if(cur)sched(cur)});
 try{window.visualViewport.addEventListener("resize",function(){if(cur)sched(cur)})}catch(e){}
 })();
+</script>
+<style>
+#lnBox{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:99999;align-items:flex-end;justify-content:center}
+#lnBox .c{background:#fff;width:100%;max-width:480px;max-height:94vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px;font-family:inherit;color:#111;-webkit-overflow-scrolling:touch}
+#lnBox h3{margin:0 0 8px}#lnBox h4{margin:14px 0 6px}
+#lnBox input{width:100%;padding:10px;margin:4px 0 8px;border:1px solid #bbb;border-radius:8px;box-sizing:border-box;font-size:16px}
+#lnBox .b{background:#ff3d00;color:#fff;border:0;border-radius:12px;padding:13px;width:100%;font-size:16px;font-weight:800;margin-top:8px}
+#lnBox .g{background:#eee;color:#222}#lnBox .bl{background:#0b5cff;box-shadow:0 6px 14px rgba(11,92,255,.3)}
+#lnBox table{width:100%;border-collapse:collapse;font-size:12px}#lnBox td,#lnBox th{border-bottom:1px solid #eee;padding:4px;text-align:right}
+#lnBox .hi{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+#lnBox .hi h2{margin:0;font:400 26px/1.2 Georgia,serif}#lnBox .hi small{color:#667;font-size:13px}
+#lnBox .rf{border:1.5px solid #9ec0ff;background:#eef4ff;color:#0b5cff;border-radius:999px;padding:8px 12px;font-weight:800;font-size:13px;white-space:nowrap}
+#lnBox .sm{color:#666;font-size:13px;text-align:center}
+#lnBox .gz{position:relative;width:260px;margin:6px auto 0}
+#lnBox .gz .sc{position:absolute;left:0;right:0;top:62px;text-align:center}
+#lnBox .gz .sc b{display:block;font-size:46px;line-height:1;font-weight:800;color:#23272f}
+#lnBox .gz .sc span{font-size:15px;font-weight:700}
+#lnBox .gz .ln{position:absolute;bottom:2px;font-size:12px;font-weight:700;color:#bbb}
+#lnBox .st{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+#lnBox .st div{background:#f5f7fb;border-radius:12px;padding:10px;text-align:center;font-size:12px;color:#556}
+#lnBox .st b{display:block;font-size:17px;color:#111}
+#lnBox .mn{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+#lnBox .mb{width:54px;border:1.5px solid #ddd;border-radius:10px;padding:5px 2px;text-align:center;font-size:11px;background:#fff;color:#333}
+#lnBox .mb i{display:block;font-style:normal;font-size:18px;font-weight:900;line-height:1.2}
+#lnBox .mb.ok{border-color:#16a34a;background:#e9f9ee}#lnBox .mb.ok i{color:#16a34a}
+#lnBox .mb.ol{border-color:#f59e0b;background:#fff6e0}#lnBox .mb.ol i{color:#d97706}
+#lnBox .mb.bad{border-color:#dc2626;background:#fdecec}#lnBox .mb.bad i{color:#dc2626}
+#lnBox .mb.td{border-color:#0b5cff;background:#eef4ff}#lnBox .mb.td i{color:#0b5cff}
+#lnBox .mb.sel{outline:3px solid #0b5cff33}
+#lnBox .dt{background:#f7f7f9;border-radius:10px;padding:10px;font-size:13px;line-height:1.6;margin:4px 0}
+#lnRep{position:fixed;inset:0;background:#fff;z-index:100000;display:none;flex-direction:column}
+#lnRep .bar{display:flex;gap:8px;padding:10px;background:#0b5cff}
+#lnRep .bar button{flex:1;padding:11px;border:0;border-radius:10px;font-weight:800;font-size:14px}
+#lnRep iframe{flex:1;border:0;width:100%}
+</style>
+<div id="lnBox" onclick="if(event.target===this)this.style.display='none'"><div class="c" id="lnC"></div></div>
+<div id="lnRep"><div class="bar"><button onclick="lnRepDl()">⬇ डाउनलोड</button><button onclick="lnRepPrint()">🖨 PDF / प्रिंट</button><button onclick="lnRepClose()" style="background:#eee">✕ बंद</button></div><iframe id="lnRepF"></iframe></div>
+<script>
+var LN_URL=(typeof ORDER_URL!=="undefined")?ORDER_URL:"https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
+function LN_USER(){try{var u=JSON.parse(localStorage.getItem("kms_user")||"null");return(u&&u.m)?u:null}catch(e){return null}}
+function LN_MOBILE(){var u=LN_USER();return u?String(u.m).replace(/\D/g,"").slice(-10):""}
+function lnPost(o){return fetch(LN_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(o)}).then(function(r){return r.json()})}
+function lnGet(q){return fetch(LN_URL+(LN_URL.indexOf("?")<0?"?":"&")+q+"&t="+Date.now()).then(function(r){return r.json()})}
+function lnC(h){document.getElementById("lnC").innerHTML=h;document.getElementById("lnBox").style.display="flex"}
+function lnClose(){document.getElementById("lnBox").style.display="none"}
+function lnRs(x){return "₹"+(Math.round(Number(x)*100)/100).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function lnEsc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var LN_CTX=null,LN_S=null,LN_MON=["जन","फ़र","मार्च","अप्र","मई","जून","जुला","अग","सित","अक्टू","नव","दिस"];
+function lnDt(s){if(!s)return"";var p=String(s).slice(0,10).split("-");return p.length<3?s:(+p[2])+" "+LN_MON[+p[1]-1]+" "+String(p[0]).slice(2)}
+function lnLabel(sc){return sc>=800?["बहुत बढ़िया","#15803d"]:sc>=701?["बहुत अच्छा","#43a047"]:sc>=500?["ठीक-ठाक","#d97706"]:sc>=300?["कमज़ोर","#dc2626"]:["शुरुआत","#64748b"]}
+
+/* गोल स्कोर (0–900) */
+function lnGauge(sc){
+  var cx=130,cy=125,r=95,f=Math.max(0,Math.min(1,sc/900));
+  function pt(t){var a=(150+240*t)*Math.PI/180;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]}
+  var s=pt(0),e=pt(1),p=pt(f),lg=(240*f>180)?1:0,lab=lnLabel(sc);
+  var track='M'+s[0]+' '+s[1]+' A'+r+' '+r+' 0 1 1 '+e[0]+' '+e[1];
+  var prog=f>0?'<path d="M'+s[0]+' '+s[1]+' A'+r+' '+r+' 0 '+lg+' 1 '+p[0]+' '+p[1]+'" fill="none" stroke="url(#lng)" stroke-width="12" stroke-linecap="round"/>':'';
+  return '<div class="gz"><svg viewBox="0 0 260 175" width="260" height="175"><defs><linearGradient id="lng" gradientUnits="userSpaceOnUse" x1="'+(cx-r)+'" y1="0" x2="'+(cx+r)+'" y2="0"><stop offset="0" stop-color="#ef4444"/><stop offset=".5" stop-color="#f59e0b"/><stop offset=".72" stop-color="#facc15"/><stop offset="1" stop-color="#22c55e"/></linearGradient></defs>'
+   +'<path d="'+track+'" fill="none" stroke="#eef0f4" stroke-width="12" stroke-linecap="round"/>'+prog
+   +'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="11" fill="#fff" stroke="'+(f>.78?"#22c55e":f>.55?"#f59e0b":"#ef4444")+'" stroke-width="3"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="5.5" fill="'+(f>.78?"#22c55e":f>.55?"#f59e0b":"#ef4444")+'"/></svg>'
+   +'<div class="sc"><b>'+sc+'</b><span style="color:'+lab[1]+'">'+lab[0]+'</span></div><span class="ln" style="left:22px">0</span><span class="ln" style="right:22px">900</span></div>'}
+
+function kingLoanOpen(ctx){
+  LN_CTX=ctx||null;var m=LN_MOBILE();
+  if(m.length!==10){lnC('<h3>लोन</h3><p>पहले ऐप में अपने मोबाइल नंबर से Login करें।</p><button class="b g" onclick="lnClose()">ठीक है</button>');return}
+  lnC('<p class="sm" style="padding:30px">⏳ आपका स्कोर देख रहे हैं...</p>');
+  lnGet("action=loanstatus&mobile="+m).then(lnShow).catch(function(){lnC('<p>नेट नहीं है, दोबारा कोशिश करें।</p><button class="b g" onclick="lnClose()">बंद</button>')});
+}
+function lnNm(s){var u=LN_USER();return (u&&u.n)||s.name||"ग्राहक"}
+
+function lnShow(s){
+  if(!s.ok){lnC('<p>'+lnEsc(s.error||"दिक्कत")+'</p><button class="b g" onclick="lnClose()">बंद</button>');return}
+  LN_S=s;var q=s.sum||{};
+  var h='<div class="hi"><div><h2>नमस्ते <b>'+lnEsc(lnNm(s))+'</b>!</h2><small>आपका क्रेडिट स्कोर · '+lnDt(s.today)+'</small></div><button class="rf" onclick="kingLoanOpen(LN_CTX)">⟳ Refresh</button></div>'
+   +lnGauge(s.score)
+   +'<div class="st"><div>लोन अमाउंट (लिमिट)<b>'+lnRs(s.limit)+'</b></div><div>अभी लेने लायक<b>'+lnRs(s.available)+'</b></div></div>'
+   +'<div class="sm" style="margin:4px 0 8px;font-weight:700;color:'+(s.eligible?"#15803d":"#b45309")+'">'+(s.eligible?'✅ आप लोन के लिए योग्य हैं':'🔒 '+lnEsc(s.reason))+'</div>'
+   +'<button class="b bl" onclick="lnReport()">⬇ Download Report (पूरी रिपोर्ट)</button>';
+  if(s.next){h+='<div style="background:#fff3e0;padding:10px;border-radius:12px;margin:12px 0 0">अगली किस्त #'+s.next.no+' : <b>'+lnRs(s.next.emi)+'</b> · आख़िरी तारीख '+lnDt(s.next.due)+(s.overdue?' <b style="color:#dc2626">(लेट है!)</b>':'')+'<button class="b" onclick="lnPay(\''+s.next.key+'\')">किस्त भरें (Razorpay)</button></div>'}
+  if(s.eligible&&LN_CTX&&LN_CTX.amount){
+    var amt=Number(LN_CTX.amount);
+    if(amt>s.available){h+='<p style="color:#d32f2f;font-weight:700">इस आइटम की कीमत '+lnRs(amt)+' है, जबकि आपकी उपलब्ध लोन लिमिट '+lnRs(s.available)+' है।</p>'}
+    else{
+      h+='<h4>'+lnEsc(LN_CTX.item||"आइटम")+' लोन पर लें</h4>'
+       +'<div class="sm" style="text-align:left">लोन अमाउंट</div><input id="lnAmt" type="number" value="'+amt+'" readonly>'
+       +'<div class="sm" style="text-align:left">ब्याज (हर महीने, बाकी रकम पर) – फिक्स</div><input value="'+s.rate+'%" disabled>'
+       +'<div class="sm" style="text-align:left">कितने महीने (1–'+s.maxMonths+')</div><input id="lnMo" type="number" value="6" min="1" max="'+s.maxMonths+'" oninput="lnPrev()"><div id="lnPrev"></div>';
+      if(!s.hasProfile)h+='<h4>पहली बार लोन: KYC (एक बार)</h4><input id="lnAd" inputmode="numeric" maxlength="12" placeholder="आधार नंबर (12 अंक)"><input id="lnPan" maxlength="10" placeholder="पैन नंबर (ABCDE1234F)" style="text-transform:uppercase"><div class="sm" style="text-align:left">आधार फोटो (ज़रूरी नहीं)</div><input id="lnAp" type="file" accept="image/*"><div class="sm" style="text-align:left">पैन फोटो (ज़रूरी नहीं)</div><input id="lnPp" type="file" accept="image/*">';
+      h+='<button class="b" onclick="lnApply('+(s.hasProfile?1:0)+')">लोन लागू करो</button>';
+    }
+  }
+  if(q.loans){
+    h+='<h4>मेरा हिसाब</h4><div class="st"><div>कुल लिया<b>'+lnRs(q.loaned)+'</b></div><div>कुल वापसी (ब्याज सहित)<b>'+lnRs(q.payable)+'</b></div><div>अब तक जमा<b style="color:#15803d">'+lnRs(q.paid)+'</b></div><div>अभी देना बाकी<b style="color:#dc2626">'+lnRs(q.left)+'</b></div><div>समय पर किस्त<b>'+q.onTime+'</b></div><div>लेट किस्त / दिन<b>'+q.lateKists+' / '+q.lateDays+'</b></div></div>';
+    (s.loans||[]).forEach(function(l,li){
+      h+='<div style="margin:12px 0 4px"><b>'+lnEsc(l.item||"लोन")+'</b> · '+lnRs(l.principal)+' · '+l.months+' महीने · <span style="color:'+(l.status==="Closed"?"#15803d":"#0b5cff")+'">'+(l.status==="Closed"?"पूरा":"चालू")+'</span><div class="sm" style="text-align:left">किस्त '+lnRs(l.emi)+' · लिया '+lnDt(l.start)+' · बाकी '+lnRs(l.leftAmt)+'</div></div><div class="mn">';
+      l.kists.forEach(function(k){
+        var cl=k.kind==="paid"?"ok":k.kind==="paidlate"?"ol":k.kind==="late"?"bad":k.kind==="today"?"td":"", ic=k.kind==="paid"?"✔":k.kind==="paidlate"?"✔":k.kind==="late"?"✖":k.kind==="today"?"●":"○";
+        h+='<button type="button" class="mb '+cl+'" onclick="lnMonth('+li+','+k.no+',this)"><i>'+ic+'</i>'+LN_MON[+String(k.due).slice(5,7)-1]+'<br>'+String(k.due).slice(2,4)+'</button>';
+      });
+      h+='</div><div class="dt" id="lnD'+li+'" style="display:none"></div>';
+    });
+  }
+  lnC(h+'<button class="b g" onclick="lnClose()">बंद करें</button>');
+  if(document.getElementById("lnAmt"))lnPrev();
+}
+/* किसी महीने पर क्लिक -> पूरी जानकारी */
+function lnKistText(k){
+  var t='<b>किस्त '+k.no+' · '+lnDt(k.due)+'</b> · '+lnRs(k.emi)+'<br>(मूल '+lnRs(k.principal)+' + ब्याज '+lnRs(k.interest)+')<br>';
+  if(k.kind==="paid")return t+'<span style="color:#16a34a">✔ समय पर जमा हुई ('+lnDt(k.paidDate)+')</span>';
+  if(k.kind==="paidlate")return t+'<span style="color:#d97706">✔ जमा हुई '+lnDt(k.paidDate)+' को – आपने <b>'+k.lateDays+' दिन लेट</b> किया</span><br>सिविल स्कोर: −'+k.pen+' अंक'+(k.lateDays>5?' (3 महीने बाद वापस ठीक)':' (1 महीने में वापस ठीक)');
+  if(k.kind==="late")return t+'<span style="color:#dc2626">✖ जमा नहीं हुई – आपने <b>'+k.lateDays+' दिन लेट</b> किया</span><br>अभी तक सिविल स्कोर: −'+k.pen+' अंक। जल्दी भरिए, देर से ज़्यादा नुकसान होगा।';
+  if(k.kind==="today")return t+'<span style="color:#0b5cff">● आज आख़िरी तारीख है – आज ही जमा करें</span>';
+  return t+'⏳ आने वाली किस्त – '+lnDt(k.due)+' तक भरनी है';
+}
+function lnMonth(li,no,el){
+  var l=LN_S.loans[li],k=l.kists.filter(function(x){return x.no===no})[0],d=document.getElementById("lnD"+li);
+  d.style.display="block";d.innerHTML=lnKistText(k);
+  if(!k.paid&&LN_S.next&&LN_S.next.key===k.key)d.innerHTML+='<button class="b" style="padding:9px" onclick="lnPay(\''+k.key+'\')">यह किस्त अभी भरें</button>';
+}
+function lnPrev(){
+  var a=+document.getElementById("lnAmt").value,mo=+document.getElementById("lnMo").value,d=document.getElementById("lnPrev");
+  if(!(a>0)||!(mo>=1)){d.innerHTML="";return}
+  lnGet("action=loanschedule&amount="+a+"&months="+mo).then(function(r){
+    if(!r.ok){d.innerHTML=lnEsc(r.error);return}
+    var h='<div style="color:#0b4fa8;font-weight:700;margin:6px 0">एक किस्त '+lnRs(r.emi)+' | कुल ब्याज '+lnRs(r.interest)+' | कुल वापसी '+lnRs(r.total)+'</div><div style="overflow-x:auto"><table><tr><th>किस्त</th><th>बाकी रकम</th><th>ब्याज</th><th>किस्त</th><th>रकम जमा</th><th>बचा</th></tr>';
+    r.rows.forEach(function(x){h+='<tr><td>'+x.no+'</td><td>'+x.bal.toFixed(2)+'</td><td>'+x.interest.toFixed(2)+'</td><td>'+x.emi.toFixed(2)+'</td><td>'+x.principal.toFixed(2)+'</td><td>'+x.left.toFixed(2)+'</td></tr>'});
+    d.innerHTML=h+'</table></div><div class="sm" style="margin-top:4px">पहली किस्त अगले महीने की आज वाली तारीख को।</div>';
+  });
+}
+function lnFile(id){return new Promise(function(res){var f=document.getElementById(id);if(!f||!f.files[0])return res("");var r=new FileReader();r.onload=function(){res(r.result)};r.readAsDataURL(f.files[0])})}
+function lnApply(has){
+  if(window._lnBusy)return;window._lnBusy=true;
+  var u=LN_USER(),o={action:"loanapply",mobile:LN_MOBILE(),name:(u&&u.n)||"",amount:+document.getElementById("lnAmt").value,months:+document.getElementById("lnMo").value,item:(LN_CTX||{}).item||"",sku:(LN_CTX||{}).sku||""};
+  Promise.all([has?"":lnFile("lnAp"),has?"":lnFile("lnPp")]).then(function(f){
+    if(!has){o.aadhaar=document.getElementById("lnAd").value;o.pan=document.getElementById("lnPan").value;o.aphoto=f[0];o.pphoto=f[1]}
+    return lnPost(o);
+  }).catch(function(){return{ok:false,error:"नेट की दिक्कत - दोबारा कोशिश करें"}}).then(function(r){
+    window._lnBusy=false;
+    if(!r.ok){alert(r.error||"लोन नहीं मिला");return}
+    r.months=o.months;alert("लोन मंज़ूर ✅ पहली किस्त "+lnDt(r.firstDue)+" को, किस्त "+lnRs(r.emi));
+    lnClose();if(LN_CTX&&LN_CTX.onDone)LN_CTX.onDone(r);else kingLoanOpen();
+  });
+}
+function lnPay(key){
+  lnPost({action:"loanpay",mobile:LN_MOBILE(),key:key}).then(function(r){
+    if(!r.ok){alert(r.error);return}
+    if(r.paid){kingLoanOpen();return}
+    window.open(r.url,"_blank");
+    var back=function(){if(document.visibilityState==="visible"){document.removeEventListener("visibilitychange",back);lnPost({action:"loanverify",mobile:LN_MOBILE(),key:key}).then(function(){kingLoanOpen()})}};
+    document.addEventListener("visibilitychange",back);
+  });
+}
+
+/* ===== Download Report: शुरू से अब तक सारे लोन, हर किस्त की तारीख / लेट / जमा / बाकी ===== */
+function lnReportHtml(s){
+  var q=s.sum||{},nm=lnNm(s),lab=lnLabel(s.score);
+  var h='<!DOCTYPE html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loan Report - '+lnEsc(nm)+'</title><style>body{font-family:system-ui,"Noto Sans Devanagari",sans-serif;margin:0;padding:16px;color:#111}h1{font-size:20px;margin:0}h2{font-size:15px;margin:18px 0 6px;border-bottom:2px solid #e63c1f;padding-bottom:4px}.s{display:grid;grid-template-columns:1fr 1fr;gap:6px}.s div{background:#f5f7fb;border-radius:8px;padding:8px;font-size:12px}.s b{display:block;font-size:15px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#f1f3f7}.ok{color:#16a34a;font-weight:800}.ol{color:#d97706;font-weight:800}.bd{color:#dc2626;font-weight:800}.un{color:#888}@media print{body{padding:6px}}</style></head><body>'
+   +'<h1>👑 KING MOBILE SHOP – लोन रिपोर्ट</h1><div style="font-size:12px;color:#555">'+lnEsc(nm)+' · मोबाइल '+lnEsc(s.mobile)+' · रिपोर्ट की तारीख '+lnDt(s.today)+'</div>'
+   +'<h2>सिविल स्कोर: <span style="color:'+lab[1]+'">'+s.score+' ('+lab[0]+')</span></h2><div class="s"><div>लोन लिमिट<b>'+lnRs(s.limit)+'</b></div><div>उपलब्ध लिमिट<b>'+lnRs(s.available)+'</b></div><div>कुल लिया<b>'+lnRs(q.loaned||0)+'</b></div><div>कुल वापसी (ब्याज सहित)<b>'+lnRs(q.payable||0)+'</b></div><div>अब तक जमा<b class="ok">'+lnRs(q.paid||0)+'</b></div><div>अभी देना बाकी<b class="bd">'+lnRs(q.left||0)+'</b></div><div>समय पर किस्त<b>'+(q.onTime||0)+'</b></div><div>लेट किस्त / कुल लेट दिन<b>'+(q.lateKists||0)+' / '+(q.lateDays||0)+'</b></div></div>';
+  if(!(s.loans||[]).length)h+='<p>अभी तक कोई लोन नहीं लिया।</p>';
+  (s.loans||[]).forEach(function(l,i){
+    h+='<h2>लोन '+(i+1)+': '+lnEsc(l.item||"")+' – '+lnRs(l.principal)+' ('+l.months+' महीने, '+l.rate+'% ब्याज) · '+(l.status==="Closed"?"पूरा हुआ":"चालू")+'</h2><div style="font-size:12px;margin-bottom:4px">लोन की तारीख '+lnDt(l.start)+' · किस्त '+lnRs(l.emi)+' · कुल वापसी '+lnRs(l.total)+' · बाकी '+lnRs(l.leftAmt)+'</div>'
+     +'<table><tr><th>किस्त</th><th>तारीख</th><th>रकम</th><th>स्थिति</th><th>जमा तारीख</th><th>लेट</th><th>स्कोर</th></tr>';
+    l.kists.forEach(function(k){
+      var st=k.kind==="paid"?'<span class="ok">✔ समय पर</span>':k.kind==="paidlate"?'<span class="ol">✔ लेट जमा</span>':k.kind==="late"?'<span class="bd">✖ बाकी (लेट)</span>':k.kind==="today"?'<b>● आज</b>':'<span class="un">○ आगे</span>';
+      h+='<tr><td>'+k.no+'</td><td>'+lnDt(k.due)+'</td><td>'+lnRs(k.emi)+'</td><td>'+st+'</td><td>'+(k.paid?lnDt(k.paidDate):"–")+'</td><td>'+(k.lateDays>0?k.lateDays+' दिन':"–")+'</td><td>'+(k.pen?'−'+k.pen:"–")+'</td></tr>';
+    });
+    h+='</table>';
+  });
+  return h+'<p style="font-size:11px;color:#777;margin-top:16px">नियम: ब्याज 3.5% हर महीने बाकी रकम पर। 1–5 दिन लेट: हर दिन 3 अंक कम (1 महीने में वापस)। इससे ज़्यादा लेट: 50–60 अंक कम और 3 महीने बाद ही स्कोर वापस ठीक। यह रिपोर्ट KING MOBILE SHOP की ओर से है।</p></body></html>';
+}
+function lnReport(){
+  if(!LN_S)return;var h=lnReportHtml(LN_S),f=document.getElementById("lnRepF");
+  f.srcdoc=h;document.getElementById("lnRep").style.display="flex";
+}
+function lnRepClose(){document.getElementById("lnRep").style.display="none"}
+function lnRepPrint(){try{var w=document.getElementById("lnRepF").contentWindow;w.focus();w.print()}catch(e){alert("इस फ़ोन में प्रिंट नहीं खुला - 'डाउनलोड' दबाइए")}}
+function lnRepDl(){
+  var h=lnReportHtml(LN_S),a=document.createElement("a");
+  try{a.href=URL.createObjectURL(new Blob([h],{type:"text/html"}));a.download="KING_Loan_Report_"+LN_S.mobile+".html";document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},500)}
+  catch(e){alert("डाउनलोड नहीं हो पाया - 'PDF / प्रिंट' दबाइए")}
+}
+window.kingLoanOpen=kingLoanOpen;
+/* Buy form ka "लोन पर आइटम लें" बटन: पहले फॉर्म जाँचो, फिर लोन, फिर ऑर्डर (payment = Loan) */
+document.addEventListener("click",function(e){
+  if(!e.target.closest||!e.target.closest("#bylone"))return;
+  var o=items[byI],er=document.getElementById("byerr");if(!o)return;
+  var n=document.getElementById("byn").value.trim(),m=document.getElementById("bym").value.replace(/\D/g,"").slice(-10),
+      a=document.getElementById("bya").value.trim(),c=document.getElementById("byc").value.trim(),pc=document.getElementById("byp").value.replace(/\D/g,"");
+  if(!n){er.textContent="⚠ कृपया अपना नाम लिखिए";return}
+  if(m.length!==10){er.textContent="⚠ मोबाइल नंबर 10 अंक का होना चाहिए";return}
+  if(byD==="home"&&(!a||!c||pc.length!==6)){er.textContent="⚠ पूरा पता और 6 अंक का पिनकोड भरिए";return}
+  var R0=numOf(o.Rate),R=(R0===null?null:R0-offPU(R0,byQ));
+  if(R===null){er.textContent="⚠ इस आइटम का रेट दुकान पर तय होगा, लोन अभी नहीं मिल सकता";return}
+  var u=getUser();if(u&&u.m!==m){er.textContent="⚠ लोन सिर्फ़ Login वाले मोबाइल नंबर पर मिलेगा";return}
+  er.textContent="";
+  kingLoanOpen({item:o.Item,sku:(o.SKU==null?"":String(o.SKU)),amount:Math.round(R*byQ*100)/100,onDone:function(r){window.KM_LOAN=r;byP="Loan";sendBuy()}});
+});
 </script>
 </body>
 </html>
