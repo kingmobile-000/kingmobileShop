@@ -35,10 +35,10 @@ S.setItem=function(k,v){_s.apply(this,arguments);if(this===LS)mirror(k,String(v)
 S.removeItem=function(k){_r.apply(this,arguments);if(this===LS)mirror(k,null)};
 /* 1) shuru me: agar localStorage khali hai to cookie se turant wapas lao */
 CK.forEach(function(k){try{if(LS.getItem(k)==null){var c=ckGet(k);if(c){_s.call(LS,k,c)}}}catch(e){}});
-/* 2) IndexedDB se baaki (orders wagairah) wapas lao; kuch wapas aaya to page ek baar refresh */
-var left=K.length,rest=0;
+/* 2) IndexedDB se backup data restore karo bina page reload ke; app session stable rahe */
+var left=K.length,rest=0,restoredKeys=[];
 K.forEach(function(k){try{if(LS.getItem(k)!=null){left--;return}}catch(e){left--;return}
- idbGet(k,function(v){if(v!=null){try{_s.call(LS,k,v);rest++}catch(e){}}if(--left===0&&rest){try{if(!sessionStorage.getItem("kk_r")){sessionStorage.setItem("kk_r","1");location.reload()}}catch(e){}}})});
+ idbGet(k,function(v){if(v!=null){try{_s.call(LS,k,v);rest++;restoredKeys.push(k)}catch(e){}}if(--left===0&&rest){try{window.dispatchEvent(new CustomEvent("kmStorageRestored",{detail:{keys:restoredKeys.slice()}}))}catch(e){}}})});
 if(left===0&&false){}
 /* 3) har 3 second me jaanch: kuch badla ho (iframe me bhi) to backup update, logout ho to backup hata do */
 function tick(){K.forEach(function(k){var v=null;try{v=LS.getItem(k)}catch(e){}
@@ -1020,7 +1020,13 @@ function kPhotoShuffle(a){for(var z=a.length-1;z>0;z--){var j=Math.floor(Math.ra
 var pOnly=C.filter(function(c){var x=inf(c);return x&&x.Photos&&x.Photos.length});
 var pIdxs=pOnly.map(function(c){return C.indexOf(c)}),topSet={};pk.forEach(function(x){topSet[x]=1});
 var upperPool=pIdxs.filter(function(x){return!topSet[x]});
-var upperChosen=kPhotoShuffle(upperPool.slice()).slice(0,6);
+/* Session-stable carousel selection: render/data refresh/back navigation must not reshuffle featured photos. */
+var eligibleKeys=upperPool.map(function(x){return kTopKey(inf(C[x]))}),photoCache=kFk._photoKeys||[],chosenKeys=photoCache.filter(function(k){return eligibleKeys.indexOf(k)>=0}),seenKeys={};
+chosenKeys.forEach(function(k){seenKeys[k]=1});
+var refill=eligibleKeys.filter(function(k){return!seenKeys[k]});kPhotoShuffle(refill);
+while(chosenKeys.length<6&&refill.length)chosenKeys.push(refill.shift());
+kFk._photoKeys=chosenKeys.slice(0,6);
+var upperChosen=kFk._photoKeys.map(function(k){return upperPool.find(function(x){return kTopKey(inf(C[x]))===k})}).filter(function(x){return x!==undefined});
 s3=upperChosen.map(function(x){return T(C[x])});
 sm=pk.map(function(x){return T(C[x])});
 var usedPhoto={};upperChosen.forEach(function(x){usedPhoto[x]=1});
@@ -1091,9 +1097,8 @@ function kldFail(){if(kldDone)return;var e=document.getElementById("kld");if(!e)
 function kldOk(){if(kldDone)return;kldDone=true;clearTimeout(kldTm);var e=document.getElementById("kld"),r=document.getElementById("klr");if(!e)return;if(r)r.style.transform="scale("+(Math.hypot(window.innerWidth,window.innerHeight)/20+6)+")";e.className="go";setTimeout(function(){e.className="gone"},2500)}
 document.getElementById("klb").onclick=function(){kldWait();itemNext=0;itemFails=0;itTick()};
 kldWait();bnrCheck();welcomeDraw();
-(function(){var d0=new Date().toDateString();function ms(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,0,0,5)-n}
-setTimeout(function(){location.reload()},ms());
-document.addEventListener("visibilitychange",function(){if(!document.hidden&&new Date().toDateString()!==d0)location.reload()})})();
+/* Keep the active app session alive: no automatic midnight/date-change page reload.
+   Fresh carousel picks happen naturally on a full app reopen; polling continues for live data. */
 function kcStart(){if(items.length){try{drawCats()}catch(e){}try{render()}catch(e){}try{kldOk()}catch(e){}}itTick();setInterval(itTick,ITEM_POLL_MS)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(kcStart,0)});else setTimeout(kcStart,0);
 window.addEventListener("offline",itOffline);
