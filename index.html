@@ -4103,3 +4103,113 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
 </style>
 </body>
 </html>
+
+<!-- KING MOBILE: SAFE PERFORMANCE OPTIMIZATION (feature-preserving) -->
+<style id="km-safe-performance-css">
+  /* Keep existing layout/features; reduce offscreen catalog image work. */
+  #list img, #cb img { image-rendering: auto; }
+</style>
+<script id="km-safe-performance-js">
+(function () {
+  'use strict';
+  /* Only optimize product-list/combo images. Detail/gallery/checkout images are untouched. */
+  function optimizeCatalogImages(root) {
+    if (!root || !root.querySelectorAll) return;
+    var imgs = [];
+    if (root.tagName === 'IMG') imgs.push(root);
+    try { imgs = imgs.concat(root.querySelectorAll('img')); } catch (e) {}
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      if (!img || img.dataset.kmPerfDone || !img.closest || !img.closest('#list, #cb')) continue;
+      var src = img.getAttribute('src') || '';
+      /* Leave embedded photos and temporary camera/blob previews alone. */
+      if (!src || /^(data:|blob:)/i.test(src)) continue;
+      img.dataset.kmPerfDone = '1';
+      if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+    }
+  }
+  function start() {
+    var list = document.getElementById('list');
+    var combo = document.getElementById('cb');
+    optimizeCatalogImages(document);
+    if (window.MutationObserver) {
+      if (list) new MutationObserver(function (records) {
+        for (var i = 0; i < records.length; i++) {
+          for (var j = 0; j < records[i].addedNodes.length; j++) {
+            var n = records[i].addedNodes[j];
+            if (n && n.nodeType === 1) optimizeCatalogImages(n);
+          }
+        }
+      }).observe(list, { childList: true, subtree: true });
+      if (combo) new MutationObserver(function (records) {
+        for (var i = 0; i < records.length; i++) {
+          for (var j = 0; j < records[i].addedNodes.length; j++) {
+            var n = records[i].addedNodes[j];
+            if (n && n.nodeType === 1) optimizeCatalogImages(n);
+          }
+        }
+      }).observe(combo, { childList: true, subtree: true });
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
+})();
+</script>
+
+<style id="kloadfix">#xod .kxl{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:14px;color:#444;font-weight:800;font-size:16px}#xod .kxl i{display:block;width:48px;height:48px;border:5px solid #d5d8de;border-top-color:#1a73e8;border-radius:50%;animation:kxspin .8s linear infinite!important}@keyframes kxspin{to{transform:rotate(360deg)}}</style>
+<script id="kloadfix-js">
+/* Order / Complaint par click: turant "Loading" ghoomta dikhe, phir data aaye (app hang jaisa na lage) */
+(function(){
+  var tok=0;
+  function loader(){
+    var d=document.getElementById("xod"); if(!d) return;
+    d.innerHTML='<div class="xbar"><button id="xodx" aria-label="Back">\u2190</button><span>Loading...</span></div><div class="kxl"><i></i><span>Loading...</span></div>';
+    d.classList.add("on"); d.scrollTop=0;
+  }
+  function wrap(name){
+    var orig=window[name];
+    if(typeof orig!=="function"||orig.__kx) return;
+    var w=function(){
+      var my=++tok,self=this,args=arguments;
+      loader();
+      setTimeout(function(){
+        if(my!==tok) return;
+        var d=document.getElementById("xod");
+        if(!d||!d.classList.contains("on")) return;
+        try{ orig.apply(self,args); }catch(e){ try{ d.classList.remove("on"); d.innerHTML=""; }catch(x){} return; }
+        /* agar original ne xod nahi bhara (jaise recharge ki alag sheet khuli), to loader hata do */
+        try{ if(d.querySelector(".kxl")){ d.classList.remove("on"); d.innerHTML=""; } }catch(x){}
+      },80);
+    };
+    w.__kx=1;
+    window[name]=w;
+  }
+  wrap("openOd");
+  wrap("openCd");
+})();
+</script>
+
+<style id="klogosb">
+/* Laal KING MOBILE patti hata di (sirf dikhna band; andar ke click chalte rahenge) */
+html body header #tg{display:none!important}
+/* King crown logo ab search bar me */
+#klogo{flex:none;display:block;width:34px;height:34px;margin:0 2px 0 -4px;border:0;padding:0;cursor:pointer;
+ background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ff8a1f'/%3E%3Cstop%20offset='1'%20stop-color='%23e8280c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20x='2'%20y='2'%20width='96'%20height='96'%20rx='14'%20fill='url%28%23g%29'/%3E%3Cpath%20d='M16%2046%20L10%2022%20L27%2034%20L33%2018%20L44%2032%20L50%2010%20L56%2032%20L67%2018%20L73%2034%20L90%2022%20L84%2046%20Z'%20fill='%231b1b1b'/%3E%3Cg%20fill='%231b1b1b'%3E%3Ccircle%20cx='10'%20cy='20'%20r='3.6'/%3E%3Ccircle%20cx='33'%20cy='16'%20r='3.6'/%3E%3Ccircle%20cx='50'%20cy='8'%20r='3.8'/%3E%3Ccircle%20cx='67'%20cy='16'%20r='3.6'/%3E%3Ccircle%20cx='90'%20cy='20'%20r='3.6'/%3E%3C/g%3E%3Cg%20fill='%23ff7a1a'%3E%3Cpath%20d='M50%2033%20L55%2039%20L50%2045%20L45%2039%20Z'/%3E%3Cpath%20d='M33%2037%20L36.5%2041%20L33%2045%20L29.5%2041%20Z'/%3E%3Cpath%20d='M67%2037%20L70.5%2041%20L67%2045%20L63.5%2041%20Z'/%3E%3C/g%3E%3Ctext%20x='50'%20y='74'%20text-anchor='middle'%20font-family='Georgia%2CTimes%20New%20Roman%2Cserif'%20font-weight='900'%20font-size='28'%20textLength='84'%20lengthAdjust='spacingAndGlyphs'%20fill='%231b1b1b'%3EKING%3C/text%3E%3Cpath%20d='M14%2080%20Q50%2088%2086%2080'%20stroke='%231b1b1b'%20stroke-width='2.6'%20fill='none'%20stroke-linecap='round'/%3E%3Cpath%20d='M39%2086%20L50%2096%20L61%2086%20Q50%2090%2039%2086%20Z'%20fill='%231b1b1b'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+</style>
+<script id="klogosb-js">
+(function(){
+  function add(){
+    var sw=document.querySelector("#sbar .sw");
+    if(!sw||document.getElementById("klogo")) return;
+    var b=document.createElement("span");
+    b.id="klogo"; b.setAttribute("role","button"); b.setAttribute("aria-label","King Mobile");
+    /* purana logo-click (admin / paycheck wale tap) ab isi logo se chalenge */
+    b.addEventListener("click",function(e){e.stopPropagation();var tg=document.getElementById("tg");if(tg)tg.click()});
+    sw.insertBefore(b,sw.firstChild);
+  }
+  add();
+  document.addEventListener("DOMContentLoaded",add);
+  setTimeout(add,500);setTimeout(add,2000);
+})();
+</script>
