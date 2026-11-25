@@ -4187,6 +4187,23 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
   }
   wrap("openOd");
   wrap("openCd");
+  /* Sync ke baad list tabhi dobara bane jab orders sach me badle (pehle har 15 sec poori list redraw hoti thi -> tap atakta tha) */
+  try{
+    var _r=window.refreshOrders, lastSig=null;
+    if(typeof _r==="function"&&!_r.__kx){
+      var rr=function(){
+        var sig;
+        try{
+          sig=[localStorage.getItem("kms_orders"),localStorage.getItem("kms_cust"),localStorage.getItem("kms_offused"),
+               localStorage.getItem("kms_complaints"),String(typeof odId!=="undefined"?odId:""),String(typeof cdId!=="undefined"?cdId:""),String(typeof curPg!=="undefined"?curPg:""),String(typeof cmode!=="undefined"?cmode:""),String(typeof CUSTMSG!=="undefined"?CUSTMSG:"")].join("|");
+        }catch(e){ sig=null; }
+        if(sig!==null&&sig===lastSig) return;
+        lastSig=sig;
+        return _r.apply(this,arguments);
+      };
+      rr.__kx=1; window.refreshOrders=rr;
+    }
+  }catch(e){}
   /* findOrd tez: orders ki poori list baar-baar parse hoti thi (har card ke liye) -> ab ek baar */
   try{
     var _f=window.findOrd, raw0=null, map=null;
@@ -4208,26 +4225,11 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
 })();
 </script>
 
-<style id="klogosb">
-/* Laal KING MOBILE patti hata di (sirf dikhna band; andar ke click chalte rahenge) */
-html body header #tg{display:none!important}
-/* King crown logo ab search bar me */
-#klogo{flex:none;display:block;width:34px;height:34px;margin:0 2px 0 -4px;border:0;padding:0;cursor:pointer;
- background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ff8a1f'/%3E%3Cstop%20offset='1'%20stop-color='%23e8280c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20x='2'%20y='2'%20width='96'%20height='96'%20rx='14'%20fill='url%28%23g%29'/%3E%3Cpath%20d='M16%2046%20L10%2022%20L27%2034%20L33%2018%20L44%2032%20L50%2010%20L56%2032%20L67%2018%20L73%2034%20L90%2022%20L84%2046%20Z'%20fill='%231b1b1b'/%3E%3Cg%20fill='%231b1b1b'%3E%3Ccircle%20cx='10'%20cy='20'%20r='3.6'/%3E%3Ccircle%20cx='33'%20cy='16'%20r='3.6'/%3E%3Ccircle%20cx='50'%20cy='8'%20r='3.8'/%3E%3Ccircle%20cx='67'%20cy='16'%20r='3.6'/%3E%3Ccircle%20cx='90'%20cy='20'%20r='3.6'/%3E%3C/g%3E%3Cg%20fill='%23ff7a1a'%3E%3Cpath%20d='M50%2033%20L55%2039%20L50%2045%20L45%2039%20Z'/%3E%3Cpath%20d='M33%2037%20L36.5%2041%20L33%2045%20L29.5%2041%20Z'/%3E%3Cpath%20d='M67%2037%20L70.5%2041%20L67%2045%20L63.5%2041%20Z'/%3E%3C/g%3E%3Ctext%20x='50'%20y='74'%20text-anchor='middle'%20font-family='Georgia%2CTimes%20New%20Roman%2Cserif'%20font-weight='900'%20font-size='28'%20textLength='84'%20lengthAdjust='spacingAndGlyphs'%20fill='%231b1b1b'%3EKING%3C/text%3E%3Cpath%20d='M14%2080%20Q50%2088%2086%2080'%20stroke='%231b1b1b'%20stroke-width='2.6'%20fill='none'%20stroke-linecap='round'/%3E%3Cpath%20d='M39%2086%20L50%2096%20L61%2086%20Q50%2090%2039%2086%20Z'%20fill='%231b1b1b'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+<style id="kgap">
+/* KING MOBILE patti jaisi thi waisi; sirf uske aur search bar ke beech ki khali jagah kam */
+html body header #tg{margin-bottom:2px!important}
+html body header{padding-bottom:0!important}
+html body #kaddr{padding:0 12px!important;line-height:1.05!important}
+html body #sbar{padding-top:0!important}
+html body #sbar .sw{margin-top:6px!important}
 </style>
-<script id="klogosb-js">
-(function(){
-  function add(){
-    var sw=document.querySelector("#sbar .sw");
-    if(!sw||document.getElementById("klogo")) return;
-    var b=document.createElement("span");
-    b.id="klogo"; b.setAttribute("role","button"); b.setAttribute("aria-label","King Mobile");
-    /* purana logo-click (admin / paycheck wale tap) ab isi logo se chalenge */
-    b.addEventListener("click",function(e){e.stopPropagation();var tg=document.getElementById("tg");if(tg)tg.click()});
-    sw.insertBefore(b,sw.firstChild);
-  }
-  add();
-  document.addEventListener("DOMContentLoaded",add);
-  setTimeout(add,500);setTimeout(add,2000);
-})();
-</script>
