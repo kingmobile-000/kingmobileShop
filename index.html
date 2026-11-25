@@ -4192,12 +4192,50 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
   wrap("openCd");
   /* Orders tab dabate hi TURANT ghoomta circle, phir poori history (pehle sab kuchh ek saath aata tha aur app ruk jaata tha) */
   try{
-    var _sp=window.showPg, tk2=0;
+    var _sp=window.showPg, tk2=0, kxBusy=false, KX_FIRST=10, KX_STEP=20;
+    /* Orders list banate waqt (circle ke baad) beech me koi aur poori list na bana de */
+    var _d1=window.drawOrders;
+    if(typeof _d1==="function"&&!_d1.__kx){ var gd=function(){ if(kxBusy) return; return _d1.apply(this,arguments); }; gd.__kx=1; window.drawOrders=gd; }
+    function kxSig(){ try{ return localStorage.getItem("kms_orders")+"|"+localStorage.getItem("kms_cust"); }catch(e){ return ""; } }
+    /* original drawOrders ko ek chhoti list par chalao aur uska output alag (screen ke bahar) rakho */
+    function kxStage(list){
+      var st=document.createElement("div"), own=Object.prototype.hasOwnProperty.call(document,"getElementById"), rg=document.getElementById, rm=window.myOrders;
+      document.getElementById=function(id){ return id==="xpo"?st:rg.call(document,id); };
+      window.myOrders=function(){ return list; };
+      try{ _d1.apply(window,[]); }finally{ if(own) document.getElementById=rg; else delete document.getElementById; window.myOrders=rm; }
+      return st;
+    }
+    function kxLazy(n){ try{ var im=n.querySelectorAll("img"); for(var k=0;k<im.length;k++){ im[k].setAttribute("decoding","async"); im[k].setAttribute("loading","lazy"); } }catch(e){} }
+    /* Pehle 10 order turant, baaki 20-20 karke (har frame me thoda) -> app hang nahi hota, poori history aati hai */
+    function kxChunk(my){
+      if(my!==tk2||typeof curPg==="undefined"||curPg!=="orders"){ kxBusy=false; return; }
+      var x=document.getElementById("xpo"), all=null;
+      if(!x){ kxBusy=false; return; }
+      if(typeof cmode!=="undefined"&&cmode){ kxBusy=false; try{ _d1(); }catch(e){} return; }
+      try{ all=myOrders(); }catch(e){ all=null; }
+      if(!all||all.length<=KX_FIRST+5){ kxBusy=false; try{ _d1(); }catch(e){} return; }
+      var sig0=kxSig(), st0;
+      try{ st0=kxStage(all.slice(0,KX_FIRST)); }catch(e){ kxBusy=false; try{ _d1(); }catch(x2){} return; }
+      x.innerHTML=""; kxLazy(st0); while(st0.firstChild) x.appendChild(st0.firstChild);
+      var i=KX_FIRST;
+      (function more(){
+        if(my!==tk2||typeof curPg==="undefined"||curPg!=="orders"){ kxBusy=false; return; }
+        if(i>=all.length){ kxBusy=false; if(kxSig()!==sig0){ try{ _d1(); }catch(e){} } return; }
+        var part=all.slice(i,i+KX_STEP); i+=KX_STEP;
+        try{
+          var s2=kxStage(part), nd=s2.querySelectorAll(".xc"), fr=document.createDocumentFragment();
+          for(var k=0;k<nd.length;k++) fr.appendChild(nd[k]);
+          kxLazy(fr); x.appendChild(fr);
+        }catch(e){ kxBusy=false; try{ _d1(); }catch(x3){} return; }
+        if(window.requestAnimationFrame) requestAnimationFrame(function(){ setTimeout(more,0); }); else setTimeout(more,16);
+      })();
+    }
     if(typeof _sp==="function"&&!_sp.__kx){
       var sp=function(p){
-        if(p!=="orders"){ tk2++; return _sp.apply(this,arguments); }   /* beech me doosra tab dabe to purana adhura kaam band */
+        if(p!=="orders"){ tk2++; kxBusy=false; return _sp.apply(this,arguments); }   /* beech me doosra tab dabe to purana adhura kaam band */
         if(typeof curPg!=="undefined"&&curPg==="orders") return _sp.apply(this,arguments);
         var my=++tk2, self=this, args=arguments, x0=document.getElementById("xpo");
+        kxBusy=true; setTimeout(function(){ if(my===tk2) kxBusy=false; },10000);   /* safety: kuch atke to 10 sec baad chhod do */
         var LD='<div class="xbar"><span>'+((typeof cmode!=="undefined"&&cmode)?"Complaint":"My Orders")+'</span></div><div class="kxl"><i></i><span>Loading...</span></div>';
         /* 1) pehle sirf circle wala page khol do (bahut halka) */
         if(x0){ x0.innerHTML=LD; x0.classList.add("on"); x0.scrollTop=0; }
@@ -4208,12 +4246,12 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
           window.drawOrders=function(){ var x=document.getElementById("xpo"); if(x&&!x.querySelector(".kxl")) x.innerHTML=LD; };
           try{ _sp.apply(self,args); }finally{ window.drawOrders=realDraw; }
           setTimeout(function(){
-            if(my!==tk2) return;
-            if(typeof curPg==="undefined"||curPg!=="orders") return;
+            if(my!==tk2){ return; }
+            if(typeof curPg==="undefined"||curPg!=="orders"){ kxBusy=false; return; }
             var x=document.getElementById("xpo");
-            if(!x||!x.querySelector(".kxl")) return;   /* list pehle hi ban chuki ho to dobara nahi */
-            try{ window.drawOrders(); }catch(e){}
-          },300);
+            if(!x||!x.querySelector(".kxl")){ kxBusy=false; return; }   /* list pehle hi ban chuki ho to dobara nahi */
+            kxChunk(my);
+          },80);
         },40);
         return;
       };
