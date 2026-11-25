@@ -3622,7 +3622,8 @@ function wdays(w){var s=String(w==null?"":w).toLowerCase().trim();if(!s||/^no\b|
  if(/week|हफ्ते|हफ़्ते|सप्ताह/.test(s))return Math.round(n*7);
  if(/day|दिन|din/.test(s))return Math.round(n);
  return Math.round(n*30)}
-function startOf(o){try{var h=hget(o),t=h.Done||(normSt(o.status)==="Done"?o.upd:null);if(!t)return null;var d=new Date(t).getTime();return isNaN(d)?null:d}catch(e){return null}}
+/* warranty: din raat 12 baje se ghate (delivery ke din ke 12 baje se ginti) */
+function startOf(o){try{var h=hget(o),t=h.Done||(normSt(o.status)==="Done"?o.upd:null);if(!t)return null;var d=new Date(t);if(isNaN(d.getTime()))return null;d.setHours(0,0,0,0);return d.getTime()}catch(e){return null}}
 function dfmt(ms){try{return new Date(ms).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})}catch(e){return""}}
 var CLK='<svg class="kwclk" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="#fff" stroke="#c62d12" stroke-width="3"/><g stroke="#c62d12" stroke-width="2" stroke-linecap="round"><path d="M24 7v4M24 37v4M7 24h4M37 24h4"/></g><path d="M24 24V14" stroke="#111" stroke-width="3" stroke-linecap="round"/><path d="M24 24l7 4" stroke="#111" stroke-width="3" stroke-linecap="round"/><g class="hd"><path d="M24 26V9" stroke="#e11d48" stroke-width="1.8" stroke-linecap="round"/></g><circle cx="24" cy="24" r="2.6" fill="#c62d12"/></svg>';
 function mk(o){
@@ -3708,7 +3709,7 @@ function wdays(w){var s=String(w==null?"":w).toLowerCase().trim();if(!s||/^no\b|
  if(/week|हफ्ते|हफ़्ते|सप्ताह/.test(s))return Math.round(n*7);
  if(/day|दिन|din/.test(s))return Math.round(n);
  return Math.round(n*30)}
-function startOf(o){try{var h=hget(o),t=h.Done||o.upd||o.time;if(!t)return null;var d=new Date(t).getTime();return isNaN(d)?null:d}catch(e){return null}}
+function startOf(o){try{var h=hget(o),t=h.Done||o.upd||o.time;if(!t)return null;var d=new Date(t);if(isNaN(d.getTime()))return null;d.setHours(0,0,0,0);return d.getTime()}catch(e){return null}}
 /* वारंटी बची हो तो बचे हुए दिन लौटाता है, नहीं तो -1 */
 function left(o){try{if(!o||o.sku==="RECHARGE"||normSt(o.status)!=="Done")return -1;var D=wdays(o.warranty);if(!D)return -1;var st=startOf(o);if(!st)return -1;var rem=st+D*864e5-Date.now();return rem>0?Math.ceil(rem/864e5):-1}catch(e){return -1}}
 function E(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -4157,7 +4158,9 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
 })();
 </script>
 
-<style id="kloadfix">#xod .kxl{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:14px;color:#444;font-weight:800;font-size:16px}#xod .kxl i{display:block;width:48px;height:48px;border:5px solid #d5d8de;border-top-color:#1a73e8;border-radius:50%;animation:kxspin .8s linear infinite!important}@keyframes kxspin{to{transform:rotate(360deg)}}</style>
+<style id="kloadfix">#xpo .kxl{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:14px;color:#444;font-weight:800;font-size:16px}#xpo .kxl i{display:block;width:48px;height:48px;border:5px solid #d5d8de;border-top-color:#1a73e8;border-radius:50%;animation:kxspin .8s linear infinite!important}
+#xpo .xc,#xpo .ccd{content-visibility:auto;contain-intrinsic-size:auto 120px}
+#xod .kxl{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:14px;color:#444;font-weight:800;font-size:16px}#xod .kxl i{display:block;width:48px;height:48px;border:5px solid #d5d8de;border-top-color:#1a73e8;border-radius:50%;animation:kxspin .8s linear infinite!important}@keyframes kxspin{to{transform:rotate(360deg)}}</style>
 <script id="kloadfix-js">
 /* Order / Complaint par click: turant "Loading" ghoomta dikhe, phir data aaye (app hang jaisa na lage) */
 (function(){
@@ -4187,6 +4190,36 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
   }
   wrap("openOd");
   wrap("openCd");
+  /* Orders tab dabate hi TURANT ghoomta circle, phir poori history (pehle sab kuchh ek saath aata tha aur app ruk jaata tha) */
+  try{
+    var _sp=window.showPg, tk2=0;
+    if(typeof _sp==="function"&&!_sp.__kx){
+      var sp=function(p){
+        if(p!=="orders"){ tk2++; return _sp.apply(this,arguments); }   /* beech me doosra tab dabe to purana adhura kaam band */
+        if(typeof curPg!=="undefined"&&curPg==="orders") return _sp.apply(this,arguments);
+        var my=++tk2, self=this, args=arguments, x0=document.getElementById("xpo");
+        var LD='<div class="xbar"><span>'+((typeof cmode!=="undefined"&&cmode)?"Complaint":"My Orders")+'</span></div><div class="kxl"><i></i><span>Loading...</span></div>';
+        /* 1) pehle sirf circle wala page khol do (bahut halka) */
+        if(x0){ x0.innerHTML=LD; x0.classList.add("on"); x0.scrollTop=0; }
+        /* 2) phir baaki kaam (menu highlight, sync) aur uske baad poori list */
+        setTimeout(function(){
+          if(my!==tk2) return;
+          var realDraw=window.drawOrders;
+          window.drawOrders=function(){ var x=document.getElementById("xpo"); if(x&&!x.querySelector(".kxl")) x.innerHTML=LD; };
+          try{ _sp.apply(self,args); }finally{ window.drawOrders=realDraw; }
+          setTimeout(function(){
+            if(my!==tk2) return;
+            if(typeof curPg==="undefined"||curPg!=="orders") return;
+            var x=document.getElementById("xpo");
+            if(!x||!x.querySelector(".kxl")) return;   /* list pehle hi ban chuki ho to dobara nahi */
+            try{ window.drawOrders(); }catch(e){}
+          },300);
+        },40);
+        return;
+      };
+      sp.__kx=1; window.showPg=sp;
+    }
+  }catch(e){}
   /* Sync ke baad list tabhi dobara bane jab orders sach me badle (pehle har 15 sec poori list redraw hoti thi -> tap atakta tha) */
   try{
     var _r=window.refreshOrders, lastSig=null;
