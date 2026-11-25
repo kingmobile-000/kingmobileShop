@@ -4180,13 +4180,31 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
         try{ orig.apply(self,args); }catch(e){ try{ d.classList.remove("on"); d.innerHTML=""; }catch(x){} return; }
         /* agar original ne xod nahi bhara (jaise recharge ki alag sheet khuli), to loader hata do */
         try{ if(d.querySelector(".kxl")){ d.classList.remove("on"); d.innerHTML=""; } }catch(x){}
-      },80);
+      },450);
     };
     w.__kx=1;
     window[name]=w;
   }
   wrap("openOd");
   wrap("openCd");
+  /* findOrd tez: orders ki poori list baar-baar parse hoti thi (har card ke liye) -> ab ek baar */
+  try{
+    var _f=window.findOrd, raw0=null, map=null;
+    if(typeof _f==="function"&&!_f.__kx){
+      var ff=function(id){
+        try{
+          var raw=localStorage.getItem("kms_orders")||"[]";
+          if(raw!==raw0||!map){
+            var a=JSON.parse(raw); if(!Array.isArray(a)) return _f(id);
+            var m={}; for(var i=0;i<a.length;i++){var k=String(a[i]&&a[i].id); if(!(k in m)) m[k]=a[i];}
+            map=m; raw0=raw;
+          }
+          return map[String(id)];
+        }catch(e){ return _f(id); }
+      };
+      ff.__kx=1; window.findOrd=ff;
+    }
+  }catch(e){}
 })();
 </script>
 
