@@ -7,7 +7,7 @@
 #kld>*{position:relative;z-index:1}
 #kld.gone{display:none}
 #kld:not(.go):not(.gone)~*{visibility:hidden!important}
-#kld .klr{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#e8260a;transform:scale(0);transition:transform 1.7s ease-in-out;z-index:0}
+#kld .klr{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#e8260a;transform:scale(0);transition:transform .5s ease-out;z-index:0}
 #klw{width:100%;font-size:20px;font-weight:800;color:#e8260a;line-height:1.4}
 #klw .klh1{font-size:38px;font-weight:900;color:#e8260a;letter-spacing:1px;line-height:1.15}
 #klw .klh2{font-size:26px;font-weight:900;color:#111;margin-top:6px}
@@ -621,7 +621,7 @@ body.nh #rcw{display:none!important}
 #rcd .rcrow,#rcq .rcrow b{text-align:right}
 </style>
 <div id="rcw"><div class="rcc"><div class="rct">📱 मोबाइल रिचार्ज</div>
-<label class="rcf" for="rcm">मोबाइल नंबर</label><input id="rcm" inputmode="numeric" maxlength="10" placeholder="10 अंक का नंबर" type="tel"/>
+<label class="rcf" for="rcm">मोबाइल नंबर</label><input autocomplete="off" id="rcm" inputmode="numeric" maxlength="10" name="king_rc_target" placeholder="10 अंक का नंबर" type="tel"/>
 <label class="rcf">कंपनी</label><button class="rcpick" id="rcpick" type="button"><span id="rcpt">कंपनी चुनिए</span><i>▾</i></button><div class="rcco" id="rcco"><button data-c="Airtel" type="button">Airtel</button><button data-c="Jio" type="button">Jio</button><button data-c="Vodafone+VI" type="button">Vodafone+VI</button><button data-c="BSNL" type="button">BSNL</button></div>
 <label class="rcf" for="rca">रिचार्ज अमाउंट (₹)</label><input id="rca" inputmode="numeric" maxlength="5" placeholder="जैसे 299" type="tel"/>
 <div class="rccalc" id="rccalc"></div><div class="rcerr" id="rcerr"></div>
@@ -1077,7 +1077,7 @@ var kldDone=false,kldTm=null;
 function kldSlow(){if(kldDone)return;var m=document.getElementById("klm");if(!m)return;m.textContent="सर्वर स्लो है";m.style.display="block"}
 function kldWait(){if(kldDone||kldTm)return;kldTm=setTimeout(kldSlow,60000)}
 function kldFail(){}
-function kldOk(){if(kldDone)return;kldDone=true;clearTimeout(kldTm);var e=document.getElementById("kld"),r=document.getElementById("klr");if(!e)return;if(r)r.style.transform="scale("+(Math.hypot(window.innerWidth,window.innerHeight)/20+6)+")";e.className="go";setTimeout(function(){e.className="gone"},2500)}
+function kldOk(){if(kldDone)return;kldDone=true;clearTimeout(kldTm);var e=document.getElementById("kld"),r=document.getElementById("klr");if(!e)return;if(r)r.style.transform="scale("+(Math.hypot(window.innerWidth,window.innerHeight)/20+6)+")";e.className="go";setTimeout(function(){e.className="gone"},650)}
 kldWait();bnrCheck();welcomeDraw();
 /* Keep the active app session alive: no automatic midnight/date-change page reload.
    Fresh carousel picks happen naturally on a full app reopen; polling continues for live data. */
@@ -2042,6 +2042,8 @@ function kbStep(){
   var _b=document.getElementById("kmblk");if(_b){_b.remove();return true}
   _b=document.getElementById("offmsg");if(_b){_b.remove();return true}
   _b=document.getElementById("kcf");if(_b&&_b.style.display!=="none"){_b.style.display="none";return true}
+  if(on("rcq")){document.getElementById("rcq").classList.remove("on");return true}
+  if(on("rcd")){if(window.rcClose)window.rcClose();else document.getElementById("rcd").classList.remove("on");return true}
   if(on("pv")){hidePhoto();return true}
   if(on("xcf")){document.getElementById("xcf").classList.remove("on");return true}
   if(on("xok")){var k=document.getElementById("xok");k.classList.remove("on");k.innerHTML="";return true}
@@ -3424,13 +3426,15 @@ function $(i){return document.getElementById(i)}
 function r2(x){return Math.round(x*100)/100}
 function isRc(o){return o&&String(o.sku)==="RECHARGE"}
 function stIx(s){s=normSt(s);if(s==="Done")return 2;if(s==="Confirmed"||s==="Shipped"||s==="OutForDelivery")return 1;if(s==="Cancelled"||s==="DelCancelled")return -1;return 0}
-function parse(o){var p=String(o.item||"").split(" – ");return{co:p.length>2?p[p.length-2]:"",m:p.length>1?p[p.length-1]:""}}
+function parse(o){var p=String(o.item||"").split(" – "),m=p.length>1?p[p.length-1]:"",c=p.length>2?p[p.length-2]:"",n=String(o.note||""),a=n.match(/नंबर:\s*(\d{10})/),b=n.match(/कंपनी:\s*([^|]+?)\s*(?:\||$)/);if(a)m=a[1];if(b&&!c)c=b[1];return{co:c,m:m}}
 function calc(){var a=parseFloat($("rca").value.replace(/\D/g,""))||0,cut=r2(a*RATE),pay=r2(a-cut);
 var d=$("rccalc");if(a>0){d.style.display="block";d.innerHTML='<div><span>रिचार्ज अमाउंट</span><span>'+inr(a)+'</span></div><div><span>3.5% कटौती</span><span>− '+inr(cut)+'</span></div><div class="tt"><span>आपको देना है</span><span>'+inr(pay)+'</span></div>'}else d.style.display="none";return{a:a,cut:cut,pay:pay}}
 $("rcpick").addEventListener("click",function(){$("rcco").classList.toggle("on")});
 $("rcco").addEventListener("click",function(e){var b=e.target.closest("[data-c]");if(!b)return;co=b.getAttribute("data-c");$("rcpt").textContent=co;$("rcpick").classList.add("set");$("rcco").classList.remove("on")});
 $("rca").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");calc()});
-$("rcm").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"").slice(0,10)});
+$("rcm").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"").slice(0,10);try{localStorage.setItem("kms_rcnum",this.value)}catch(x){}});
+try{var _sv=localStorage.getItem("kms_rcnum");if(_sv)$("rcm").value=_sv}catch(x){}
+var _keep=function(){try{var v=localStorage.getItem("kms_rcnum")||"";if(v&&$("rcm").value!==v&&document.activeElement!==$("rcm"))$("rcm").value=v}catch(x){}};setInterval(_keep,700);
 function getRN(cb){var done=false,f=function(n){if(done)return;done=true;if(!n)n="RN "+String(Date.now()).slice(-6);cb(n)};
 setTimeout(function(){f("")},6000);
 try{if(!ORDER_URL){f("");return}fetch(ORDER_URL+(ORDER_URL.indexOf("?")<0?"?":"&")+"action=nextrn&t="+Date.now()).then(function(r){return r.json()}).then(function(j){var n=j&&j.no?String(j.no):"";f(/^RN/i.test(n)?n:"")}).catch(function(){f("")})}catch(e){f("")}}
@@ -3459,7 +3463,7 @@ getRN(function(no){
 var ord={id:"RC"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:"📱 RECHARGE – "+P.co+" – "+P.m,sku:"RECHARGE",warranty:"",mrate:"",rate:P.a,qty:1,total:P.pay,cod:0,stock:"",name:u.n||"",mobile:u.m,delivery:"घर",offer:0,address:a+(k?", Landmark: "+k:""),city:c+(dist?", "+dist:"")+(st?", "+st:"")+", पिन "+pc,pin:pc,payment:"Recharge",note:"RECHARGE REQUEST | नंबर: "+P.m+" | कंपनी: "+P.co+" | अमाउंट: ₹"+P.a+" | 3.5% कटौती: ₹"+P.cut+" | देना है: ₹"+P.pay,offLocal:0,thumb:""};
 try{var arr=readAll();arr.unshift(ord);writeAll(arr)}catch(x){}
 if(ORDER_URL){var body=JSON.stringify({action:"add",order:ord});var send=function(){return fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body})};try{send().catch(function(){setTimeout(function(){try{send().catch(function(){})}catch(x){}},4000)})}catch(x){}}
-$("rcm").value="";$("rca").value="";co="";$("rcpt").textContent="कंपनी चुनिए";$("rcpick").classList.remove("set");calc();
+try{localStorage.setItem("kms_rcnum",P.m)}catch(x){}$("rca").value="";co="";$("rcpt").textContent="कंपनी चुनिए";$("rcpick").classList.remove("set");calc();
 pend=null;busy=false;$("rcq").classList.remove("on");drawList();openRc(ord.id)})}
 function recs(){var u=getUser();if(!u)return[];return readAll().filter(function(o){return isRc(o)&&t10(o.mobile)===u.m}).sort(function(a,b){return String(b.time).localeCompare(String(a.time))})}
 function drawList(){var a=recs().slice(0,5),h="";if(a.length){h='<div class="rch">आपके रिचार्ज</div>';a.forEach(function(o){var p=parse(o),i=stIx(o.status);h+='<div class="rcr" data-rc="'+esc(o.id)+'"><div class="a"><b>'+esc(p.co)+' · '+esc(p.m)+'</b><small>'+esc(o.no||"")+' · '+esc(fdt(o.time))+'</small><span class="rcs rcs'+(i<0?"x":i)+'">'+(i<0?"रद्द":esc(LB[i]))+'</span></div><div class="p">'+inr(fnum(o.rate)||0)+'</div></div>'})}
@@ -3484,7 +3488,7 @@ var sh=document.createElement("div");sh.id="rcd";document.body.appendChild(sh);v
 sh.addEventListener("click",function(e){if(e.target.closest("#rcdx"))closeRc()});
 window.rcRefresh=function(){drawList();if(rcId)drawSheet()};
 window.rcLbl=function(s){var i=stIx(s);return i<0?"Recharge Cancelled":LB[i]};
-window.rcOpen=openRc;
+window.rcOpen=openRc;window.rcClose=closeRc;
 var _oo=window.openOd;openOd=function(id){var o=findOrd(id);if(o&&isRc(o)){openRc(id);return}return _oo.apply(this,arguments)};
 setInterval(function(){try{if(document.hidden||!getUser())return;var p=recs().some(function(o){return stIx(o.status)===0||stIx(o.status)===1});if(p)syncOrders()}catch(e){}},15000);
 drawList();
@@ -4158,6 +4162,7 @@ html:has(#lnBox[style*="flex"]),body:has(#lnBox[style*="flex"]){overflow:hidden}
     if(typeof orig!=="function"||orig.__kx) return;
     var w=function(){
       var my=++tok,self=this,args=arguments;
+      if(name==="openOd"){try{var _ro=findOrd(args[0]);if(_ro&&String(_ro.sku)==="RECHARGE"){orig.apply(self,args);return}}catch(e){}}
       loader();
       setTimeout(function(){
         if(my!==tok) return;
