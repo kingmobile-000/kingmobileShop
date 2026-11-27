@@ -576,6 +576,14 @@ var st=document.createElement("style");st.textContent=".kadlk{background:#f3f4f6
 .obtr s.op{border:2px solid #16a34a;background:linear-gradient(135deg,#dcfce7,#bbf7d0);opacity:1;animation:obp 1.2s infinite}.obtr s.op small{color:#166534;font-size:9px}
 .obtr s.us{border:2px solid #cfcfcf;background:#f1f1f1;filter:grayscale(1);opacity:.7}
 .obtr s.mg{border:2px solid #60a5fa;background:#eff6ff}.obtr s.mg small{color:#1d4ed8}
+/* ऑफर बॉक्स: पूरी चौड़ाई (कोने से कोने), "ऑर्डर डिलीवर होने के बाद" वाली लाइन सबसे नीचे */
+#obx{margin:0 0 6px!important}
+.obw{display:flex!important;flex-wrap:wrap;align-items:center;border-left:0!important;border-right:0!important;border-radius:0!important;padding:5px 0 5px!important}
+.obhd{display:contents!important}
+.obhd b{padding-left:10px;order:1;line-height:1.25}
+.obhd span{padding-right:10px;order:1;line-height:1.25}
+.obtr{order:2;width:100%;box-sizing:border-box}
+.obhd em,.obhd em.gn{order:3;margin:4px auto 0!important;line-height:1.25}
 @keyframes obp{50%{transform:scale(1.08)}}
 #obm{position:fixed;inset:0;z-index:2147483100;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
 #obm .obp{background:#fff;width:100%;max-width:520px;max-height:88vh;border-radius:16px 16px 0 0;display:flex;flex-direction:column;overflow:hidden}
