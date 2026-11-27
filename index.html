@@ -2,6 +2,24 @@
 
 <html lang="hi">
 <head>
+<style id="kld-crit">
+#kld{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;overflow:hidden}
+#kld>*{position:relative;z-index:1}
+#kld.gone{display:none}
+#kld:not(.go):not(.gone)~*{visibility:hidden!important}
+#kld .klr{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#e8260a;transform:scale(0);transition:transform 1.7s ease-in-out;z-index:0}
+#klw{width:100%;font-size:20px;font-weight:800;color:#e8260a;line-height:1.4}
+#klw .klh1{font-size:38px;font-weight:900;color:#e8260a;letter-spacing:1px;line-height:1.15}
+#klw .klh2{font-size:26px;font-weight:900;color:#111;margin-top:6px}
+#klw .klh3{font-size:30px;font-weight:900;color:#1a237e;margin-top:6px;word-break:break-word;text-transform:capitalize}
+#kld .kls{width:56px;height:56px;border-radius:50%;border:6px solid #e3e8f5;border-top-color:#e8260a;margin-top:18px;animation:kspin .9s linear infinite}
+@keyframes kspin{to{transform:rotate(360deg)}}
+#kld .klt{font-size:22px;font-weight:900;color:#111}
+#kld .klm{display:none;font-size:17px;font-weight:800;line-height:1.5;color:#555;max-width:320px}
+#kld.go{opacity:0;transition:opacity .45s ease 1.75s}
+#kld.go .kls{opacity:0;transition:opacity .3s}
+#kld.go #klw .klh1,#kld.go #klw .klh2,#kld.go #klw .klh3,#kld.go .klt{color:#fff;transition:color .4s .25s}
+</style>
 <script id="km-speed-boost">
 /* KING MOBILE SPEED PATCH: reduce busy polling, avoid background work, adapt refresh to slow networks */
 (function(){
@@ -537,7 +555,7 @@ saveAd:function(m,n,ad){put(String(m),n,ad)}};
 var st=document.createElement("style");st.textContent=".kadlk{background:#f3f4f6!important;color:#374151!important}";document.head.appendChild(st);
 })();
 </script>
-<div id="kld"><div class="klr" id="klr"></div><div id="klw"></div><div class="kls"></div><div class="klt" id="klt">डेटा आ रहा है…</div><div class="klm" id="klm"></div><button id="klb" type="button">फिर कोशिश करें</button></div>
+<div id="kld"><div class="klr" id="klr"></div><div id="klw"><div class="klh1">KING MOBILE</div><div class="klh2">आपका स्वागत करता है</div></div><div class="kls"></div><div class="klt" id="klt">डेटा आ रहा है…</div><div class="klm" id="klm"></div></div>
 <header>
 <div id="tg" role="button">KING MOBILE</div>
 <div id="wlc"></div>
@@ -781,18 +799,6 @@ header::before,header::after{display:none!important}
 #xnav button.on{color:#2874f0!important}
 #xnav button.on i{filter:none;transform:none}
 </style>
-<style id="kld-css">
-#kld{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
-#kld.gone{display:none}
-#kld .kls{width:56px;height:56px;border-radius:50%;border:6px solid #e3e8f5;border-top-color:#2874f0;animation:kspin .9s linear infinite}
-@keyframes kspin{to{transform:rotate(360deg)}}
-#kld .klt{font-size:20px;font-weight:800;color:#111}
-#kld .klm{display:none;font-size:15px;line-height:1.5;color:#555;max-width:320px}
-#kld #klb{display:none;background:#2874f0;color:#fff;border:0;border-radius:8px;padding:12px 26px;font-size:16px;font-weight:800}
-#kld.fail .kls{display:none}
-#kld.fail .klm{display:block}
-#kld.fail #klb{display:inline-block}
-</style>
 <style id="khome">
 #stc,#stm:empty{display:none!important}
 #st{background:none!important;box-shadow:none!important;padding:0 12px!important;min-height:0!important}
@@ -842,22 +848,6 @@ header{background:linear-gradient(180deg,#e8260a,#ff4a18)!important}
 body.srch #ap{display:none!important}
 #wlc{text-align:center;color:#fff;font-size:14px;font-weight:700;padding:0 8px 8px}
 #wlc b{color:#ffe11b}
-#klw{font-size:20px;font-weight:800;color:#e8260a;max-width:320px;line-height:1.4}
-#klw b{color:#111}
-</style>
-<style id="kld2">
-#kld{overflow:hidden;gap:10px}
-#kld>*{position:relative;z-index:1}
-#kld .klr{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#e8260a;transform:scale(0);transition:transform .8s ease-in;z-index:0}
-#klw{max-width:none;width:100%}
-#klw .klh1{font-size:38px;font-weight:900;color:#e8260a;letter-spacing:1px;line-height:1.15}
-#klw .klh2{font-size:30px;font-weight:900;color:#111;margin-top:6px}
-#klw .klh3{font-size:34px;font-weight:900;color:#1a237e;margin-top:6px;word-break:break-word}
-#kld .kls{border-top-color:#e8260a;margin-top:18px}
-#kld .klt{font-size:22px;font-weight:900}
-#kld.go{opacity:0;transition:opacity .35s ease .8s}
-#kld.go .kls{opacity:0}
-#kld.go #klw .klh1,#kld.go #klw .klh2,#kld.go #klw .klh3,#kld.go .klt{color:#fff;transition:color .4s .25s}
 </style>
 <style id="ktab">
 #ap{display:none!important}
@@ -919,13 +909,6 @@ html body #dtg .dsl.dno{min-height:160px!important}
 #list{align-items:start!important}
 #list .cw{align-self:start!important}
 #list .cw .cd{flex:none!important}
-/* Splash ka swagat text */
-#klw .klh2{font-size:26px!important}
-#klw .klh3{font-size:30px!important;text-transform:capitalize}
-/* laal bindu dheere badhkar poori screen bhare, phir fade */
-#kld .klr{transition:transform 1.7s ease-in-out!important}
-#kld.go{opacity:0;transition:opacity .45s ease 1.75s!important}
-#kld.go .kls{opacity:0;transition:opacity .3s}
 /* Masonry: neeche wala item upar ki khali jagah me aa jaye (JS .msn lagata hai) */
 #list.msn{grid-auto-rows:1px!important;row-gap:0!important;column-gap:8px!important;align-items:start!important}
 #list.msn>*{align-self:start!important}
@@ -1091,10 +1074,10 @@ itApply(L);itemV=d.v;
 status("")
 }).catch(function(e){itemBusy=false;itemFails++;try{console.error("ITEMS FETCH ERROR",e)}catch(x){}status("⚠ डेटा नहीं आ सका: "+(e&&e.message?e.message:e));if(itemFails>=3)itOffline();itemNext=Date.now()+Math.min(30000,3000*Math.pow(2,Math.max(0,itemFails-1)))})}catch(e){itemBusy=false;status("⚠ Error: "+(e&&e.message?e.message:e))}}
 var kldDone=false,kldTm=null;
-function kldWait(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="";document.getElementById("klt").textContent="डेटा आ रहा है…";clearTimeout(kldTm);kldTm=setTimeout(kldFail,9000)}
-function kldFail(){if(kldDone)return;var e=document.getElementById("kld");if(!e)return;e.className="fail";document.getElementById("klt").textContent="Net nahi connect hai";document.getElementById("klm").textContent="इंटरनेट नहीं जुड़ा है। King Mobile में माल और ऑर्डर देखने के लिए सर्वर (इंटरनेट) का जुड़ा होना बहुत ज़रूरी है।"}
+function kldSlow(){if(kldDone)return;var m=document.getElementById("klm");if(!m)return;m.textContent="सर्वर स्लो है";m.style.display="block"}
+function kldWait(){if(kldDone||kldTm)return;kldTm=setTimeout(kldSlow,60000)}
+function kldFail(){}
 function kldOk(){if(kldDone)return;kldDone=true;clearTimeout(kldTm);var e=document.getElementById("kld"),r=document.getElementById("klr");if(!e)return;if(r)r.style.transform="scale("+(Math.hypot(window.innerWidth,window.innerHeight)/20+6)+")";e.className="go";setTimeout(function(){e.className="gone"},2500)}
-document.getElementById("klb").onclick=function(){kldWait();itemNext=0;itemFails=0;itTick()};
 kldWait();bnrCheck();welcomeDraw();
 /* Keep the active app session alive: no automatic midnight/date-change page reload.
    Fresh carousel picks happen naturally on a full app reopen; polling continues for live data. */
@@ -2796,7 +2779,7 @@ var EX={
 };
 var PH={
 "Order Now दबाने पर UPI / Card / NetBanking खुलेगा। पेमेंट सफल होने के बाद ही ऑर्डर बुक होगा।":"Tapping Order Now opens UPI / Card / NetBanking. The order is booked only after the payment succeeds.",
-"डेटा आ रहा है…":"Loading data…","फिर कोशिश करें":"Try again","बिना फोटो":"No photo","आइटम का नाम":"Item name",
+"डेटा आ रहा है…":"Loading data…","सर्वर स्लो है":"Server is slow","फिर कोशिश करें":"Try again","बिना फोटो":"No photo","आइटम का नाम":"Item name",
 "Market Rs (कटेगा)":"Market Rs (struck)","Rs (असली रेट)":"Rs (actual rate)","वारंटी (जैसे 6 महीने)":"Warranty (e.g. 6 months)","वारंटी की स्थिति":"Warranty Status","दिन शेष":"days remaining","शुरू:":"Start:","समाप्त:":"End:","वारंटी अवधि समाप्त":"Warranty period expired","बीते:":"Elapsed:","शेष:":"Remaining:","कुल:":"Total:","डिलीवरी की पुष्टि होते ही वारंटी अवधि शुरू हो जाएगी।":"Warranty begins once delivery is confirmed.",
 "सेव करें":"Save","Excel से लोड करें":"Load from Excel","ऑर्डर की जानकारी":"Order details","मात्रा (Quantity)":"Quantity",
 "पेमेंट कैसे करेंगे?":"How will you pay?","माल मिलने पर नकद दीजिए":"Pay cash when you receive the item",
