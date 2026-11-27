@@ -564,21 +564,19 @@ var st=document.createElement("style");st.textContent=".kadlk{background:#f3f4f6
 <div id="sbar"><button aria-label="Menu" id="mbtn" type="button">☰</button><div class="sw"><span>🔍</span><input autocomplete="off" id="q" placeholder="Search item" type="search"/></div></div>
 <div id="ap"></div>
 <div id="catw"><div id="cats"></div></div>
-<div id="hm"><div id="bnr" style="display:none"><div class="b0"></div><div class="b1"></div><div class="b2"></div><div class="b3"></div></div><div id="cb"></div><div id="ofb" style="display:none"></div><div id="obx" style="display:none"></div><style>
-#obx{margin:0 12px 10px}.obw{background:#fff;border:1px solid #f0c9c3;border-radius:12px;padding:12px 0 12px}
-.obh{font-size:16px;font-weight:900;color:#b42410;padding:0 12px}
-.obt{font-size:13.5px;font-weight:800;color:#222;line-height:1.45;padding:2px 12px 0}
-.obt2{font-size:12.5px;font-weight:700;color:#555;padding:4px 12px 0}
-.obs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 12px 2px;-webkit-overflow-scrolling:touch}
-.obs::-webkit-scrollbar{display:none}
-.obc{flex:0 0 82%;max-width:320px;scroll-snap-align:start;border-radius:12px;padding:12px;text-align:center;box-sizing:border-box;border:2px solid #dc2626;background:#fff5f4;color:#b42410}
-.obc.us{border-color:#cfcfcf;background:#f4f4f4;color:#666}
-.obc.op{border-color:#16a34a;background:#effaf2;color:#166534;cursor:pointer}
-.obc .k{font-size:12px;font-weight:800}.obc .a{font-size:30px;font-weight:900;line-height:1.2}
-.obc .m{font-size:13px;font-weight:700;line-height:1.45;margin-top:4px;word-break:break-word}
-.obd{display:flex;justify-content:center;gap:10px;margin:8px 0}
-.obd i{width:30px;height:30px;border-radius:50%;border:2px solid #dc2626;background:#fff;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:900;font-size:15px;color:#fff}
-.obd i.f{background:#dc2626}
+<div id="hm"><div id="bnr" style="display:none"><div class="b0"></div><div class="b1"></div><div class="b2"></div><div class="b3"></div></div><div id="cb"></div><div id="obx" style="display:none"></div><style>
+#obx{margin:0 12px 6px}.obw{background:linear-gradient(135deg,#fff7ed,#ffe4e6);border:1px solid #f5b8b0;border-radius:12px;padding:5px 0 6px;overflow:hidden}
+.obhd{display:flex;align-items:center;flex-wrap:wrap;gap:1px 8px;padding:0 10px;line-height:1.25}.obhd b{font-size:14px;font-weight:900;color:#b42410}.obhd span{font-size:10.5px;font-weight:700;color:#444;flex:1 1 auto;min-width:0}.obhd em.gn{background:#dcfce7;color:#166534}.obhd em{font-style:normal;font-size:10.5px;font-weight:800;color:#b45309;background:#fff;border-radius:8px;padding:1px 6px;margin-left:auto}
+.obtr{display:flex;align-items:center;gap:9px;overflow-x:auto;padding:5px 10px 0;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}.obtr::-webkit-scrollbar{display:none}
+.obtr i{flex:none;width:19px;height:19px;border-radius:50%;background:#fff;border:2px solid #fca5a5;color:#b42410;font-style:normal;font-weight:900;font-size:10px;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.obtr i.f{background:linear-gradient(135deg,#22c55e,#16a34a);border-color:#16a34a;color:#fff}.obtr i.p{background:#fb923c;border-color:#ea580c;color:#fff}.obtr i.cur{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.25)}
+.obtr>*{margin-left:auto;margin-right:auto}
+.obtr s{flex:none;text-decoration:none;width:38px;height:36px;border-radius:9px;border:2px dashed #f59e0b;background:#fffbeb;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:16px;line-height:1;box-sizing:border-box;opacity:.9;cursor:pointer}
+.obtr s small{font-size:8px;font-weight:900;color:#92400e;margin-top:1px;white-space:nowrap}
+.obtr s.op{border:2px solid #16a34a;background:linear-gradient(135deg,#dcfce7,#bbf7d0);opacity:1;animation:obp 1.2s infinite}.obtr s.op small{color:#166534;font-size:9px}
+.obtr s.us{border:2px solid #cfcfcf;background:#f1f1f1;filter:grayscale(1);opacity:.7}
+.obtr s.mg{border:2px solid #60a5fa;background:#eff6ff}.obtr s.mg small{color:#1d4ed8}
+@keyframes obp{50%{transform:scale(1.08)}}
 #obm{position:fixed;inset:0;z-index:2147483100;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
 #obm .obp{background:#fff;width:100%;max-width:520px;max-height:88vh;border-radius:16px 16px 0 0;display:flex;flex-direction:column;overflow:hidden}
 #obm .obph{padding:14px 14px 10px;border-bottom:1px solid #eee;position:relative}
@@ -592,14 +590,7 @@ var st=document.createElement("style");st.textContent=".kadlk{background:#f3f4f6
 #obm .obr .nm{flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#111;word-break:break-word}
 #obm .obr .pr{flex:none;text-align:right;font-size:12px;font-weight:700;color:#555}
 #obm .obr .pr b{display:block;font-size:14px;color:#dc2626}#obm .obr .pr b.z{color:#16a34a}
-</style><style>#ofb{margin:4px 12px 10px;padding:12px;background:#fff;border:1px solid #f0c9c3;border-radius:12px;align-items:center;gap:12px}#ofb:not([style*="none"]){display:flex!important}#ofb .ofbt{flex:1;font-size:14px;font-weight:700;line-height:1.5;color:#222}#ofb .ofbx{min-width:96px;text-align:center;border:2px solid #dc2626;border-radius:12px;padding:6px 10px;background:#fff5f4;color:#dc2626;line-height:1.3}#ofb .ofbx span{display:block;font-size:12px;font-weight:800}#ofb .ofbx b{font-size:22px;font-weight:900}#ofb .ofbx small{display:block;font-size:10px;font-weight:700}
-#ofb{padding:8px 10px;gap:8px;margin:4px 12px 8px}
-#ofb .ofbt{font-size:13px;line-height:1.35}
-#ofb .ofbx{flex:none;min-width:0;padding:3px 6px;border-width:1.5px;border-radius:10px;line-height:1.2}
-#ofb .ofbx span{font-size:11px}
-#ofb .ofbx b{font-size:20px}
-#ofb{cursor:pointer}
-@media(max-width:340px){#ofb .ofbt{font-size:12px}}</style></div>
+</style></div>
 <div id="st"><span id="stm"></span><button id="nf">बिना फोटो</button><span id="stc"></span></div>
 <div id="add">
 <input id="an" placeholder="आइटम का नाम" type="text"/>
@@ -942,48 +933,12 @@ html body #dtg .dsl.dno{min-height:160px!important}
 #list.msn>*{align-self:start!important}
 </style>
 <script>
-/* ===== उधार + ऑफर: दोनों Daily Hisab से आते हैं (ग्राहक के मोबाइल नंबर के हिसाब से) ===== */
-var OFFK="kms_offon",OUSEK="kms_offused";
-var OFF_SESS=false; /* ऑफर हर बार बंद से शुरू; ON करने पर बस इसी बार, Refresh पर फिर बंद */
-function offOn(){if(offLocked())return false;return OFF_SESS===true}
-function setOffOn(v){OFF_SESS=!!v}
-/* Daily Hisab का credit, उसमें से वो घटाकर जो इस फ़ोन से ऑर्डर में लग चुका (Daily Hisab में नया आंकड़ा आते ही फिर Daily Hisab का ही माना जाता है) */
-function offAvail(){var c=custGet();if(!c.m)return 0;var o=null;try{o=JSON.parse(localStorage.getItem(OUSEK)||"null")}catch(e){}
-if(o&&String(o.m)===String(c.m)&&Number(o.sc)===c.credit)return Math.max(0,Math.round((c.credit-Number(o.used||0))*100)/100);return c.credit}
-function offConsume(d){var c=custGet();if(!c.m||!(d>0))return;var o=null;try{o=JSON.parse(localStorage.getItem(OUSEK)||"null")}catch(e){}
-var u=(o&&String(o.m)===String(c.m)&&Number(o.sc)===c.credit)?Number(o.used||0):0;
-try{localStorage.setItem(OUSEK,JSON.stringify({m:c.m,sc:c.credit,used:u+d}))}catch(e){}}
-/* ===== उधार हो तो ऑफर बंद (कटा हुआ) जब तक उधार जमा न हो ===== */
-function offLocked(){return custGet().due>0}
-function offFmt(n){n=Number(n)||0;return n>0?fmtN(n):"00"}
-function offMsg(){var d=document.getElementById("offmsg");if(d)d.remove();
-d=document.createElement("div");d.id="offmsg";
-d.style.cssText="position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:22px";
-d.innerHTML='<div style="background:#fff;border-radius:14px;max-width:340px;width:100%;padding:22px 18px 16px;text-align:center;font-family:inherit"><div style="font-size:40px;line-height:1">🔒</div><div style="font-size:17px;font-weight:900;color:#b42410;margin:10px 0 6px">ऑफर अभी बंद है</div><div style="font-size:16px;font-weight:700;color:#222;line-height:1.5">आप अपना पहले उधार जमा करें, फिर आप ऑफर उपयोग कर पाएंगे।</div><div style="font-size:14px;font-weight:800;color:#555;margin-top:8px">आपका उधार: ₹'+fmtN(custGet().due)+'</div><button style="margin-top:14px;border:0;background:#e63c1f;color:#fff;font-weight:900;font-size:16px;border-radius:10px;padding:10px 34px;cursor:pointer;font-family:inherit">ठीक है</button></div>';
-d.addEventListener("click",function(){d.remove()});document.body.appendChild(d)}
-/* ऑफर बॉक्स पर टैप करने पर जानकारी: बंद हो तो चालू करने का तरीका बताए */
-function offInfo(ic,tt,bd){var d=document.getElementById("offmsg");if(d)d.remove();
-d=document.createElement("div");d.id="offmsg";
-d.style.cssText="position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:22px";
-d.innerHTML="<div style='background:#fff;border-radius:14px;max-width:340px;width:100%;padding:22px 18px 16px;text-align:center;font-family:inherit'><div style='font-size:40px;line-height:1'>"+ic+"</div><div style='font-size:17px;font-weight:900;color:#b42410;margin:10px 0 6px'>"+tt+"</div><div style='font-size:16px;font-weight:700;color:#222;line-height:1.5'>"+bd+"</div><button style='margin-top:14px;border:0;background:#e63c1f;color:#fff;font-weight:900;font-size:16px;border-radius:10px;padding:10px 34px;cursor:pointer;font-family:inherit'>ठीक है</button></div>";
-d.addEventListener("click",function(){d.remove()});document.body.appendChild(d)}
-function ofbTap(){var a=offAvail();
-if(offLocked()&&a>0){offMsg();return}
-if(!(a>0)){offInfo("🎁","आपका ऑफर अभी ₹0 है","हर बिक्री पर आपको कुछ रुपयों का ऑफर मिलता है।");return}
-if(!offOn()){offInfo("🔒","ऑफर अभी बंद है","इसे चालू करने के लिए Orders में जाइए। वहाँ ऊपर दाईं तरफ़ <b>ऑफर OFF</b> का बटन है, उससे ON कीजिए।");return}
-offInfo("✅","ऑफर चालू है","आपका ₹"+fmtN(a)+" का ऑफर अगले ऑर्डर के कुल पेमेंट से कट जाएगा।")}
-document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest("#ofb");if(b)ofbTap()});
-/* ऑर्डर कैंसिल होने पर ऑफर वापस (इसी फ़ोन से लगे ऑफर के लिए, एक ही बार) */
-function offGive(d){var c=custGet();if(!c.m||!(d>0))return;var o=null;try{o=JSON.parse(localStorage.getItem(OUSEK)||"null")}catch(e){}
-if(o&&String(o.m)===String(c.m)&&Number(o.sc)===c.credit){try{localStorage.setItem(OUSEK,JSON.stringify({m:c.m,sc:c.credit,used:Math.max(0,Number(o.used||0)-d)}))}catch(e){}}}
-function offPost(op,o){if(typeof ORDER_URL==="undefined"||!ORDER_URL)return;try{fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"offer",op:op,id:o.id,mobile:t10(o.mobile),amount:Number(o.offer)||0})}).catch(function(){})}catch(e){}}
-function offSweep(a){var ch=false;a.forEach(function(o){var s=normSt(o.status);
-if(o&&Number(o.offer)>0&&(s==="Cancelled"||s==="DelCancelled")&&String(o.offerref)!=="1"){o.offerref="1";ch=true;if(o.offLocal===1)offGive(Number(o.offer));offPost("refund",o)}});return ch}
-function offRs(){return offOn()?offAvail():0}   /* ऑफर ON हो तभी छूट लगती है */
-function offPU(R0,q){var c=(window.BOXV&&window.BOXV.amt>0)?window.BOXV.amt:offRs();if(R0===null||R0===undefined||c<=0||!(q>0))return 0;return Math.min(c,R0*q)/q}
+/* ===== उधार (Daily Hisab से, मोबाइल नंबर के हिसाब से) ===== */
+/* ऑफर बॉक्स का वाउचर लगाने की छूट: sirf BOXV (ऑफर बॉक्स) se */
+function offPU(R0,q){var c=(window.BOXV&&window.BOXV.amt>0)?window.BOXV.amt:0;if(R0===null||R0===undefined||c<=0||!(q>0))return 0;return Math.min(c,R0*q)/q}
 var CUSTK="kms_cust";
 function custGet(){try{var c=JSON.parse(localStorage.getItem(CUSTK)||"null"),u=JSON.parse(localStorage.getItem("kms_user")||"null");
-if(c&&u&&String(c.m)===String(u.m))return{m:c.m,due:Number(c.due)||0,credit:Number(c.credit)||0}}catch(e){}return{m:"",due:0,credit:0}}
+if(c&&u&&String(c.m)===String(u.m))return{m:c.m,due:Number(c.due)||0}}catch(e){}return{m:"",due:0}}
 function fmtN(n){return(Math.round(Number(n)*100)/100).toLocaleString("en-IN")}
 function hasR(o){return o&&o.Rate!==undefined&&o.Rate!==null&&o.Rate!==""}
 function effRate(r){var n=parseFloat(String(r==null?"":r).replace(/,/g,""));return isNaN(n)?null:Math.max(0,n)}
@@ -1112,8 +1067,7 @@ kldWait();bnrCheck();welcomeDraw();
 function kcStart(){if(items.length){try{drawCats()}catch(e){}try{render()}catch(e){}try{kldOk()}catch(e){}}itTick();setInterval(itTick,ITEM_POLL_MS)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(kcStart,0)});else setTimeout(kcStart,0);
 window.addEventListener("offline",itOffline);
-document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-offt]");if(!b)return;if(offLocked()){offMsg();return}setOffOn(!offOn());
-try{if(byI>=0)drawBy()}catch(x){}try{render()}catch(x){}try{if(curPg==="orders")drawOrders()}catch(x){}},true);
+
 setTimeout(function(){syncCust();setInterval(syncCust,30000)},2000);
 window.addEventListener("online",function(){kldWait();itemNext=0;itTick();syncCust()});
 document.addEventListener("visibilitychange",function(){if(!document.hidden){itemNext=0;itTick();syncCust()}});
@@ -1122,23 +1076,23 @@ var CUST_URL="";
 var CUSTMSG="";
 /* ===== उधार (E: Udhaar (Baki)) + ऑफर (G: 20% Profit (Earned)) — "Customer Credit" शीट से, मोबाइल नंबर के हिसाब से =====
    एक नंबर पर कितने भी नाम हों, सब जुड़कर दिखते हैं। शीट बदले तो नया Data.xlsx देकर यह CUSTDB नया बनवा लें। */
-var CUSTDB={"7307490275":{"due":0.0,"credit":0.0},"8303907304":{"due":0.0,"credit":0.0},"0000000000":{"due":699.0,"credit":0.0},"8423431543":{"due":80.5,"credit":0.0},"9670478962":{"due":750.0,"credit":0.0},"9236010824":{"due":50.0,"credit":0.0},"8127872374":{"due":250.0,"credit":0.0},"8429737425":{"due":114.0,"credit":0.0},"6284493018":{"due":0.0,"credit":0.0},"7318114220":{"due":545.0,"credit":0.0},"8112625651":{"due":0.0,"credit":0.0},"8127904308":{"due":0.0,"credit":0.0},"7985391355":{"due":0.0,"credit":0.0},"9792813351":{"due":600.5,"credit":0.0},"9628464341":{"due":0.0,"credit":0.0},"8756792912":{"due":0.0,"credit":0.0},"7706845143":{"due":0.0,"credit":0.0},"7068125092":{"due":0.0,"credit":0.0},"9335704842":{"due":0.0,"credit":0.0},"6390528272":{"due":0.0,"credit":0.0},"7081310909":{"due":0.0,"credit":0.0},"8360306196":{"due":0.0,"credit":0.0},"7340940441":{"due":110.0,"credit":0.0},"7394978755":{"due":80.0,"credit":0.0},"7434859693":{"due":0.0,"credit":0.0},"9026770520":{"due":0.0,"credit":0.0},"9260940447":{"due":0.0,"credit":0.0},"9170827774":{"due":0.0,"credit":0.0},"8097129587":{"due":0.0,"credit":0.0},"8853154781":{"due":0.0,"credit":0.0},"8115274115":{"due":0.0,"credit":0.0},"6387254500":{"due":250.0,"credit":0.0},"8858398680":{"due":100.0,"credit":0.0},"6392910832":{"due":227.5,"credit":0.0},"7518707580":{"due":0.0,"credit":0.0},"9198198921":{"due":0.0,"credit":0.0},"9628722421":{"due":0.0,"credit":0.0},"8174072588":{"due":0.0,"credit":0.0},"9519437588":{"due":0.0,"credit":0.0},"9198820799":{"due":0.0,"credit":0.0},"7052863068":{"due":0.0,"credit":0.0},"8858845688":{"due":70.0,"credit":0.0},"9336841246":{"due":300.0,"credit":0.0},"9559157543":{"due":0.0,"credit":0.0},"9034841298":{"due":0.0,"credit":0.0},"6306672768":{"due":0.0,"credit":0.0},"7054183635":{"due":0.0,"credit":0.0},"1233230132":{"due":0.0,"credit":0.0},"7619037209":{"due":0.0,"credit":0.0},"6389632055":{"due":0.0,"credit":0.0},"9506608313":{"due":0.0,"credit":0.0},"9198293092":{"due":650.0,"credit":0.0},"7388289337":{"due":1100.5,"credit":0.0},"9648594692":{"due":0.0,"credit":0.0},"8580453419":{"due":0.0,"credit":0.0},"9235134350":{"due":0.0,"credit":0.0},"8115198597":{"due":0.0,"credit":0.0},"9326629277":{"due":0.0,"credit":0.0},"8756837917":{"due":0.0,"credit":0.0},"7607714415":{"due":150.0,"credit":0.0},"9651514096":{"due":3049.0,"credit":0.0},"9005739892":{"due":0.0,"credit":0.0},"9217425947":{"due":45.0,"credit":0.0},"6386735727":{"due":0.0,"credit":0.0},"9219055433":{"due":778.0,"credit":0.0},"7380734307":{"due":0.0,"credit":0.0},"8174070013":{"due":0.0,"credit":0.0},"8423069880":{"due":0.0,"credit":0.0},"9724250212":{"due":0.0,"credit":0.0},"9670640651":{"due":19.0,"credit":0.0},"9558222519":{"due":89.0,"credit":0.0},"8726979950":{"due":0.0,"credit":0.0},"9621503709":{"due":0.0,"credit":0.0},"6393137129":{"due":251.5,"credit":0.0},"8756844050":{"due":50.0,"credit":0.0},"9721712237":{"due":0.0,"credit":0.0},"7753840415":{"due":0.0,"credit":0.0},"9696826576":{"due":0.0,"credit":0.0},"9125747230":{"due":0.0,"credit":0.0},"9120554350":{"due":0.0,"credit":0.0},"8423821055":{"due":0.0,"credit":0.0},"7081375270":{"due":975.0,"credit":0.0},"8081543190":{"due":0.0,"credit":0.0},"8601004480":{"due":500.0,"credit":0.0},"8577966013":{"due":0.0,"credit":0.0},"7800222519":{"due":0.0,"credit":0.0},"8115871204":{"due":0.0,"credit":0.0},"7054662667":{"due":0.0,"credit":0.0},"8423714724":{"due":0.0,"credit":0.0},"9956320709":{"due":0.0,"credit":0.0},"1234567891":{"due":1750.0,"credit":0.0},"8176991142":{"due":0.0,"credit":0.0},"7388315046":{"due":0.0,"credit":0.0},"8429155474":{"due":395.0,"credit":0.0},"9170683840":{"due":500.0,"credit":0.0},"8830700507":{"due":0.0,"credit":0.0},"7985948521":{"due":0.0,"credit":0.0},"9125648454":{"due":50.0,"credit":0.0},"8602282095":{"due":0.0,"credit":0.0},"9695784457":{"due":850.0,"credit":0.0},"9170204810":{"due":0.0,"credit":0.0},"7800460378":{"due":0.0,"credit":0.0},"7717651411":{"due":0.0,"credit":0.0},"6386612962":{"due":0.0,"credit":0.0},"8081968155":{"due":0.0,"credit":0.0},"7081544680":{"due":350.0,"credit":0.0},"7894561234":{"due":0.0,"credit":0.0},"7800706039":{"due":0.0,"credit":0.0},"8874446105":{"due":0.0,"credit":0.0},"9795506304":{"due":0.0,"credit":0.0},"7068893616":{"due":0.0,"credit":0.0},"7268894661":{"due":1000.0,"credit":0.0},"8115109675":{"due":0.0,"credit":0.0},"9621926308":{"due":387.5,"credit":0.0},"9621464070":{"due":120.0,"credit":0.0},"9794775953":{"due":0.0,"credit":0.0},"7897969809":{"due":0.0,"credit":0.0},"9151781774":{"due":0.0,"credit":0.0},"9250718451":{"due":0.0,"credit":0.0},"9919817146":{"due":0.0,"credit":0.0},"9892347830":{"due":0.0,"credit":0.0},"9793728345":{"due":0.0,"credit":0.0},"6206572560":{"due":237.5,"credit":0.0},"8930605441":{"due":0.0,"credit":0.0},"9889427597":{"due":0.0,"credit":0.0},"7388296527":{"due":0.0,"credit":0.0},"9936172065":{"due":300.0,"credit":0.0},"8881119406":{"due":0.0,"credit":0.0},"9648503709":{"due":0.0,"credit":0.0},"9956320389":{"due":0.0,"credit":0.0},"9198982915":{"due":0.0,"credit":0.0},"7690018895":{"due":0.0,"credit":0.0},"8127442672":{"due":0.0,"credit":0.0},"7054935881":{"due":0.0,"credit":0.0},"9005290066":{"due":0.0,"credit":0.0},"9628839522":{"due":0.0,"credit":0.0},"9044521795":{"due":850.0,"credit":0.0},"8948147333":{"due":0.0,"credit":0.0},"9034067962":{"due":0.0,"credit":0.0},"7880649952":{"due":500.0,"credit":0.0},"9621345579":{"due":0.0,"credit":0.0},"7388742990":{"due":0.0,"credit":0.0}};
+var CUSTDB={"7307490275":{"due":0.0},"8303907304":{"due":0.0},"0000000000":{"due":699.0},"8423431543":{"due":80.5},"9670478962":{"due":750.0},"9236010824":{"due":50.0},"8127872374":{"due":250.0},"8429737425":{"due":114.0},"6284493018":{"due":0.0},"7318114220":{"due":545.0},"8112625651":{"due":0.0},"8127904308":{"due":0.0},"7985391355":{"due":0.0},"9792813351":{"due":600.5},"9628464341":{"due":0.0},"8756792912":{"due":0.0},"7706845143":{"due":0.0},"7068125092":{"due":0.0},"9335704842":{"due":0.0},"6390528272":{"due":0.0},"7081310909":{"due":0.0},"8360306196":{"due":0.0},"7340940441":{"due":110.0},"7394978755":{"due":80.0},"7434859693":{"due":0.0},"9026770520":{"due":0.0},"9260940447":{"due":0.0},"9170827774":{"due":0.0},"8097129587":{"due":0.0},"8853154781":{"due":0.0},"8115274115":{"due":0.0},"6387254500":{"due":250.0},"8858398680":{"due":100.0},"6392910832":{"due":227.5},"7518707580":{"due":0.0},"9198198921":{"due":0.0},"9628722421":{"due":0.0},"8174072588":{"due":0.0},"9519437588":{"due":0.0},"9198820799":{"due":0.0},"7052863068":{"due":0.0},"8858845688":{"due":70.0},"9336841246":{"due":300.0},"9559157543":{"due":0.0},"9034841298":{"due":0.0},"6306672768":{"due":0.0},"7054183635":{"due":0.0},"1233230132":{"due":0.0},"7619037209":{"due":0.0},"6389632055":{"due":0.0},"9506608313":{"due":0.0},"9198293092":{"due":650.0},"7388289337":{"due":1100.5},"9648594692":{"due":0.0},"8580453419":{"due":0.0},"9235134350":{"due":0.0},"8115198597":{"due":0.0},"9326629277":{"due":0.0},"8756837917":{"due":0.0},"7607714415":{"due":150.0},"9651514096":{"due":3049.0},"9005739892":{"due":0.0},"9217425947":{"due":45.0},"6386735727":{"due":0.0},"9219055433":{"due":778.0},"7380734307":{"due":0.0},"8174070013":{"due":0.0},"8423069880":{"due":0.0},"9724250212":{"due":0.0},"9670640651":{"due":19.0},"9558222519":{"due":89.0},"8726979950":{"due":0.0},"9621503709":{"due":0.0},"6393137129":{"due":251.5},"8756844050":{"due":50.0},"9721712237":{"due":0.0},"7753840415":{"due":0.0},"9696826576":{"due":0.0},"9125747230":{"due":0.0},"9120554350":{"due":0.0},"8423821055":{"due":0.0},"7081375270":{"due":975.0},"8081543190":{"due":0.0},"8601004480":{"due":500.0},"8577966013":{"due":0.0},"7800222519":{"due":0.0},"8115871204":{"due":0.0},"7054662667":{"due":0.0},"8423714724":{"due":0.0},"9956320709":{"due":0.0},"1234567891":{"due":1750.0},"8176991142":{"due":0.0},"7388315046":{"due":0.0},"8429155474":{"due":395.0},"9170683840":{"due":500.0},"8830700507":{"due":0.0},"7985948521":{"due":0.0},"9125648454":{"due":50.0},"8602282095":{"due":0.0},"9695784457":{"due":850.0},"9170204810":{"due":0.0},"7800460378":{"due":0.0},"7717651411":{"due":0.0},"6386612962":{"due":0.0},"8081968155":{"due":0.0},"7081544680":{"due":350.0},"7894561234":{"due":0.0},"7800706039":{"due":0.0},"8874446105":{"due":0.0},"9795506304":{"due":0.0},"7068893616":{"due":0.0},"7268894661":{"due":1000.0},"8115109675":{"due":0.0},"9621926308":{"due":387.5},"9621464070":{"due":120.0},"9794775953":{"due":0.0},"7897969809":{"due":0.0},"9151781774":{"due":0.0},"9250718451":{"due":0.0},"9919817146":{"due":0.0},"9892347830":{"due":0.0},"9793728345":{"due":0.0},"6206572560":{"due":237.5},"8930605441":{"due":0.0},"9889427597":{"due":0.0},"7388296527":{"due":0.0},"9936172065":{"due":300.0},"8881119406":{"due":0.0},"9648503709":{"due":0.0},"9956320389":{"due":0.0},"9198982915":{"due":0.0},"7690018895":{"due":0.0},"8127442672":{"due":0.0},"7054935881":{"due":0.0},"9005290066":{"due":0.0},"9628839522":{"due":0.0},"9044521795":{"due":850.0},"8948147333":{"due":0.0},"9034067962":{"due":0.0},"7880649952":{"due":500.0},"9621345579":{"due":0.0},"7388742990":{"due":0.0}};
 function syncCust(){var u=null;try{u=JSON.parse(localStorage.getItem("kms_user")||"null")}catch(e){}
 if(!u||!u.m)return;
-var m=t10(u.m),c=CUSTDB[m]||{due:0,credit:0},old=custGet();
-try{localStorage.setItem(CUSTK,JSON.stringify({m:u.m,due:c.due,credit:c.credit}))}catch(e){}
+var m=t10(u.m),c=CUSTDB[m]||{due:0},old=custGet();
+try{localStorage.setItem(CUSTK,JSON.stringify({m:u.m,due:c.due}))}catch(e){}
 CUSTMSG="";
 var nw=custGet();
-if(nw.due!==old.due||nw.credit!==old.credit){try{drawOfb()}catch(e){}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}}
+if(nw.due!==old.due){try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}}
 /* LIVE: 16-11-2026 ke baad ke bills ka Offer/Udhaar MUKESH_KUMAR.py se Sheet me jaata hai - yahan wahi laate hain */
 try{var cu=(CUST_URL||(typeof ORDER_URL!=="undefined"?ORDER_URL:""));if(cu){
 fetch(cu+(cu.indexOf("?")<0?"?":"&")+"action=customer&mobile="+m+"&t="+Date.now()).then(function(r){return r.json()}).then(function(j){
-var d=j&&(j.customer||j);if(!d||j.ok===false||d.credit===undefined||d.credit===null)return;
-var cr=Math.max(0,Number(d.credit)||0),du=Math.max(0,Number(d.due)||0),cur=custGet();
+var d=j&&(j.customer||j);if(!d||j.ok===false||d.due===undefined||d.due===null)return;
+var du=Math.max(0,Number(d.due)||0),cur=custGet();
 if(String(cur.m)!==String(u.m)&&cur.m)return;
-if(cur.due===du&&cur.credit===cr)return;
-try{localStorage.setItem(CUSTK,JSON.stringify({m:u.m,due:du,credit:cr}))}catch(e){}
-try{drawOfb()}catch(e){}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}}).catch(function(){})}}catch(e){}}
+if(cur.due===du)return;
+try{localStorage.setItem(CUSTK,JSON.stringify({m:u.m,due:du}))}catch(e){}
+try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}}).catch(function(){})}}catch(e){}}
 var onlyNo=false,IDB=null,items=[],KEY="king_offline_items_v1",TKEY="king_offline_items_t_v1",lt=0,EMB=null;
 EMB=null;items=[];lt=0;
 /* TURANT ITEM: pichhli baar ke item+photo-link turant dikhte hain (sirf internet chalu ho tab, 3 din tak); server ka naya data aate hi apne-aap badal jata hai */
@@ -1369,8 +1323,7 @@ q(3).textContent=nm?(nm+" जी"):"KING MOBILE परिवार";q(3).style.f
 setInterval(function(){try{bnrCheck()}catch(e){}},60000);
 function welcomeDraw(){try{bnrCheck()}catch(e){}var u=null;try{u=JSON.parse(localStorage.getItem("kms_user")||"null")}catch(e){}var h="🙏 KING MOBILE में आपका स्वागत है"+((u&&u.m&&u.n)?", <b>"+esc(u.n)+"</b>":"");var a=document.getElementById("wlc"),b=document.getElementById("klw");if(a)a.innerHTML=h;if(b)b.innerHTML='<div class="klh1">KING MOBILE</div><div class="klh2">आपका स्वागत करता है</div>'+((u&&u.m&&u.n)?'<div class="klh3">'+esc(u.n)+' जी</div>':'')}
 function drawAp(){var h="";catList().forEach(function(c,i){h+='<div class="apt'+(c[0]===curCat?' on':'')+'" data-c="'+esc(c[0])+'"><div class="api">'+(i===0?"👑":c[1])+'</div><div class="apl">'+(i===0?"King Mobile":esc(c[0]))+'</div></div>'});document.getElementById("ap").innerHTML=h}
-function drawOfb(){var el=document.getElementById("ofb");if(!el)return;var u=null;try{u=getUser()}catch(e){}if(!u){el.style.display="none";return}var a=offAvail(),lk=offLocked()&&a>0;el.style.display="";el.innerHTML='<div class="ofbt">KING MOBILE आपकी हर एक बिक्री पर आपको कुछ रुपयों का ऑफर देता है।</div><div class="ofbx"><span>🎁 आपका ऑफर</span><b>'+(lk?'<s>₹'+fmtN(a)+'</s>':'₹'+offFmt(a))+'</b>'+(lk?'<small>उधार जमा करने पर चालू होगा</small>':'')+'</div>'}
-function drawCombo(){try{drawOfb()}catch(e){}var el=document.getElementById("cb"),h="",a=[];items.forEach(function(o,i){var p=offPct(o);if(p>0&&(typeof isStk!=="function"||isStk(o.Qty)))a.push([i,p])});a.sort(function(x,y){return y[1]-x[1]});a=a.slice(0,4);
+function drawCombo(){var el=document.getElementById("cb"),h="",a=[];items.forEach(function(o,i){var p=offPct(o);if(p>0&&(typeof isStk!=="function"||isStk(o.Qty)))a.push([i,p])});a.sort(function(x,y){return y[1]-x[1]});a=a.slice(0,4);
 if(a.length<2){el.innerHTML="";return}
 a.forEach(function(r){var o=items[r[0]],im=(o.Photos&&o.Photos.length)?'<img loading="lazy" decoding="async" src="'+esc(kth(o.Photos[0]))+'" alt="">':'<span>📦</span>';h+='<div class="cbt" data-cb="'+r[0]+'"><div class="cbi">'+im+'</div><div class="cbn">'+esc(kSplit(o).n)+'</div><div class="cbo">Min. '+r[1]+'% Off</div></div>'});
 el.innerHTML='<div class="cbh">Combo Dhamaka <i>➜</i></div><div class="cbg">'+h+'</div>'}
@@ -1728,7 +1681,7 @@ document.getElementById("byaddr").style.display=byD==="home"?"block":"none";
 var h='<div class="byh">कीमत का ब्योरा</div>';
 if(R!==null){h+='<div class="byr"><span>कीमत ('+byQ+' आइटम)</span><span>'+inr((M!==null&&M>R0?M:R0)*byQ)+'</span></div>';
 if(M!==null&&M>R0)h+='<div class="byr g"><span>छूट</span><span>− '+inr((M-R0)*byQ)+'</span></div>';
-if(window.BOXV)h+='<div class="byr"><span>🎁 ऑफर बॉक्स वाउचर ₹'+fmtN(BOXV.amt)+' लगा है</span><button class="offt on" data-boxx="1">हटाएँ</button></div>';else if(offAvail()>0)h+='<div class="byr"><span>ऑफर '+(offLocked()?'<s>₹'+fmtN(offAvail())+'</s>':'₹'+fmtN(offAvail()))+' उपलब्ध</span><button class="offt '+(offOn()?'on':'off')+'" data-offt="1">'+(offOn()?'ON':'OFF')+'</button></div>';
+if(window.BOXV)h+='<div class="byr"><span>🎁 ऑफर बॉक्स वाउचर ₹'+fmtN(BOXV.amt)+' लगा है</span><button class="offt on" data-boxx="1">हटाएँ</button></div>';;
 if(R0>R)h+='<div class="byr g"><span>ऑफर ₹'+fmtN((R0-R)*byQ)+' की छूट</span><span>− '+inr((R0-R)*byQ)+'</span></div>';
 if(custGet().due>0)h+='<div class="byr"><span>आपका पुराना उधार (अलग)</span><span>'+inr(custGet().due)+'</span></div>';
 h+='<div class="byr"><span>डिलीवरी</span><span>'+"दुकान पर तय होगा"+'</span></div>'+(byP==="Cash"?'<div class="byr"><span>कैश ऑन डिलीवरी चार्ज (₹3.60 प्रति ₹100)</span><span>+ '+inr(codFee(R*byQ))+'</span></div>':'')+'<div class="byr tot"><span>कुल रकम</span><span>'+inr(kmTot(R))+'</span></div>'}
@@ -1790,9 +1743,9 @@ L.push("","*ग्राहक की जानकारी*","नाम: "+n,"�
 if(byD==="home"){L.push("लेना है: घर पर मँगवाना","पता: "+a+(c?", "+c:"")+(pc?" - "+pc:""))}else L.push("लेना है: दुकान से");
 L.push("पेमेंट: "+(byP==="Udhaar"?"उधार":byP));
 if(nt)L.push("नोट: "+nt);
-var ord={id:"KM"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:o.Item,sku:(o.SKU==null?"":String(o.SKU)),warranty:o.Warranty||"",mrate:(o.MRate==null?"":o.MRate),rate:(R===null?"":R),qty:byQ,total:(R!==null?kmTot(R):""),cod:(R!==null&&byP==="Cash"?codFee(R*byQ):0),stock:(s==="Yes"?"है":s==="NO"?"नहीं है":""),name:n,mobile:m,delivery:(byD==="home"?"घर":"दुकान"),offer:D,address:a,city:c,pin:pc,payment:(byP==="Udhaar"?"उधार":byP),note:nt,offLocal:(D>0&&!window.BOXV?1:0)};if(window.BOXV){ord.boxv=BOXV.id}
+var ord={id:"KM"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:o.Item,sku:(o.SKU==null?"":String(o.SKU)),warranty:o.Warranty||"",mrate:(o.MRate==null?"":o.MRate),rate:(R===null?"":R),qty:byQ,total:(R!==null?kmTot(R):""),cod:(R!==null&&byP==="Cash"?codFee(R*byQ):0),stock:(s==="Yes"?"है":s==="NO"?"नहीं है":""),name:n,mobile:m,delivery:(byD==="home"?"घर":"दुकान"),offer:D,address:a,city:c,pin:pc,payment:(byP==="Udhaar"?"उधार":byP),note:nt};if(window.BOXV){ord.boxv=BOXV.id}
 if(byP==="Loan"&&window.KM_LOAN){ord.loan=KM_LOAN.id;window.KM_LOAN=null}pushOrder(ord,(o.Photos&&o.Photos[0])||"");try{if(o._fb&&window.fbBook)fbBook(o,byQ)}catch(e){}
-if(D>0){if(!ord.boxv)offConsume(D);offPost("use",ord)}if(ord.boxv){setTimeout(function(){try{obLoad()}catch(e){}},2500);setTimeout(function(){try{obLoad()}catch(e){}},9000)}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}
+if(ord.boxv){setTimeout(function(){try{obLoad()}catch(e){}},2500);setTimeout(function(){try{obLoad()}catch(e){}},9000)}try{render()}catch(e){}try{if(curPg==="orders")drawOrders()}catch(e){}
 btn.disabled=false;btn.textContent="✅ Order Now";closeBuy()})}
 var ORDER_URL="https://script.google.com/macros/s/AKfycby739dRs7oX_SYidOaq4mUbD7VZz660VSrk07gECF7Zd2lcvAZlDVblicIKbDadBch4/exec";
 function mkThumb(u,cb0){var _d=false,cb=function(v){if(_d)return;_d=true;cb0(v)};setTimeout(function(){cb("")},3000);if(!u){cb("");return}var im=new Image();if(!/^data:/.test(u))im.crossOrigin="anonymous";im.onload=function(){try{var f=140/Math.max(im.width,im.height,1),c=document.createElement("canvas");c.width=Math.max(1,Math.round(im.width*f));c.height=Math.max(1,Math.round(im.height*f));c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",0.6))}catch(e){cb("")}};im.onerror=function(){cb("")};im.src=u}
@@ -1825,7 +1778,6 @@ l.status=normSt(l.status);
 if(l._dirty){if(r.status===l.status){delete l._dirty;ch=true}return}
 var was=l.status;["no","status","dboy","cancelby","upd"].forEach(function(k){if(r[k]!==undefined&&String(l[k]||"")!==String(r[k]||"")){l[k]=r[k];ch=true}});if(was!==l.status){hmark(l,l.status,r.upd);ch=true}if(mh(l,r))ch=true;
 if(!l.thumb&&r.thumb){l.thumb=r.thumb;ch=true}});
-if(offSweep(a))ch=true;
 if(ch)writeAll(a)}
 
 /* Neeche ka menu */
@@ -1848,7 +1800,7 @@ function showPgQuiet(){["xpc","xpo","xpa"].forEach(function(i){document.getEleme
 Array.prototype.forEach.call(document.querySelectorAll("#xnav [data-xp]"),function(b){b.classList.toggle("on",b.getAttribute("data-xp")==="home")})}
 
 /* Orders list */
-function drawOrders(){var u=getUser(),cu=custGet(),h='<div class="xbar"><span>My Orders</span>'+(u?'<span class="xchs"><span class="xch d">उधार ₹'+fmtN(cu.due)+'</span><button class="xch t '+(offOn()?'on':'off')+'" data-offt="1">ऑफर '+(offOn()?'ON':'OFF')+'</button></span>':'')+'</div>'+(u&&CUSTMSG?'<div class="cdiag">'+esc(CUSTMSG)+'</div>':'')+(u?'<div class="obx2">'+obHTML()+'</div>':'');
+function drawOrders(){var u=getUser(),cu=custGet(),h='<div class="xbar"><span>My Orders</span>'+(u?'<span class="xchs"><span class="xch d">उधार ₹'+fmtN(cu.due)+'</span></span>':'')+'</div>'+(u&&CUSTMSG?'<div class="cdiag">'+esc(CUSTMSG)+'</div>':'')+(u?'<div class="obx2">'+obHTML()+'</div>':'');
 if(!u){document.getElementById("xpo").innerHTML=h+'<div class="xemp"><div class="big">🔐</div>अपने ऑर्डर देखने के लिए पहले Login कीजिए<button class="xbtn" data-xlogin="1">Login</button></div>';return}
 var a=myOrders();
 if(!a.length){document.getElementById("xpo").innerHTML=h+'<div class="xemp"><div class="big">📦</div>अभी तक कोई ऑर्डर नहीं<br>कोई आइटम चुनकर <b>Buy Now</b> दबाइए</div>';return}
@@ -1894,7 +1846,7 @@ document.getElementById("xod").addEventListener("click",function(e){
 if(e.target.closest("#xodx")){closeOd();return}
 if(e.target.closest("#xcan")){var o=findOrd(odId);if(!o)return;
 if(!confirm("क्या आप यह ऑर्डर ("+(o.no||"")+") रद्द करना चाहते हैं?"))return;
-var a=readAll();a.forEach(function(x){if(String(x.id)===String(o.id)){x.status="Cancelled";x.cancelby="Customer";x.upd=new Date().toISOString();x._dirty=1}});offSweep(a);writeAll(a);
+var a=readAll();a.forEach(function(x){if(String(x.id)===String(o.id)){x.status="Cancelled";x.cancelby="Customer";x.upd=new Date().toISOString();x._dirty=1}});writeAll(a);
 if(ORDER_URL){try{fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"cancel",id:o.id,mobile:t10(o.mobile)})}).catch(function(){})}catch(x){}}
 drawOd();refreshOrders();setTimeout(syncOrders,2500)}});
 
@@ -2212,7 +2164,6 @@ header{position:relative!important;margin:0!important;padding:6px 14px 8px!impor
 var MSG="\uD83D\uDEAB \u0911\u0928\u0932\u093E\u0907\u0928 \u092C\u0941\u0915 \u0905\u092D\u0940 \u092C\u0902\u0926 \u0939\u0948";
 window.KM_ONLINE_CLOSED=false;   /* true = Online band (QR dikhega, order nahi jayega) | false = Online chalu */
 /* ---------- 1) Online dabane par QR + upar/neeche "band hai", aage nahi badhna ---------- */
-var _rn=render;render=function(){var r=_rn.apply(this,arguments);try{drawOfb()}catch(e){}return r};
 var _dq=drawQR;
 drawQR=function(R,q){
   if(window.KM_ONLINE_CLOSED&&byP==="UPI"){pendFail=true}   /* order number na bane */
@@ -3489,7 +3440,7 @@ er.textContent="";var u=getUser();if(!u)return;var P=pend;
 try{kAd.saveAd(u.m,u.n,{a:a,k:k,c:c,d:dist,s:st,p:pc})}catch(x){}
 busy=true;var b=$("rcgo");b.disabled=true;b.textContent="⏳ RN नंबर बन रहा है…";
 getRN(function(no){
-var ord={id:"RC"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:"📱 RECHARGE – "+P.co+" – "+P.m,sku:"RECHARGE",warranty:"",mrate:"",rate:P.a,qty:1,total:P.pay,cod:0,stock:"",name:u.n||"",mobile:u.m,delivery:"घर",offer:0,address:a+(k?", Landmark: "+k:""),city:c+(dist?", "+dist:"")+(st?", "+st:"")+", पिन "+pc,pin:pc,payment:"Recharge",note:"RECHARGE REQUEST | नंबर: "+P.m+" | कंपनी: "+P.co+" | अमाउंट: ₹"+P.a+" | 3.5% कटौती: ₹"+P.cut+" | देना है: ₹"+P.pay,offLocal:0,thumb:""};
+var ord={id:"RC"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:"📱 RECHARGE – "+P.co+" – "+P.m,sku:"RECHARGE",warranty:"",mrate:"",rate:P.a,qty:1,total:P.pay,cod:0,stock:"",name:u.n||"",mobile:u.m,delivery:"घर",offer:0,address:a+(k?", Landmark: "+k:""),city:c+(dist?", "+dist:"")+(st?", "+st:"")+", पिन "+pc,pin:pc,payment:"Recharge",note:"RECHARGE REQUEST | नंबर: "+P.m+" | कंपनी: "+P.co+" | अमाउंट: ₹"+P.a+" | 3.5% कटौती: ₹"+P.cut+" | देना है: ₹"+P.pay,thumb:""};
 try{var arr=readAll();arr.unshift(ord);writeAll(arr)}catch(x){}
 if(ORDER_URL){var body=JSON.stringify({action:"add",order:ord});var send=function(){return fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body})};try{send().catch(function(){setTimeout(function(){try{send().catch(function(){})}catch(x){}},4000)})}catch(x){}}
 try{localStorage.setItem("kms_rcnum",P.m)}catch(x){}$("rca").value="";co="";$("rcpt").textContent="कंपनी चुनिए";$("rcpick").classList.remove("set");calc();
@@ -4127,22 +4078,35 @@ function obMsg(d){var r=d.every-d.inBox;
 if(d.inBox===0)return d.delivered>0?"नया बॉक्स शुरू हो गया है – "+d.every+" ऑर्डर और करिए, फिर एक बेहतरीन ऑफर मिलेगा":d.every+" ऑर्डर करिए, आपको एक बेहतरीन ऑफर मिलेगा";
 if(r===1)return"बस अगला ऑर्डर! ऑर्डर पूरा होते ही आपको एक बेहतरीन ऑफर मिलेगा";
 return"वाह! आप ऑफर के करीब पहुँचने वाले हैं – "+r+" ऑर्डर और"}
-function obHTML(){var u=getUser();if(!u)return"";var d=obMine();
-var h='<div class="obw"><div class="obh">🎁 ऑफर बॉक्स</div><div class="obt">तीन ऑर्डर करने के बाद आपको एक बेहतरीन ऑफर वाउचर मिलता है।</div>';
-if(!d)return h+'<div class="obt2">लोड हो रहा है…</div></div>';
-var tot=0;d.boxes.forEach(function(b){tot+=b.amount});
-if(tot>0)h+='<div class="obt2">अब तक आपको मिला ऑफर: <b>₹'+fmtN(tot)+'</b></div>';
-h+='<div class="obs"><div class="obc"><div class="k">बॉक्स '+(d.boxes.length+1)+' (अभी चल रहा)</div><div class="obd">';
-for(var i=0;i<d.every;i++)h+='<i class="'+(i<d.inBox?'f':'')+'">'+(i<d.inBox?'✔':'')+'</i>';
-h+='</div><div class="m">'+esc(obMsg(d))+'</div>'+(d.placed>0?'<div class="m">📦 आपके '+d.placed+' ऑर्डर रास्ते में हैं, डिलीवर होते ही गिने जाएँगे</div>':'')+'</div>';
-var bs=d.boxes.slice().sort(function(a,b){if(a.state!==b.state)return a.state==="open"?-1:1;return b.k-a.k});
-bs.forEach(function(b){
-if(b.state==="open")h+='<div class="obc op" data-obopen="'+esc(b.id)+'"><div class="k">🎁 ऑफर बॉक्स '+b.k+' – खुल गया!</div><div class="a">₹'+fmtN(b.amount)+'</div><div class="m">खोलने के लिए यहाँ टैप कीजिए</div></div>';
-else h+='<div class="obc us"><div class="k">ऑफर बॉक्स '+b.k+' – इस्तेमाल हो गया</div><div class="a">₹'+fmtN(b.amount)+'</div><div class="m">'+(b.usedItem?esc(b.usedItem):'')+(b.usedTime?'<br>'+obDate(b.usedTime):'')+'</div></div>'});
-return h+'</div></div>'}
+function obInfo(ic,tt,bd){var d=document.getElementById("obinf");if(d)d.remove();d=document.createElement("div");d.id="obinf";
+d.style.cssText="position:fixed;inset:0;z-index:2147483200;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:22px";
+d.innerHTML="<div style='background:#fff;border-radius:14px;max-width:340px;width:100%;padding:20px 16px 14px;text-align:center;font-family:inherit'><div style='font-size:38px;line-height:1'>"+ic+"</div><div style='font-size:17px;font-weight:900;color:#b42410;margin:8px 0 6px'>"+tt+"</div><div style='font-size:15px;font-weight:700;color:#222;line-height:1.5'>"+bd+"</div><button style='margin-top:12px;border:0;background:#e63c1f;color:#fff;font-weight:900;font-size:16px;border-radius:10px;padding:9px 32px;cursor:pointer;font-family:inherit'>ठीक है</button></div>";
+d.addEventListener("click",function(){d.remove()});document.body.appendChild(d)}
+function obTap(k){var d=getUser()?obMine():null;if(!getUser()){obInfo("🔑","ऑफर बॉक्स "+k,"लॉगिन करने के बाद आपका ऑफर यहाँ दिखेगा। हर 3 ऑर्डर डिलीवर होने पर एक ऑफर बॉक्स खुलता है।");return}if(!d)return;var b=null;d.boxes.forEach(function(x){if(x.k===k)b=x});
+if(b&&b.state==="merged"){obInfo("🔗","ऑफर बॉक्स "+k+" जुड़ गया","आपका ऑफर ₹"+fmtN(b.amount)+" अगले ऑफर बॉक्स "+b.into+" में जोड़ दिया गया है। अब आप ऑफर बॉक्स "+b.into+" से इस्तेमाल कीजिए।");return}
+if(b&&b.state==="used"){obInfo("✔","ऑफर बॉक्स "+k+" इस्तेमाल हो गया","आपने इसका ₹"+fmtN(b.amount)+" का ऑफर ले लिया है।");return}
+var r=Math.max(1,3*k-d.delivered);obInfo("🔒","ऑफर बॉक्स "+k,"आपका ऑफर "+(r<3*k?r+" ऑर्डर और ":"3 ऑर्डर ")+"डन (डिलीवर) होने के बाद ओपन होगा।")}
+function obHTML(){var u=getUser(),d=u?obMine():null;
+var H='<div class="obw"><div class="obhd"><b>🎁 ऑफर बॉक्स</b><span>हर 3 ऑर्डर डिलीवर होने पर एक ऑफर बॉक्स खुलता है</span>';
+if(!u)d={delivered:0,placed:0,inBox:0,boxes:[]},H+='<em>🔑 लॉगिन करने पर आपका ऑफर यहाँ दिखेगा</em>';
+else if(!d)return H+'</div><div class="obtr"><i class="c">…</i></div></div>';
+var tot=0,bm={},opn=0;d.boxes.forEach(function(b){if(b.state!=="merged")tot+=b.amount;if(b.state==="open")opn=b.amount;bm[b.k]=b});
+if(opn>0)H+='<em class="gn">🎁 आपका ऑफर ₹'+fmtN(opn)+' तैयार है</em>';
+if(!u){}else if(d.placed>0)H+='<em>📦 आपके '+d.placed+' ऑर्डर डिलीवर होने के बाद आपको ऑफर मिलेगा</em>';else if(tot>0&&!(opn>0))H+='<em>अब तक मिला ₹'+fmtN(tot)+'</em>';
+H+='</div><div class="obtr">';
+var dl=d.delivered,N=Math.max(9,(d.boxes.length+2)*3);if(N>90)N=90;
+for(var n=1;n<=N;n++){
+var cls=n<=dl?'f':(n<=dl+d.placed?'p':(n===dl+d.placed+1?'c':''));
+H+='<i class="'+cls+(n===dl+1?' cur':'')+'">'+(n<=dl?'✔':n)+'</i>';
+if(n%3===0){var k=n/3,b=bm[k];
+if(b&&b.state==="open")H+='<s class="g op" data-obopen="'+esc(b.id)+'">🎁<small>₹'+fmtN(b.amount)+'</small></s>';
+else if(b&&b.state==="used")H+='<s class="g us" data-obtap="'+k+'">🎁<small>✔ ₹'+fmtN(b.amount)+'</small></s>';
+else if(b&&b.state==="merged")H+='<s class="g mg" data-obtap="'+k+'">🎁<small>➜ ऑफर '+b.into+'</small></s>';
+else H+='<s class="g" data-obtap="'+k+'">🎁<small>ऑफर '+k+'</small></s>'}}
+return H+'</div></div>'}
+function obScroll(el){try{var sc=el.querySelector(".obtr"),c=sc&&sc.querySelector(".cur");if(!c)c=sc&&sc.querySelector(".g.op");if(sc&&c)sc.scrollLeft=Math.max(0,c.offsetLeft-sc.clientWidth*0.3)}catch(e){}}
 function obDraw(){var el=document.getElementById("obx");if(!el)return;var u=null;try{u=getUser()}catch(e){}
-if(!u){el.style.display="none";return}
-var h=obHTML();if(el.getAttribute("data-h")!==h){var sc=el.querySelector(".obs"),x=sc?sc.scrollLeft:0;el.innerHTML=h;el.setAttribute("data-h",h);sc=el.querySelector(".obs");if(sc)sc.scrollLeft=x}
+var h=obHTML();if(el.getAttribute("data-h")!==h){el.innerHTML=h;el.setAttribute("data-h",h);obScroll(el)}
 el.style.display=""}
 function obLoad(){var u=getUser();if(!u||typeof ORDER_URL==="undefined"||!ORDER_URL)return;
 try{fetch(ORDER_URL+(ORDER_URL.indexOf("?")<0?"?":"&")+"action=boxstatus&mobile="+u.m+"&t="+Date.now()).then(function(r){return r.json()}).then(function(j){if(!j||!j.ok)return;var s=JSON.stringify(j);if(s===OB.j)return;OB.j=s;OB.d=j;try{localStorage.setItem("kms_obx",s)}catch(e){}obDraw();try{if(curPg==="orders")drawOrders()}catch(e){}}).catch(function(){})}catch(e){}}
@@ -4159,12 +4123,14 @@ function obBuy(i,id){var d=obMine();if(!d)return;var b=null;d.boxes.forEach(func
 obClose();window.BOXV={id:b.id,amt:b.amount};openBuy(i)}
 document.addEventListener("click",function(e){var t=e.target&&e.target.closest?e.target:null;if(!t)return;
 var o=t.closest("[data-obopen]");if(o){obOpen(o.getAttribute("data-obopen"));return}
+var g=t.closest("[data-obtap]");if(g){obTap(Number(g.getAttribute("data-obtap")));return}
 var r=t.closest("[data-obbuy]");if(r){obBuy(Number(r.getAttribute("data-obbuy")),r.getAttribute("data-obid"));return}
 if(t.id==="obmx"||t.id==="obm")obClose()});
 var _dbBox=drawBy;drawBy=function(){var u=document.getElementById("bpUPI");
 if(window.BOXV){try{var o=items[byI];if(o){var R0=numOf(o.Rate),R=R0===null?null:R0-offPU(R0,byQ),z=(R!==null&&R*byQ<=0.004);if(z)byP="Cash";if(u)u.style.display=z?"none":""}}catch(e){}}else if(u)u.style.display="";
 return _dbBox.apply(this,arguments)};
 var _rnOb=render;render=function(){var r=_rnOb.apply(this,arguments);try{obDraw()}catch(e){}return r};
+var _suOb=setUser;setUser=function(u){var r=_suOb.apply(this,arguments);try{obDraw();if(u)obLoad()}catch(e){}return r};
 setTimeout(function(){obLoad();obDraw()},1800);setInterval(function(){if(!document.hidden)obLoad()},15000);
 </script>
 </body>
