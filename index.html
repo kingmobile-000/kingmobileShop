@@ -647,12 +647,6 @@ body.nh #rcw{display:none!important}
 #rcd .rcrow,#rcq .rcrow:last-child{border:0}
 #rcd .rcrow,#rcq .rcrow b{text-align:right}
 </style>
-<div id="rcw"><div class="rcc"><div class="rct">📱 मोबाइल रिचार्ज</div>
-<label class="rcf" for="rcm">मोबाइल नंबर</label><input autocomplete="off" id="rcm" inputmode="numeric" maxlength="10" name="king_rc_target" placeholder="10 अंक का नंबर" type="tel"/>
-<label class="rcf">कंपनी</label><button class="rcpick" id="rcpick" type="button"><span id="rcpt">कंपनी चुनिए</span><i>▾</i></button><div class="rcco" id="rcco"><button data-c="Airtel" type="button">Airtel</button><button data-c="Jio" type="button">Jio</button><button data-c="Vodafone+VI" type="button">Vodafone+VI</button><button data-c="BSNL" type="button">BSNL</button></div>
-<label class="rcf" for="rca">रिचार्ज अमाउंट (₹)</label><input id="rca" inputmode="numeric" maxlength="5" placeholder="जैसे 299" type="tel"/>
-<div class="rccalc" id="rccalc"></div><div class="rcerr" id="rcerr"></div>
-<button class="rcdone" id="rcdone" type="button">✅ Done</button></div><div id="rcl"></div></div>
 <div id="dt"><div id="dtb"><button aria-label="वापस" id="dtx">←</button><span id="dtc"></span></div><div id="dtg"></div><div id="dti"></div><div id="dto"></div></div>
 <div id="by"><div id="byb"><button aria-label="वापस" id="byx">←</button><span>ऑर्डर की जानकारी</span></div>
 <div id="bysum"></div>
@@ -3406,7 +3400,7 @@ const firebaseConfig = {
   });
 </script>
 <script>
-/* ===== मोबाइल रिचार्ज सिस्टम (RN नंबर, सिर्फ 3 स्टेटस, 3.5% कटौती) ===== */
+/* purane recharge orders sirf dekhne ke liye (naya recharge booking hata diya gaya) */
 (function(){
 var RATE=0.035,co="",busy=false,rcId=null;
 var LB=["Recharge Request में पड़ा है","कॉल द वेट","Recharge Done"];
@@ -3415,48 +3409,6 @@ function r2(x){return Math.round(x*100)/100}
 function isRc(o){return o&&String(o.sku)==="RECHARGE"}
 function stIx(s){s=normSt(s);if(s==="Done")return 2;if(s==="Confirmed"||s==="Shipped"||s==="OutForDelivery")return 1;if(s==="Cancelled"||s==="DelCancelled")return -1;return 0}
 function parse(o){var p=String(o.item||"").split(" – "),m=p.length>1?p[p.length-1]:"",c=p.length>2?p[p.length-2]:"",n=String(o.note||""),a=n.match(/नंबर:\s*(\d{10})/),b=n.match(/कंपनी:\s*([^|]+?)\s*(?:\||$)/);if(a)m=a[1];if(b&&!c)c=b[1];return{co:c,m:m}}
-function calc(){var a=parseFloat($("rca").value.replace(/\D/g,""))||0,cut=r2(a*RATE),pay=r2(a-cut);
-var d=$("rccalc");if(a>0){d.style.display="block";d.innerHTML='<div><span>रिचार्ज अमाउंट</span><span>'+inr(a)+'</span></div><div><span>3.5% कटौती</span><span>− '+inr(cut)+'</span></div><div class="tt"><span>आपको देना है</span><span>'+inr(pay)+'</span></div>'}else d.style.display="none";return{a:a,cut:cut,pay:pay}}
-$("rcpick").addEventListener("click",function(){$("rcco").classList.toggle("on")});
-$("rcco").addEventListener("click",function(e){var b=e.target.closest("[data-c]");if(!b)return;co=b.getAttribute("data-c");$("rcpt").textContent=co;$("rcpick").classList.add("set");$("rcco").classList.remove("on")});
-$("rca").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");calc()});
-$("rcm").addEventListener("input",function(){this.value=this.value.replace(/\D/g,"").slice(0,10);try{localStorage.setItem("kms_rcnum",this.value)}catch(x){}});
-try{var _sv=localStorage.getItem("kms_rcnum");if(_sv)$("rcm").value=_sv}catch(x){}
-var _keep=function(){try{var v=localStorage.getItem("kms_rcnum")||"";if(v&&$("rcm").value!==v&&document.activeElement!==$("rcm"))$("rcm").value=v}catch(x){}};setInterval(_keep,700);
-function getRN(cb){var done=false,f=function(n){if(done)return;done=true;if(!n)n="RN "+String(Date.now()).slice(-6);cb(n)};
-setTimeout(function(){f("")},6000);
-try{if(!ORDER_URL){f("");return}fetch(ORDER_URL+(ORDER_URL.indexOf("?")<0?"?":"&")+"action=nextrn&t="+Date.now()).then(function(r){return r.json()}).then(function(j){var n=j&&j.no?String(j.no):"";f(/^RN/i.test(n)?n:"")}).catch(function(){f("")})}catch(e){f("")}}
-function savedAd(){var u=getUser();return(u&&kAd.get(u.m))||{}}
-var pend=null;
-$("rcdone").addEventListener("click",function(){var er=$("rcerr"),m=$("rcm").value.replace(/\D/g,""),c=calc();
-var u=getUser();if(!u){openLogin("पहले Login कीजिए, फिर रिचार्ज होगा");return}
-if(m.length!==10){er.textContent="⚠ मोबाइल नंबर 10 अंक का होना चाहिए";return}
-if(!co){er.textContent="⚠ कंपनी चुनिए";return}
-if(!(c.a>=10)){er.textContent="⚠ रिचार्ज अमाउंट लिखिए (कम से कम ₹10)";return}
-er.textContent="";pend={m:m,co:co,a:c.a,cut:c.cut,pay:c.pay};drawAd()});
-function drawAd(){var sv=savedAd(),has=!!(sv.a&&sv.c&&String(sv.p||"").length===6),d=$("rcq"),P=pend;if(!P)return;
-var h='<div class="xbar"><button id="rcqx" aria-label="वापस">←</button><span>रिचार्ज – पता</span></div>';
-h+='<div class="xsec"><div class="xh2">📱 रिचार्ज की जानकारी</div><div class="rcrow"><span>कंपनी</span><b>'+esc(P.co)+'</b></div><div class="rcrow"><span>मोबाइल नंबर</span><b>'+esc(P.m)+'</b></div><div class="rcrow"><span>रिचार्ज अमाउंट</span><b>'+inr(P.a)+'</b></div><div class="rcrow"><span>3.5% कटौती</span><b>− '+inr(P.cut)+'</b></div><div class="rcrow"><span>आपको देना है</span><b style="font-size:18px">'+inr(P.pay)+'</b></div></div>';
-h+='<div class="xsec"><div class="xh2">📍 आपका पता</div>'+(has?'':'<div class="rcbn">📍डिलीवरी सेवा: किंग मोबाइल शॉप, हुसैनगंज से 10 किलोमीटर की दूरी में उपलब्ध है। कृपया इसी दूरी के भीतर का पता भरें।</div>')+
-'<input class="rcin" id="rya" type="text" placeholder="मकान नंबर / गली / मोहल्ला *" value="'+esc(sv.a||"")+'"><input class="rcin" id="ryk" type="text" placeholder="लैंडमार्क (जैसे मंदिर, स्कूल के पास)" value="'+esc(sv.k||"")+'"><div class="rc2"><input class="rcin" id="ryc" type="text" placeholder="गाँव / शहर *" value="'+esc(sv.c||"")+'"><input class="rcin" id="ryd" type="text" placeholder="जिला" value="'+esc(sv.d||"")+'"></div><div class="rc2"><input class="rcin" id="rys" type="text" placeholder="राज्य" value="'+esc(sv.s||"Uttar Pradesh")+'"><input class="rcin" id="ryp" type="text" inputmode="numeric" maxlength="6" placeholder="पिनकोड *" value="'+esc(sv.p||"")+'"></div><div class="rce" id="ryer"></div><button class="rcgo" id="rcgo">✅ Done</button></div>';
-d.innerHTML=h;d.classList.add("on");d.scrollTop=0;try{kAd.init("ry")}catch(e){}}
-function submit(){if(busy||!pend)return;var er=$("ryer"),a=$("rya").value.trim(),k=$("ryk").value.trim(),c=$("ryc").value.trim(),dist=$("ryd").value.trim(),st=$("rys").value.trim(),pc=$("ryp").value.replace(/\D/g,"");
-if(!a){er.textContent="⚠ मकान नंबर / गली / मोहल्ला लिखिए";return}
-if(!c){er.textContent="⚠ गाँव / शहर लिखिए";return}
-if(pc.length!==6){er.textContent="⚠ पिनकोड 6 अंक का होना चाहिए";return}
-er.textContent="";var u=getUser();if(!u)return;var P=pend;
-try{kAd.saveAd(u.m,u.n,{a:a,k:k,c:c,d:dist,s:st,p:pc})}catch(x){}
-busy=true;var b=$("rcgo");b.disabled=true;b.textContent="⏳ RN नंबर बन रहा है…";
-getRN(function(no){
-var ord={id:"RC"+Date.now().toString(36).toUpperCase(),no:no,time:new Date().toISOString(),status:"New",item:"📱 RECHARGE – "+P.co+" – "+P.m,sku:"RECHARGE",warranty:"",mrate:"",rate:P.a,qty:1,total:P.pay,cod:0,stock:"",name:u.n||"",mobile:u.m,delivery:"घर",offer:0,address:a+(k?", Landmark: "+k:""),city:c+(dist?", "+dist:"")+(st?", "+st:"")+", पिन "+pc,pin:pc,payment:"Recharge",note:"RECHARGE REQUEST | नंबर: "+P.m+" | कंपनी: "+P.co+" | अमाउंट: ₹"+P.a+" | 3.5% कटौती: ₹"+P.cut+" | देना है: ₹"+P.pay,thumb:""};
-try{var arr=readAll();arr.unshift(ord);writeAll(arr)}catch(x){}
-if(ORDER_URL){var body=JSON.stringify({action:"add",order:ord});var send=function(){return fetch(ORDER_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body})};try{send().catch(function(){setTimeout(function(){try{send().catch(function(){})}catch(x){}},4000)})}catch(x){}}
-try{localStorage.setItem("kms_rcnum",P.m)}catch(x){}$("rca").value="";co="";$("rcpt").textContent="कंपनी चुनिए";$("rcpick").classList.remove("set");calc();
-pend=null;busy=false;$("rcq").classList.remove("on");drawList();openRc(ord.id)})}
-function recs(){var u=getUser();if(!u)return[];return readAll().filter(function(o){return isRc(o)&&t10(o.mobile)===u.m}).sort(function(a,b){return String(b.time).localeCompare(String(a.time))})}
-function drawList(){var a=recs().slice(0,5),h="";if(a.length){h='<div class="rch">आपके रिचार्ज</div>';a.forEach(function(o){var p=parse(o),i=stIx(o.status);h+='<div class="rcr" data-rc="'+esc(o.id)+'"><div class="a"><b>'+esc(p.co)+' · '+esc(p.m)+'</b><small>'+esc(o.no||"")+' · '+esc(fdt(o.time))+'</small><span class="rcs rcs'+(i<0?"x":i)+'">'+(i<0?"रद्द":esc(LB[i]))+'</span></div><div class="p">'+inr(fnum(o.rate)||0)+'</div></div>'})}
-$("rcl").innerHTML=h}
-$("rcl").addEventListener("click",function(e){var c=e.target.closest("[data-rc]");if(c)openRc(c.getAttribute("data-rc"))});
 function drawSheet(){var d=$("rcd"),o=null,a=readAll();for(var k=0;k<a.length;k++)if(String(a[k].id)===String(rcId)){o=a[k];break}
 if(!o){d.classList.remove("on");return}
 var p=parse(o),i=stIx(o.status),A=fnum(o.rate)||0,P=fnum(o.total)||0,cut=r2(A-P);
@@ -3470,31 +3422,14 @@ h+='<div class="xsec"><div class="xh2">'+(i===2?'🧾 रिचार्ज र�
 if(i===2)h+='<div class="xsec"><div class="xbox g">✅ रिचार्ज हो गया – धन्यवाद!</div></div>';
 if(i===1)h+='<div class="xsec"><div class="xbox b">⏳ कृपया थोड़ा इंतज़ार कीजिए, आपका रिचार्ज जल्द होगा</div></div>';
 d.innerHTML=h;d.classList.add("on")}
+
 function openRc(id){rcId=id;drawSheet();$("rcd").scrollTop=0;try{syncOrders()}catch(e){}}
 function closeRc(){rcId=null;$("rcd").classList.remove("on")}
-var sh=document.createElement("div");sh.id="rcd";document.body.appendChild(sh);var sq=document.createElement("div");sq.id="rcq";document.body.appendChild(sq);sq.addEventListener("click",function(e){if(e.target.closest("#rcqx")){sq.classList.remove("on");return}if(e.target.closest("#rcgo"))submit()});sq.addEventListener("input",function(e){if(e.target.id==="ryp")e.target.value=e.target.value.replace(/\D/g,"").slice(0,6)});
-sh.addEventListener("click",function(e){if(e.target.closest("#rcdx"))closeRc()});
-window.rcRefresh=function(){drawList();if(rcId)drawSheet()};
+var sh=document.createElement("div");sh.id="rcd";document.body.appendChild(sh);sh.addEventListener("click",function(e){if(e.target.closest("#rcdx"))closeRc()});
+window.rcRefresh=function(){if(rcId)drawSheet()};
 window.rcLbl=function(s){var i=stIx(s);return i<0?"Recharge Cancelled":LB[i]};
 window.rcOpen=openRc;window.rcClose=closeRc;
 var _oo=window.openOd;openOd=function(id){var o=findOrd(id);if(o&&isRc(o)){openRc(id);return}return _oo.apply(this,arguments)};
-setInterval(function(){try{if(document.hidden||!getUser())return;var p=recs().some(function(o){return stIx(o.status)===0||stIx(o.status)===1});if(p)syncOrders()}catch(e){}},15000);
-drawList();
-})();
-</script>
-<style id="rcpl">html body #list #rcslot{grid-column:1/-1!important;margin:0!important;padding:0!important}#list #rcslot #rcw{margin:10px 2px 6px!important;padding:0!important}</style>
-<script id="rcpljs">
-/* रिचार्ज बॉक्स: लाल फ्रेम (Top Deals) खत्म होते ही उसके ठीक नीचे; search/category में पहले जैसा सबसे नीचे */
-(function(){
-var W=document.getElementById("rcw"),L=document.getElementById("list");if(!W||!L)return;
-var HOME=W.parentNode,NEXT=W.nextSibling;
-function place(){try{
-var s=L.querySelector("#rcslot");
-if(s){if(W.parentNode!==s)s.appendChild(W)}
-else if(W.parentNode!==HOME){HOME.insertBefore(W,(NEXT&&NEXT.parentNode===HOME)?NEXT:null)}
-}catch(e){}}
-try{new MutationObserver(place).observe(L,{childList:true})}catch(e){}
-place();
 })();
 </script>
 <style id="kbrand">
